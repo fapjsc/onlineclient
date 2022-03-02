@@ -1,0 +1,49 @@
+.container {
+  max-height: 56vh;
+  min-height: 56vh;
+  padding: 0.5rem 2rem;
+
+  .brand-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    height: 11vh;
+    overflow-y: scroll;
+
+    .brand {
+      background-image: url(../../assets/button/home/btn-small.png);
+      background-position: center;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      height: 3rem;
+    }
+  }
+
+  .slot-box {
+    height: 43vh;
+    margin-top: 1vh;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    gap: 1rem;
+
+    @media only screen and(max-width: 557px) {
+      row-gap: 0;
+    }
+
+    .slot-btn {
+      //   background-color: green;
+      background-image: url(../../assets/button/slot-list/Aristocrat/btn-koi.png);
+      background-position: center;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      height: 10rem;
+      cursor: pointer;
+
+      @media only screen and(max-width: 557px) {
+        height: 7.5rem;
+      }
+    }
+  }
+}

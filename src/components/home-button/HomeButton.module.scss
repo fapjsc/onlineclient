@@ -1,0 +1,50 @@
+.home-btn-container {
+  position: absolute;
+  bottom: 3%;
+  width: 100%;
+  height: 9%;
+
+  .home-btn-box {
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    gap: 2rem;
+  }
+
+  .btn-container {
+    width: 78%;
+    height: 70%;
+    align-self: flex-end;
+    display: flex;
+    gap: 1rem;
+
+    .home-btn {
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      height: 100%;
+      width: 33%;
+      cursor: pointer;
+    }
+
+    .home {
+      background-image: url(../../assets/button/home/btn_home_1.png);
+    }
+
+    .game {
+      background-image: url(../../assets/button/home/btn_game_1.png);
+    }
+
+    .user {
+      background-image: url(../../assets/button/home/btn_user_1.png);
+    }
+  }
+
+  .icon-container {
+    background-image: url(../../assets/button/home/btn_coin_normal.png);
+    flex: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

@@ -1,15 +1,16 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+// import React from 'react';
+// import { useSelector } from 'react-redux';
+// import { Navigate } from 'react-router-dom';
 
-// eslint-disable-next-line
-const ProtectRoute = ({ children }) => {
-  const isAuth = true;
+// // eslint-disable-next-line
+// const ProtectRoute = ({ children }) => {
+//   const { data } = useSelector((state) => state.user);
 
-  if (!isAuth) {
-    return <Navigate to="/login" />;
-  }
+//   if (!data) {
+//     return <Navigate to="/login" />;
+//   }
 
-  return children;
-};
+//   return children;
+// };
 
-export default ProtectRoute;
+// export default ProtectRoute;

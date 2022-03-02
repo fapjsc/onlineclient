@@ -1,0 +1,51 @@
+.action-box {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+  grid-gap: 1rem;
+  padding: 1rem;
+  color: #fff;
+  font-size: 1.5rem;
+
+  .action-small-btn {
+    height: 5rem;
+    background-image: url(../../assets/button/home/btn-small.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .action-big-btn {
+    height: 4rem;
+    background-image: url(../../assets/button/home/btn-big.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .notify {
+    grid-column: 1 / span 2;
+  }
+
+  .promo {
+    grid-column: 3 / span 2;
+  }
+
+  .login {
+    grid-column: 1/ -1;
+  }
+
+  .register {
+    grid-column: 1/ -1;
+  }
+}

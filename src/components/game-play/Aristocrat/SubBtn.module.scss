@@ -1,0 +1,33 @@
+.sub-btn-header-box {
+  height: 28%;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+}
+
+.sub-btn-holder {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0.7rem;
+  padding: 0.5rem;
+  margin-bottom: 5px;
+
+  .sub-btn {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+}

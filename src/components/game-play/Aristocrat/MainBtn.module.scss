@@ -1,0 +1,38 @@
+.main-btn-holder {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .main-btn {
+    background-size: 50rem;
+    background-repeat: no-repeat;
+    background-position: -3.5rem -4rem;
+    width: 30%;
+    height: 90%;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    @media only screen and(max-width: 557px) {
+      background-size: 40rem;
+      background-position: -3rem -3.6rem;
+      width: 33%;
+    }
+  }
+
+  .btn-auto {
+    background-image: url(../../../assets/button/aristocrat/main/btn-auto.png);
+  }
+
+  .btn-max {
+    background-image: url(../../../assets/button/aristocrat/main/btn-max.png);
+  }
+
+  .btn-spin {
+    background-image: url(../../../assets/button/aristocrat/main/btn-spin.png);
+  }
+}

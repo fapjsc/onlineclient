@@ -4,3 +4,5 @@ obj
 *.*
 !*.css
 !*.scss
+
+src/pages/Layout/*

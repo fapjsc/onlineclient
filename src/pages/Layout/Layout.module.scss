@@ -1,0 +1,38 @@
+.big-bg {
+  background-image: linear-gradient(
+      to right bottom,
+      rgb(#000, 0.7),
+      rgb(#000, 0.7)
+    ),
+    url(../../assets/big-bg.jpg);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: blue;
+}
+
+// .center-box {
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: blue;
+// }
+
+.container {
+  background-image: url(../../assets/bg.jpg);
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 650px;
+  height: 99%;
+  position: relative;
+  border-radius: 10px;
+
+  @media only screen and(max-width: 414px) {
+    height: 99%;
+  }
+}

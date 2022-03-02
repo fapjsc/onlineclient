@@ -1,0 +1,22 @@
+.header {
+  border-bottom: 1px solid #9c7a33;
+  padding: 1rem;
+  padding-bottom: 0.5rem;
+  background-color: transparent;
+  position: sticky;
+  top: 0;
+
+  .header-text-box {
+    display: flex;
+    flex-direction: column;
+
+    .header-title {
+      font-size: 1.8rem;
+      color: #fff;
+    }
+
+    .header-text {
+      color: #9c7a33;
+    }
+  }
+}

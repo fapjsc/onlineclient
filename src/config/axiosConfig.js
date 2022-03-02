@@ -1,23 +1,19 @@
 import axios from 'axios';
 
-const authFetch = axios.create({
+export const authFetch = axios.create({
   baseURL: '/api/v1',
 });
 
 authFetch.interceptors.request.use(
   (config) => {
-    config.headers.common['login_session'] = `${state.token}`;
+    config.headers.common.login_session = '1234';
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
 authFetch.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     // console.log(error.response);
     if (error.response.code === 91) {
@@ -27,4 +23,4 @@ authFetch.interceptors.response.use(
   },
 );
 
-export default authFetch;
+export const temp = () => {};

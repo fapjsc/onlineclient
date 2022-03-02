@@ -1,0 +1,63 @@
+// Sub Button Header
+.sub-btn-header-animation {
+  animation: shake-vertical 10s ease infinite;
+}
+
+@keyframes shake-vertical {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateY(-8px);
+  }
+
+  20%,
+  40%,
+  60% {
+    transform: translateY(8px);
+  }
+
+  80% {
+    transform: translateY(6.4px);
+  }
+
+  90% {
+    transform: translateY(-6.4px);
+  }
+}
+
+// Main Button
+.main-btn-animation {
+  animation: 0.15s main-btn-click steps(3) 1;
+}
+
+.main-btn-animation-auto {
+  animation: 0.3s main-btn-click steps(3) infinite;
+}
+
+@keyframes main-btn-click {
+  0% {
+    background-position-x: -3.5rem;
+  }
+
+  100% {
+    background-position-x: -53.5rem;
+  }
+}
+
+@media only screen and(max-width: 550px) {
+  @keyframes main-btn-click {
+    0% {
+      background-position-x: -3rem;
+    }
+
+    100% {
+      background-position-x: -43rem;
+    }
+  }
+}
