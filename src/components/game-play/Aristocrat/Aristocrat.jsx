@@ -33,7 +33,6 @@ import '../../../sass/animation.scss';
 // ];
 
 const Aristocrat = () => {
-  console.log('Aristocrat');
   // Init State
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [isAuto, setIsAuto] = useState(false);

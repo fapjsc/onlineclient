@@ -6,8 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // actions
-import { getEgmList, selectEgm } from '../../store/actions/egmActions';
+import {
+  getEgmList,
+  selectEgm,
+  getBrandList,
+} from '../../store/actions/egmActions';
 
+// Styles
 import styles from './SlotList.module.scss';
 
 const SlotList = () => {
@@ -15,14 +20,19 @@ const SlotList = () => {
 
   const navigate = useNavigate();
 
-  const { data } = useSelector((state) => state.egmList);
+  const { data: egmListData, error: egmListError } = useSelector(
+    (state) => state.egmList,
+  );
+  const { data: brandListData } = useSelector((state) => state.brand);
+
+  console.log(egmListError);
+
   const { data: selectEgmDta } = useSelector((state) => state.selectEgm);
   const { id: egmID } = selectEgmDta || {};
 
-  console.log(egmID);
-
   useEffect(() => {
     dispatch(getEgmList());
+    dispatch(getBrandList());
   }, [dispatch]);
 
   const selectEgmHandler = (id) => {
@@ -37,23 +47,30 @@ const SlotList = () => {
 
   return (
     <section className={styles.container}>
-      {/* <div className={styles['brand-box']}>
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-        <div className={styles.brand} />
-      </div> */}
+      <div className={styles['brand-box']}>
+        {brandListData
+          && Object.keys(brandListData).map((brand) => {
+            let imgObj;
+            try {
+              //eslint-disable-next-line
+              imgObj = require(`../../assets/brand/${brand}.png`);
+            } catch (error) {
+              console.log(error);
+            }
+            return (
+              <div
+                key={brand}
+                className={styles.brand}
+                style={{ backgroundImage: imgObj && `url(${imgObj})` }}
+              >
+                {!imgObj && <span>{brand}</span>}
+              </div>
+            );
+          })}
+      </div>
 
       <div className={styles['slot-box']}>
-        {data?.map((egm) => (
+        {egmListData?.map((egm) => (
           <div
             key={egm.id}
             onClick={() => selectEgmHandler(egm.id)}

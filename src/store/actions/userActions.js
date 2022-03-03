@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { userActionTypes } from '../types';
 
-import { agentServer } from '../../apis';
+import { agentServer, authApi } from '../../apis';
 
 // const addUserToLocalStorage = ({ user, token, location }) => {
 //   localStorage.setItem('user', JSON.stringify(user));
@@ -21,28 +21,37 @@ export const setupUser = ({ currentUser, endPoint }) => async (dispatch) => {
 
     const { result } = data || {};
 
-    // const {
-    //   id, token, member_id: memberID, cards,
-    // } = result;
-
-    // const userData = {
-    //   id,
-    //   token,
-    //   memberID,
-    //   cards,
-    // };
-
-    console.log(result);
     dispatch({
       type: userActionTypes.SETUP_USER_SUCCESS,
       payload: { userData: result },
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: userActionTypes.SETUP_USER_ERROR,
       payload: {
-        error: error.response.data.message || 'setup uer fail',
+        error: error?.response?.data?.message || 'setup uer fail',
+      },
+    });
+  }
+};
+
+export const getCrypto = () => async (dispatch) => {
+  dispatch({ type: userActionTypes.SETUP_CRYPTO_BEGIN });
+
+  try {
+    const { data } = await axios.get(`${agentServer.api}/${authApi.getKey}`);
+
+    const { result } = data || {};
+
+    dispatch({
+      type: userActionTypes.SETUP_CRYPTO_SUCCESS,
+      payload: { crypto: result },
+    });
+  } catch (error) {
+    dispatch({
+      type: userActionTypes.SETUP_CRYPTO_ERROR,
+      payload: {
+        error: error?.response?.data?.message || 'get crypto key fail',
       },
     });
   }

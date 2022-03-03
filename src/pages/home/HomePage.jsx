@@ -1,49 +1,79 @@
 import React, { useState, useEffect } from 'react';
 
+import { useDispatch } from 'react-redux';
+import { authFetch } from '../../config/axiosConfig';
+
+// Redux
+
+// Components
 import Carousel from '../../components/Carousel';
 import HomeAction from '../../components/home-action/HomeAction';
 import HomeButton from '../../components/home-button/HomeButton';
 import HomeHeader from '../../components/home-header/HomeHeader';
 import GameType from '../../components/game-type/GameType';
-import SlotList from '../../components/slot-list/SlotList';
 
+// eslint-disable-next-line
+import SlotList from '../../components/slot-list/SlotList';
+import LoginForm from '../../components/LoginForm';
+
+// Actions
+import { clearSelectEgmData } from '../../store/actions/egmActions';
+
+// Hooks
+import useAuth from '../../hooks/useAuth';
+
+// Styles
 import styles from './HomePage.module.scss';
 
+console.log(authFetch);
+
 const HomePage = () => {
+  const { isAuth, isSelectEgm } = useAuth();
+
+  const dispatch = useDispatch();
+
   const [currentAction, setCurrentAction] = useState('home');
+  const [showLoginForm, setShowLoginForm] = useState(false);
 
-  console.log('home page');
-
+  // 關閉login form
   useEffect(() => {
-    console.log(currentAction);
-  }, [currentAction]);
+    if (isAuth && showLoginForm) setShowLoginForm(false);
+  }, [isAuth, showLoginForm]);
+
+  // 清除select egm status
+  useEffect(() => {
+    if (!isSelectEgm) return;
+    dispatch(clearSelectEgmData());
+  }, [isSelectEgm, dispatch]);
+
   return (
     <>
-      <div className={styles['content-box']}>
+      <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />
+
+      <div className={styles.container}>
         {currentAction === 'home' && (
-          <div className={styles.carousel}>
-            <Carousel />
-          </div>
+          <section className={styles['content-landing-box']}>
+            <div className={styles.carousel}>
+              <Carousel />
+            </div>
+            <HomeAction setShowLoginForm={setShowLoginForm} isAuth={isAuth} />
+          </section>
         )}
 
-        <section className={styles.container}>
-          {currentAction === 'home' && <HomeAction />}
-
-          {currentAction !== 'home' && (
+        {currentAction !== 'home' && (
+          <section className={styles['content-box']}>
             <HomeHeader
               setCurrentAction={setCurrentAction}
               currentAction={currentAction}
             />
-          )}
 
-          {currentAction === 'game-type' && (
-            <GameType setCurrentAction={setCurrentAction} />
-          )}
+            {currentAction === 'game-type' && (
+              <GameType setCurrentAction={setCurrentAction} />
+            )}
 
-          {currentAction === 'slot-list' && <SlotList />}
-        </section>
-
-        <div className={styles['text-box']} />
+            {currentAction === 'slot-list' && <SlotList />}
+          </section>
+        )}
       </div>
 
       <HomeButton setCurrentAction={setCurrentAction} />

@@ -3,16 +3,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Antd
+// eslint-disable-next-line
 import { NavBar } from 'antd-mobile';
 
 // Image
+// eslint-disable-next-line
 import btnBack from '../../assets/button/btn-back.png';
 
 import styles from './HomeHeader.module.scss';
 
 const HomeHeader = ({ setCurrentAction, currentAction }) => {
-  console.log(currentAction);
-
+  // eslint-disable-next-line
   const showText = {
     'game-type': {
       title: '遊戲種類',
@@ -24,6 +25,7 @@ const HomeHeader = ({ setCurrentAction, currentAction }) => {
     },
   };
 
+  // eslint-disable-next-line
   const backBtnHandler = () => {
     if (currentAction === 'slot-list') {
       setCurrentAction('game-type');
@@ -35,13 +37,15 @@ const HomeHeader = ({ setCurrentAction, currentAction }) => {
   return (
     <header className={styles.header}>
       <NavBar
+        style={{ width: '100%' }}
         backArrow={
           <img
-            style={{ width: '3rem', height: '3rem' }}
+            // style={{ width: '3rem', height: '3rem' }}
             src={btnBack}
             alt="back"
             onClick={backBtnHandler}
             role="presentation"
+            className={styles.img}
           />
         }
       >

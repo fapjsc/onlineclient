@@ -5,8 +5,8 @@
   gap: 1rem;
   padding-top: 1rem;
   margin: auto;
-  max-height: 56vh;
   overflow-y: scroll;
+  height: 85%;
 
   @media only screen and(max-width: 557px) {
     grid-template-columns: repeat(2, 1fr);
@@ -21,10 +21,10 @@
   }
 
   .slot {
-    background-image: url(../../assets/button/game-type/game-type.png);
+    background-image: url("../../assets/button/game-type/game-type.png");
   }
 
   .other {
-    background-image: url(../../assets/button/game-type/btn_gametype_test_normal.png);
+    background-image: url("../../assets/button/game-type/btn_gametype_test_normal.png");
   }
 }

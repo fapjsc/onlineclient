@@ -65,9 +65,7 @@ export const selectEgmReducer = (state = selectEgmState, action) => {
       };
 
     case egmActionTypes.CLEAR_SELECT_EGM_DATA:
-      return {
-        selectEgmState,
-      };
+      return selectEgmState;
 
     default:
       return state;
@@ -103,6 +101,9 @@ export const egmButtonPressReducer = (state = buttonPressState, action) => {
         error: action.payload.error,
       };
 
+    case egmActionTypes.CLEAR_BUTTON_PRESS_STATUS:
+      return buttonPressState;
+
     default:
       return state;
   }
@@ -132,6 +133,44 @@ export const cashInOutReducer = (state = cashInOutState, action) => {
       };
 
     case egmActionTypes.CASH_IN_OUT_ERROR:
+      return {
+        isLoading: false,
+        data: null,
+        error: action.payload.error,
+      };
+
+    case egmActionTypes.CLEAR_CASH_IN_OUT_STATUS:
+      return cashInOutState;
+
+    default:
+      return state;
+  }
+};
+
+// Brand
+const brandState = {
+  isLoading: false,
+  data: null,
+  error: '',
+};
+
+export const brandReducer = (state = brandState, action) => {
+  switch (action.type) {
+    case egmActionTypes.SETUP_BRAND_LIST_BEGIN:
+      return {
+        isLoading: true,
+        data: null,
+        error: '',
+      };
+
+    case egmActionTypes.SETUP_BRAND_LIST_SUCCESS:
+      return {
+        isLoading: false,
+        data: action.payload.brandList,
+        error: '',
+      };
+
+    case egmActionTypes.SETUP_BRAND_LIST_ERROR:
       return {
         isLoading: false,
         data: null,

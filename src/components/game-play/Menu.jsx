@@ -14,7 +14,12 @@ import {
 import { AppOutline } from 'antd-mobile-icons';
 
 // Actions
-import { clearSelectEgmData, cashInOut } from '../../store/actions/egmActions';
+import {
+  clearSelectEgmData,
+  cashInOut,
+  clearButtonPressStatus,
+  clearCashInOutStatus,
+} from '../../store/actions/egmActions';
 
 const Menu = ({ visible, setVisible }) => {
   const navigate = useNavigate();
@@ -51,6 +56,8 @@ const Menu = ({ visible, setVisible }) => {
   };
 
   const exitGameHandler = () => {
+    dispatch(clearButtonPressStatus());
+    dispatch(clearCashInOutStatus());
     dispatch(clearSelectEgmData());
   };
 

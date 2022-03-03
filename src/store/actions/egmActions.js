@@ -1,4 +1,6 @@
-import axios from 'axios';
+// import axios from 'axios';
+
+import { authFetch } from '../../config/axiosConfig';
 
 import { egmAPi, agentServer } from '../../apis';
 
@@ -9,18 +11,22 @@ export const getEgmList = () => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_EGM_LIST_BEGIN });
 
   try {
-    const { data } = await axios.get(`${agentServer.api}/${egmAPi.getEgmList}`);
+    const { data } = await authFetch.get(
+      `${agentServer.api}/${egmAPi.getEgmList}`,
+    );
 
     dispatch({
       type: egmActionTypes.SETUP_EGM_LIST_SUCCESS,
       payload: { egmList: data.result },
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: egmActionTypes.SETUP_EGM_LIST_ERROR,
       payload: {
-        error: error.response.data.message || error.response.data.error,
+        error:
+          error?.response?.data?.message
+          || error?.response?.data?.error
+          || 'get egm list fail',
       },
     });
   }
@@ -30,7 +36,7 @@ export const getEgmList = () => async (dispatch) => {
 export const selectEgm = (id) => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_SELECT_EGM_BEGIN });
   try {
-    const { data } = await axios.post(
+    const { data } = await authFetch.post(
       `${agentServer.api}/${egmAPi.selectEgm}`,
       { id },
     );
@@ -39,26 +45,24 @@ export const selectEgm = (id) => async (dispatch) => {
       payload: { selectEgm: data.result },
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: egmActionTypes.SETUP_SELECT_EGM_ERROR,
       payload: {
-        error: error.response.data.message || error.response.data.error,
+        error:
+          error?.response?.data?.message
+          || error?.response?.data?.error
+          || 'select egm fail',
       },
     });
   }
 };
-
-export const clearSelectEgmData = () => ({
-  type: egmActionTypes.CLEAR_SELECT_EGM_DATA,
-});
 
 // Button Press
 export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
   dispatch({ type: egmActionTypes.BUTTON_PRESS_BEGIN });
 
   try {
-    const { data } = await axios.post(
+    const { data } = await authFetch.post(
       `${agentServer.api}/${egmAPi.buttonPress}`,
       {
         ip,
@@ -75,7 +79,10 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
     dispatch({
       type: egmActionTypes.BUTTON_PRESS_ERROR,
       payload: {
-        error: error.response.data.message || error.response.data.error,
+        error:
+            error?.response?.data?.message
+            || error?.response?.data?.error
+            || 'button press fail',
       },
     });
   }
@@ -97,13 +104,11 @@ export const cashInOut = ({
       url = `${agentServer.api}/${egmAPi.aftOut}`;
     }
 
-    const { data } = await axios.post(url, {
+    const { data } = await authFetch.post(url, {
       onlineId,
       ip,
       cashAmount,
     });
-
-    console.log(data);
 
     dispatch({
       type: egmActionTypes.CASH_IN_OUT_SUCCESS,
@@ -118,8 +123,50 @@ export const cashInOut = ({
     dispatch({
       type: egmActionTypes.CASH_IN_OUT_ERROR,
       payload: {
-        error: error.response.data.message || error.response.data.error,
+        error:
+            error?.response?.data?.message
+            || error?.response?.data?.error
+            || 'cash in out fail',
       },
     });
   }
 };
+
+// Get Brand List
+export const getBrandList = () => async (dispatch) => {
+  dispatch({ type: egmActionTypes.SETUP_BRAND_LIST_BEGIN });
+
+  try {
+    const { data } = await authFetch.get(
+      `${agentServer.api}/${egmAPi.getBrandList}`,
+    );
+
+    dispatch({
+      type: egmActionTypes.SETUP_BRAND_LIST_SUCCESS,
+      payload: { brandList: data.result },
+    });
+  } catch (error) {
+    dispatch({
+      type: egmActionTypes.SETUP_BRAND_LIST_ERROR,
+      payload: {
+        error:
+          error?.response?.data?.message
+          || error?.response?.data?.error
+          || 'get brand list fail',
+      },
+    });
+  }
+};
+
+// Clear Status
+export const clearSelectEgmData = () => ({
+  type: egmActionTypes.CLEAR_SELECT_EGM_DATA,
+});
+
+export const clearButtonPressStatus = () => ({
+  type: egmActionTypes.CLEAR_BUTTON_PRESS_STATUS,
+});
+
+export const clearCashInOutStatus = () => ({
+  type: egmActionTypes.CLEAR_CASH_IN_OUT_STATUS,
+});

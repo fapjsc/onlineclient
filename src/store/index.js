@@ -7,12 +7,13 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 // Reducer
-import { userReducer } from './reducers/userReducer';
+import { userReducer, cryptoReducer } from './reducers/userReducer';
 import {
   egmListReducer,
   selectEgmReducer,
   egmButtonPressReducer,
   cashInOutReducer,
+  brandReducer,
 } from './reducers/egmReducer';
 
 const reducer = combineReducers({
@@ -21,6 +22,8 @@ const reducer = combineReducers({
   selectEgm: selectEgmReducer,
   egmButtonPress: egmButtonPressReducer,
   cashInOut: cashInOutReducer,
+  brand: brandReducer,
+  crypto: cryptoReducer,
 });
 
 const persistConfig = {

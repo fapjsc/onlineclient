@@ -1,12 +1,16 @@
 import axios from 'axios';
+import { store } from '../store';
 
 export const authFetch = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/online',
 });
 
 authFetch.interceptors.request.use(
   (config) => {
-    config.headers.common.login_session = '1234';
+    // config.headers.common.Authorization = `Bearer ${state.token}`;
+    config.headers.common.Authorization = `Bearer ${
+      store.getState().user.data.token
+    }`;
     return config;
   },
   (error) => Promise.reject(error),

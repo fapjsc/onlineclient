@@ -20,28 +20,34 @@
     gap: 1rem;
 
     .home-btn {
-      background-size: 100% 100%;
+      background-size: 80rem;
+      background-position: -9.5rem center;
       background-repeat: no-repeat;
       height: 100%;
       width: 33%;
       cursor: pointer;
+
+      @media only screen and(max-width: 557px) {
+        background-size: 45rem;
+        background-position: -5.2rem center;
+      }
     }
 
     .home {
-      background-image: url(../../assets/button/home/btn_home_1.png);
+      background-image: url("../../assets/button/home/home-home.png");
     }
 
     .game {
-      background-image: url(../../assets/button/home/btn_game_1.png);
+      background-image: url("../../assets/button/home/home-game.png");
     }
 
     .user {
-      background-image: url(../../assets/button/home/btn_user_1.png);
+      background-image: url("../../assets/button/home/home-user.png");
     }
   }
 
   .icon-container {
-    background-image: url(../../assets/button/home/btn_coin_normal.png);
+    background-image: url("../../assets/button/home/btn_coin_normal.png");
     flex: 1;
     background-size: contain;
     background-repeat: no-repeat;

@@ -1,42 +1,54 @@
 .container {
-  max-height: 56vh;
-  min-height: 56vh;
-  padding: 0.5rem 2rem;
+  height: 85%;
+  padding: 0.5rem;
 
   .brand-box {
+    height: 20%;
+    overflow-y: scroll;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.5rem;
-    height: 11vh;
-    overflow-y: scroll;
 
     .brand {
-      background-image: url(../../assets/button/home/btn-small.png);
+      background-image: url("../../assets/button/home/btn-small.png");
       background-position: center;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      height: 3rem;
+      height: 4rem;
+      align-self: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        color: white;
+        font-size: 2rem;
+      }
+
+      @media only screen and(max-width: 557px) {
+        height: 3rem;
+      }
     }
   }
 
   .slot-box {
-    height: 43vh;
-    margin-top: 1vh;
+    height: 80%;
     overflow-y: scroll;
+    margin-top: 3%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     gap: 1rem;
 
     @media only screen and(max-width: 557px) {
-      row-gap: 0;
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 0.5rem;
     }
 
     .slot-btn {
-      //   background-color: green;
-      background-image: url(../../assets/button/slot-list/Aristocrat/btn-koi.png);
+      background-image: url("../../assets/button/slot-list/Aristocrat/btn-koi.png");
       background-position: center;
-      background-size: 100% 100%;
+      background-size: contain;
       background-repeat: no-repeat;
       height: 10rem;
       cursor: pointer;

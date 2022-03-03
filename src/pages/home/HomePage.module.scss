@@ -1,8 +1,16 @@
-.content-box {
+.container {
   position: absolute;
   top: 19.5%;
   width: 100%;
-  max-height: 64%;
+  height: 64%;
+
+  .content-landing-box {
+    height: 100%;
+  }
+
+  .content-box {
+    height: 100%;
+  }
 
   .text-box {
     color: #fff;

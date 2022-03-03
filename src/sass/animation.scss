@@ -1,4 +1,3 @@
-// Sub Button Header
 .sub-btn-header-animation {
   animation: shake-vertical 10s ease infinite;
 }
@@ -31,7 +30,6 @@
   }
 }
 
-// Main Button
 .main-btn-animation {
   animation: 0.15s main-btn-click steps(3) 1;
 }
@@ -50,7 +48,7 @@
   }
 }
 
-@media only screen and(max-width: 550px) {
+@media only screen and(max-width: 557px) {
   @keyframes main-btn-click {
     0% {
       background-position-x: -3rem;
@@ -58,6 +56,32 @@
 
     100% {
       background-position-x: -43rem;
+    }
+  }
+}
+
+.home-btn-animation {
+  animation: 0.15s home-btn-click steps(3) 1;
+}
+
+@keyframes home-btn-click {
+  0% {
+    background-position-x: -9.5rem;
+  }
+
+  100% {
+    background-position-x: -89.5rem;
+  }
+}
+
+@media only screen and(max-width: 557px) {
+  @keyframes home-btn-click {
+    0% {
+      background-position-x: -5.2rem;
+    }
+
+    100% {
+      background-position-x: -50.2rem;
     }
   }
 }

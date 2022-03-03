@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// Crypto
+
 // Prop types
 import PropTypes from 'prop-types';
+
+import crypto from 'crypto';
 
 // Antd
 import {
@@ -15,17 +19,20 @@ import {
 import { PhonebookOutline, AppstoreOutline } from 'antd-mobile-icons';
 
 // actions
-import { setupUser } from '../store/actions/userActions';
+// eslint-disable-next-line
+import { setupUser, getCrypto } from '../store/actions/userActions';
 
 const LoginForm = ({ visible, setVisible }) => {
+  const formRef = useRef();
   const [activeKey, setActiveKey] = useState('phone');
 
   const { isLoading, error } = useSelector((state) => state.user);
+  const { data: cryptoKey } = useSelector((state) => state.crypto);
 
   const dispatch = useDispatch();
 
   const onFinish = (values) => {
-    dispatch(setupUser({ currentUser: values, endPoint: 'login' }));
+    dispatch(getCrypto());
   };
 
   const tabs = [
@@ -54,12 +61,30 @@ const LoginForm = ({ visible, setVisible }) => {
       Toast.show({
         content: error,
         icon: 'fail',
-        afterClose: () => {
-          console.log('after');
-        },
+        // afterClose: () => {
+        //   console.log('after');
+        // },
       });
     }
   }, [error]);
+
+  useEffect(() => {
+    if (!cryptoKey) return;
+
+    let formValue = formRef.current.getFieldValue();
+
+    const password = crypto.publicEncrypt(
+      cryptoKey,
+      Buffer.from(formValue.password),
+    );
+
+    formValue = {
+      ...formValue,
+      password: password,
+    };
+
+    dispatch(setupUser({ currentUser: formValue, endPoint: 'login' }));
+  }, [cryptoKey, dispatch]);
 
   return (
     <Modal
@@ -70,9 +95,9 @@ const LoginForm = ({ visible, setVisible }) => {
       }}
       content={
         <Form
+          ref={formRef}
           layout="horizontal"
           onFinish={onFinish}
-          onFinishFailed={() => console.log('test')}
           hasFeedback
           footer={
             <Space direction="vertical" style={{ width: '100%' }}>

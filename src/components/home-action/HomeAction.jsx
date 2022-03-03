@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styles from './HomeAction.module.scss';
 
-const HomeAction = ({ setShowLoginForm }) => (
+const HomeAction = ({ setShowLoginForm, isAuth }) => (
   <div className={styles['action-box']}>
     <div className={`${styles.notify} ${styles['action-small-btn']}`}>
       最新公告
@@ -12,31 +12,28 @@ const HomeAction = ({ setShowLoginForm }) => (
       優惠活動
     </div>
 
-    {setShowLoginForm && (
-      <>
-        <div
-          role="presentation"
-          onClick={() => {
-            setShowLoginForm(true);
-          }}
-          className={`${styles.login} ${styles['action-big-btn']}`}
-        >
-          登入
-        </div>
-        {/* <div className={`${styles.register} ${styles['action-big-btn']}`}>
-          註冊
-        </div> */}
-      </>
+    {!isAuth && (
+      <div
+        role="presentation"
+        onClick={() => {
+          setShowLoginForm(true);
+        }}
+        className={`${styles.login} ${styles['action-big-btn']}`}
+      >
+        登入
+      </div>
     )}
   </div>
 );
 
 HomeAction.propTypes = {
   setShowLoginForm: PropTypes.func,
+  isAuth: PropTypes.bool,
 };
 
 HomeAction.defaultProps = {
   setShowLoginForm: null,
+  isAuth: false,
 };
 
 export default HomeAction;

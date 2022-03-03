@@ -42,4 +42,37 @@ export const userReducer = (state = initialState, action) => {
   }
 };
 
+const cryptoState = {
+  isLoading: false,
+  data: null,
+  error: '',
+};
+
+export const cryptoReducer = (state = cryptoState, action) => {
+  switch (action.type) {
+    case userActionTypes.SETUP_CRYPTO_BEGIN:
+      return {
+        isLoading: true,
+        data: null,
+        error: '',
+      };
+
+    case userActionTypes.SETUP_CRYPTO_SUCCESS:
+      return {
+        isLoading: false,
+        data: action.payload.crypto,
+        error: '',
+      };
+
+    case userActionTypes.SETUP_CRYPTO_ERROR:
+      return {
+        isLoading: false,
+        data: null,
+        error: action.payload.error,
+      };
+    default:
+      return state;
+  }
+};
+
 export default userReducer;
