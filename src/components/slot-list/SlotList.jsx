@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 
+// Antd
+import { Image } from 'antd-mobile';
+
 // Router
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
+
+import koiImage from '../../assets/button/slot-list/Aristocrat/btn-koi.png';
 
 // actions
 import {
@@ -20,21 +25,25 @@ const SlotList = () => {
 
   const navigate = useNavigate();
 
+  // eslint-disable-next-line
   const { data: egmListData, error: egmListError } = useSelector(
     (state) => state.egmList,
   );
-  const { data: brandListData } = useSelector((state) => state.brand);
-
-  console.log(egmListError);
+  const { data: brandListData, error: brandListError } = useSelector(
+    (state) => state.brand,
+  );
 
   const { data: selectEgmDta } = useSelector((state) => state.selectEgm);
   const { id: egmID } = selectEgmDta || {};
+
+  // console.log(egmListData);
 
   useEffect(() => {
     dispatch(getEgmList());
     dispatch(getBrandList());
   }, [dispatch]);
 
+  // eslint-disable-next-line
   const selectEgmHandler = (id) => {
     dispatch(selectEgm(id));
   };
@@ -44,6 +53,20 @@ const SlotList = () => {
       navigate('/game-play');
     }
   }, [egmID, navigate]);
+
+  useEffect(() => {
+    if (egmListError && brandListError) {
+      alert(egmListError && brandListError);
+    }
+
+    if (!brandListError && egmListError) {
+      alert(egmListError);
+    }
+
+    if (brandListError && !egmListError) {
+      alert(brandListError);
+    }
+  }, [egmListError, brandListError]);
 
   return (
     <section className={styles.container}>
@@ -76,7 +99,9 @@ const SlotList = () => {
             onClick={() => selectEgmHandler(egm.id)}
             role="presentation"
             className={styles['slot-btn']}
-          />
+          >
+            <Image src={koiImage} />
+          </div>
         ))}
       </div>
     </section>

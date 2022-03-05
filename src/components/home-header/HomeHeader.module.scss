@@ -16,10 +16,18 @@
     .header-title {
       font-size: 1.8rem;
       color: #fff;
+
+      @media only screen and(max-width: 557px) {
+        font-size: 1.4rem;
+      }
     }
 
     .header-text {
       color: #9c7a33;
+
+      @media only screen and(max-width: 557px) {
+        font-size: 1rem;
+      }
     }
   }
 }

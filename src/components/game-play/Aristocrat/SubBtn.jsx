@@ -1,3 +1,16 @@
+// const subBtnList = [
+//   'bet-1',
+//   'bet-2',
+//   'bet-5',
+//   'bet-10',
+//   'bet-15',
+//   '1-1',
+//   '1-2',
+//   '1-3',
+//   '1-4',
+//   '1-5',
+// ];
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -34,7 +47,6 @@ const SubBtn = ({
           <div
             key={name}
             role="presentation"
-            // onClick={() => setCurrentSubBtn(btn)}
             onClick={() => subBtnClickHandler({ code, name })}
             style={{
               transform:
@@ -74,6 +86,8 @@ SubBtn.propTypes = {
   buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentSubBtn: PropTypes.string.isRequired,
   subBtnClickHandler: PropTypes.func.isRequired,
+  subBtnRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+    .isRequired,
 };
 
 export default SubBtn;

@@ -26,8 +26,14 @@ const LoginForm = ({ visible, setVisible }) => {
   const formRef = useRef();
   const [activeKey, setActiveKey] = useState('phone');
 
-  const { isLoading, error } = useSelector((state) => state.user);
-  const { data: cryptoKey } = useSelector((state) => state.crypto);
+  const { isLoading: userLoading, error: userError } = useSelector(
+    (state) => state.user,
+  );
+  const {
+    data: cryptoKey,
+    isLoading: cryptoLoading,
+    error: cryptoError,
+  } = useSelector((state) => state.crypto);
 
   const dispatch = useDispatch();
 
@@ -57,16 +63,27 @@ const LoginForm = ({ visible, setVisible }) => {
   );
 
   useEffect(() => {
-    if (error) {
+    if (cryptoError && userError) {
       Toast.show({
-        content: error,
+        content: '登入錯誤，請稍後再試',
         icon: 'fail',
-        // afterClose: () => {
-        //   console.log('after');
-        // },
       });
     }
-  }, [error]);
+
+    if (cryptoError && !userError) {
+      Toast.show({
+        content: cryptoError,
+        icon: 'fail',
+      });
+    }
+
+    if (!cryptoError && userError) {
+      Toast.show({
+        content: userError,
+        icon: 'fail',
+      });
+    }
+  }, [userError, cryptoError]);
 
   useEffect(() => {
     if (!cryptoKey) return;
@@ -102,7 +119,8 @@ const LoginForm = ({ visible, setVisible }) => {
           footer={
             <Space direction="vertical" style={{ width: '100%' }}>
               <Button
-                loading={isLoading}
+                loading={userLoading || cryptoLoading}
+                loadingText="請稍等"
                 type="submit"
                 block
                 color="primary"

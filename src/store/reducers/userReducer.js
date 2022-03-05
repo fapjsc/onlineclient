@@ -4,12 +4,14 @@ const initialState = {
   isLoading: false,
   data: null,
   error: '',
+  currentAction: 'home',
 };
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case userActionTypes.SETUP_USER_BEGIN:
       return {
+        ...state,
         isLoading: true,
         data: null,
         error: '',
@@ -17,6 +19,7 @@ export const userReducer = (state = initialState, action) => {
 
     case userActionTypes.SETUP_USER_SUCCESS:
       return {
+        ...state,
         isLoading: false,
         data: action.payload.userData,
         error: '',
@@ -24,9 +27,16 @@ export const userReducer = (state = initialState, action) => {
 
     case userActionTypes.SETUP_USER_ERROR:
       return {
+        ...state,
         isLoading: false,
         data: null,
         error: action.payload.error,
+      };
+
+    case userActionTypes.SET_CURRENT_ACTION:
+      return {
+        ...state,
+        currentAction: action.payload.currentAction,
       };
 
     case userActionTypes.UPDATE_ONLINE:
@@ -70,6 +80,9 @@ export const cryptoReducer = (state = cryptoState, action) => {
         data: null,
         error: action.payload.error,
       };
+
+    case userActionTypes.CLEAR_CRYPTO_STATUS:
+      return cryptoState;
     default:
       return state;
   }

@@ -1,0 +1,60 @@
+.cash-in-out-btn-box {
+  position: absolute;
+  top: 52.4%;
+  width: 100%;
+  height: 8.5%;
+
+  .cash-in-out-btn {
+    position: absolute;
+    top: 0;
+    right: 31%;
+    height: 100%;
+    width: 15%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  .cash-in-out-bg {
+    background-image: url("../../../assets/button/aristocrat/cash-in-out.png");
+  }
+
+  .cash-in-out-action {
+    background-image: url("../../../assets/button/aristocrat/cash-in-out-action.png");
+  }
+
+  .form {
+    background-color: red;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    transition: height 1s;
+    overflow: hidden;
+    font-size: 2rem;
+    color: white;
+    width: 40rem;
+
+    @media only screen and(max-with: 557px) {
+    //   width: 90vw;
+    }
+
+    .header {
+      background-color: blue;
+      height: 30%;
+      transition: height 1s;
+    }
+
+    .content {
+      background-color: green;
+      height: 60%;
+      transition: height 1s;
+    }
+
+    .footer {
+      background-color: paleturquoise;
+      height: 10%;
+      transition: height 1s;
+    }
+  }
+}

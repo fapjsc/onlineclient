@@ -20,15 +20,42 @@ export const getEgmList = () => async (dispatch) => {
       payload: { egmList: data.result },
     });
   } catch (error) {
+    const { response } = error;
+    if (response?.status !== 401) {
+      dispatch({
+        type: egmActionTypes.SETUP_EGM_LIST_ERROR,
+        payload: {
+          error: response.data.message || 'get egm list fail',
+        },
+      });
+    }
+  }
+};
+
+// Get Brand List
+export const getBrandList = () => async (dispatch) => {
+  dispatch({ type: egmActionTypes.SETUP_BRAND_LIST_BEGIN });
+
+  try {
+    const { data } = await authFetch.get(
+      `${agentServer.api}/${egmAPi.getBrandList}`,
+    );
+
     dispatch({
-      type: egmActionTypes.SETUP_EGM_LIST_ERROR,
-      payload: {
-        error:
-          error?.response?.data?.message
-          || error?.response?.data?.error
-          || 'get egm list fail',
-      },
+      type: egmActionTypes.SETUP_BRAND_LIST_SUCCESS,
+      payload: { brandList: data.result },
     });
+  } catch (error) {
+    const { response } = error;
+    console.log(error);
+    if (response?.status !== 401) {
+      dispatch({
+        type: egmActionTypes.SETUP_BRAND_LIST_ERROR,
+        payload: {
+          error: response.data.message || 'get brand list fail',
+        },
+      });
+    }
   }
 };
 
@@ -40,20 +67,21 @@ export const selectEgm = (id) => async (dispatch) => {
       `${agentServer.api}/${egmAPi.selectEgm}`,
       { id },
     );
+
     dispatch({
       type: egmActionTypes.SETUP_SELECT_EGM_SUCCESS,
       payload: { selectEgm: data.result },
     });
   } catch (error) {
-    dispatch({
-      type: egmActionTypes.SETUP_SELECT_EGM_ERROR,
-      payload: {
-        error:
-          error?.response?.data?.message
-          || error?.response?.data?.error
-          || 'select egm fail',
-      },
-    });
+    const { response } = error;
+    if (response?.status !== 401) {
+      dispatch({
+        type: egmActionTypes.SETUP_SELECT_EGM_ERROR,
+        payload: {
+          error: response.data.message || 'select egm fail',
+        },
+      });
+    }
   }
 };
 
@@ -76,15 +104,15 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
       payload: { buttonPressData: data.message },
     });
   } catch (error) {
-    dispatch({
-      type: egmActionTypes.BUTTON_PRESS_ERROR,
-      payload: {
-        error:
-            error?.response?.data?.message
-            || error?.response?.data?.error
-            || 'button press fail',
-      },
-    });
+    const { response } = error;
+    if (response?.status !== 401) {
+      dispatch({
+        type: egmActionTypes.BUTTON_PRESS_ERROR,
+        payload: {
+          error: response.data.message || 'button press fail',
+        },
+      });
+    }
   }
 };
 
@@ -120,41 +148,15 @@ export const cashInOut = ({
       payload: { onlineData: data.result },
     });
   } catch (error) {
-    dispatch({
-      type: egmActionTypes.CASH_IN_OUT_ERROR,
-      payload: {
-        error:
-            error?.response?.data?.message
-            || error?.response?.data?.error
-            || 'cash in out fail',
-      },
-    });
-  }
-};
-
-// Get Brand List
-export const getBrandList = () => async (dispatch) => {
-  dispatch({ type: egmActionTypes.SETUP_BRAND_LIST_BEGIN });
-
-  try {
-    const { data } = await authFetch.get(
-      `${agentServer.api}/${egmAPi.getBrandList}`,
-    );
-
-    dispatch({
-      type: egmActionTypes.SETUP_BRAND_LIST_SUCCESS,
-      payload: { brandList: data.result },
-    });
-  } catch (error) {
-    dispatch({
-      type: egmActionTypes.SETUP_BRAND_LIST_ERROR,
-      payload: {
-        error:
-          error?.response?.data?.message
-          || error?.response?.data?.error
-          || 'get brand list fail',
-      },
-    });
+    const { response } = error;
+    if (response?.status !== 401) {
+      dispatch({
+        type: egmActionTypes.CASH_IN_OUT_ERROR,
+        payload: {
+          error: response.data.message || 'cash in out fail',
+        },
+      });
+    }
   }
 };
 

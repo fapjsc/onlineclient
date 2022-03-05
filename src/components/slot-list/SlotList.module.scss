@@ -46,12 +46,11 @@
     }
 
     .slot-btn {
-      background-image: url("../../assets/button/slot-list/Aristocrat/btn-koi.png");
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-      height: 10rem;
+      height: 9rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       @media only screen and(max-width: 557px) {
         height: 7.5rem;

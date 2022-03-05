@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { useDispatch } from 'react-redux';
-import { authFetch } from '../../config/axiosConfig';
-
 // Redux
+import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import Carousel from '../../components/Carousel';
@@ -11,13 +9,12 @@ import HomeAction from '../../components/home-action/HomeAction';
 import HomeButton from '../../components/home-button/HomeButton';
 import HomeHeader from '../../components/home-header/HomeHeader';
 import GameType from '../../components/game-type/GameType';
-
-// eslint-disable-next-line
 import SlotList from '../../components/slot-list/SlotList';
 import LoginForm from '../../components/LoginForm';
 
 // Actions
 import { clearSelectEgmData } from '../../store/actions/egmActions';
+import { setCurrentAction } from '../../store/actions/userActions';
 
 // Hooks
 import useAuth from '../../hooks/useAuth';
@@ -25,15 +22,16 @@ import useAuth from '../../hooks/useAuth';
 // Styles
 import styles from './HomePage.module.scss';
 
-console.log(authFetch);
-
 const HomePage = () => {
   const { isAuth, isSelectEgm } = useAuth();
+  const [showLoginForm, setShowLoginForm] = useState(false);
 
   const dispatch = useDispatch();
+  const { currentAction } = useSelector((state) => state.user);
 
-  const [currentAction, setCurrentAction] = useState('home');
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const setCurrentActionHandler = (action) => {
+    dispatch(setCurrentAction(action));
+  };
 
   // 關閉login form
   useEffect(() => {
@@ -53,9 +51,7 @@ const HomePage = () => {
       <div className={styles.container}>
         {currentAction === 'home' && (
           <section className={styles['content-landing-box']}>
-            <div className={styles.carousel}>
-              <Carousel />
-            </div>
+            <Carousel />
             <HomeAction setShowLoginForm={setShowLoginForm} isAuth={isAuth} />
           </section>
         )}
@@ -63,12 +59,12 @@ const HomePage = () => {
         {currentAction !== 'home' && (
           <section className={styles['content-box']}>
             <HomeHeader
-              setCurrentAction={setCurrentAction}
+              setCurrentAction={setCurrentActionHandler}
               currentAction={currentAction}
             />
 
             {currentAction === 'game-type' && (
-              <GameType setCurrentAction={setCurrentAction} />
+              <GameType setCurrentAction={setCurrentActionHandler} />
             )}
 
             {currentAction === 'slot-list' && <SlotList />}
@@ -76,7 +72,7 @@ const HomePage = () => {
         )}
       </div>
 
-      <HomeButton setCurrentAction={setCurrentAction} />
+      <HomeButton setCurrentAction={setCurrentActionHandler} />
     </>
   );
 };

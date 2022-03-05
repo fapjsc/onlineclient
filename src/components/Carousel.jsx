@@ -1,25 +1,34 @@
 import React from 'react';
-import Slider from 'react-slick';
+
+import { Swiper, Image } from 'antd-mobile';
 
 import carousel1 from '../assets/carousel-1.jpg';
 import carousel2 from '../assets/carousel-2.jpg';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+
+import useWindowSize from '../hooks/useWindowSize';
 
 const Carousel = () => {
-  const settings = {
-    speed: 500,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
-    adaptiveHeight: true,
-    dots: false,
-  };
+  const [height] = useWindowSize();
+
+  const images = [carousel1, carousel2];
+
+  const items = images.map((image) => (
+    <Swiper.Item key={image}>
+      <Image
+        lazy
+        src={image}
+        alt="carousel"
+        width="100%"
+        height={height / 4}
+        placeholder={<div />}
+      />
+    </Swiper.Item>
+  ));
+
   return (
-    <Slider {...settings}>
-      <img src={carousel1} alt="carousel1" />
-      <img src={carousel2} alt="carousel2" />
-    </Slider>
+    <Swiper autoplay loop indicator={() => null}>
+      {items}
+    </Swiper>
   );
 };
 

@@ -16,6 +16,12 @@ import {
   brandReducer,
 } from './reducers/egmReducer';
 
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['user', 'selectEgm'], // only member will be persisted
+};
+
 const reducer = combineReducers({
   user: userReducer,
   egmList: egmListReducer,
@@ -26,16 +32,20 @@ const reducer = combineReducers({
   crypto: cryptoReducer,
 });
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['user', 'selectEgm'], // only member will be persisted
+const rootReducer = (state, action) => {
+  if (action.type === 'RESET_STORE') {
+    storage.removeItem('persist:root');
+    console.log(storage);
+    return reducer(undefined, action);
+  }
+
+  return reducer(state, action);
 };
 
 const middleware = [thunk];
 
 // 持久化根reducers
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(
   persistedReducer,
