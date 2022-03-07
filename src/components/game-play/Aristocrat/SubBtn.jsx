@@ -1,16 +1,3 @@
-// const subBtnList = [
-//   'bet-1',
-//   'bet-2',
-//   'bet-5',
-//   'bet-10',
-//   'bet-15',
-//   '1-1',
-//   '1-2',
-//   '1-3',
-//   '1-4',
-//   '1-5',
-// ];
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -27,6 +14,7 @@ const SubBtn = ({
 }) => {
   const subBtnEl = buttonList
     && buttonList
+      .filter((btn) => btn.button_name !== 'max' && btn.button_name !== 'spin')
       .sort((a, b) => b.id - a.id)
       .map((btn) => {
         const { button_name: name, code } = btn || {};
@@ -69,7 +57,6 @@ const SubBtn = ({
             ${classnames({ 'sub-btn-header-animation': !showSubBtn })}
           `}
         onClick={() => setShowSubBtn((prev) => !prev)}
-        onKeyDown={() => {}}
         role="presentation"
       >
         <img src={subBtnHeaderImage} alt="sub-btn-header" />
@@ -86,8 +73,8 @@ SubBtn.propTypes = {
   buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentSubBtn: PropTypes.string.isRequired,
   subBtnClickHandler: PropTypes.func.isRequired,
-  subBtnRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
-    .isRequired,
+  // subBtnRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  //   .isRequired,
 };
 
 export default SubBtn;

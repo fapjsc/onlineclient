@@ -40,6 +40,10 @@ export const egmActionTypes = {
   CASH_IN_OUT_SUCCESS: 'CASH_IN_OUT_SUCCESS',
   CASH_IN_OUT_ERROR: 'CASH_IN_OUT_ERROR',
   CLEAR_CASH_IN_OUT_STATUS: 'CLEAR_CASH_IN_OUT_STATUS',
+
+  // Set Cash in out Form
+  SET_AFT_FORM: 'SET_AFT_FORM',
+  CLEAR_AFT_FORM: 'CLEAR_AFT_FORM',
 };
 
 export const rootActionTypes = {

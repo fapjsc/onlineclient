@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import Aristocrat from '../../components/game-play/Aristocrat/Aristocrat';
 
 const GamePlay = () => {
-  const { error: egmButtonPressError } = useSelector(
-    (state) => state.egmButtonPress,
-  );
-  console.log('game play');
+  const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
+  const { name } = SelectEgmData || {};
+  console.log('game play => ', name);
 
-  useEffect(() => {
-    if (egmButtonPressError) {
-      alert(egmButtonPressError);
-    }
-  }, [egmButtonPressError]);
-
-  return <Aristocrat />;
+  return <Aristocrat gameName={name} />;
 };
 
 export default GamePlay;

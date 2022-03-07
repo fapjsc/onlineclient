@@ -51,7 +51,7 @@ const HomeButton = ({ setCurrentAction }) => {
             role="presentation"
             onClick={clickHandler}
             className={`${styles.home} ${styles['home-btn']} ${classnames({
-              'home-btn-animation': btnClick.home,
+              [styles['home-btn-animation']]: btnClick.home,
             })}`}
           />
           <div
@@ -59,7 +59,7 @@ const HomeButton = ({ setCurrentAction }) => {
             role="presentation"
             onClick={clickHandler}
             className={`${styles.game} ${styles['home-btn']} ${classnames({
-              'home-btn-animation': btnClick['game-type'],
+              [styles['home-btn-animation']]: btnClick['game-type'],
             })}`}
           />
           <div
@@ -67,7 +67,7 @@ const HomeButton = ({ setCurrentAction }) => {
             role="presentation"
             onClick={clickHandler}
             className={`${styles.user} ${styles['home-btn']} ${classnames({
-              'home-btn-animation': btnClick.user,
+              [styles['home-btn-animation']]: btnClick.user,
             })}`}
           />
         </div>

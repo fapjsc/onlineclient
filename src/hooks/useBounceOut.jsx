@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { gsap } from 'gsap';
 
 /*
+How to use
+============
    useBounceOut({
     isSHowElement: showSubBtn,
     elementRef: subBtnRef,
@@ -24,9 +26,9 @@ import { gsap } from 'gsap';
 const useBounceOut = ({
   isSHowElement, elementRef, showEl, hideEl,
 }) => {
-  const tl = gsap.timeline();
-
   useEffect(() => {
+    const tl = gsap.timeline();
+
     if (isSHowElement) {
       tl.to(elementRef.current, {
         y: showEl.from || -40,
@@ -50,7 +52,7 @@ const useBounceOut = ({
         ease: 'bounce.out',
       });
     }
-  }, [isSHowElement, elementRef, tl, showEl, hideEl]);
+  }, [isSHowElement, elementRef, showEl, hideEl]);
 };
 
 export default useBounceOut;

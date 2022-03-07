@@ -49,6 +49,7 @@ const Menu = ({ visible, setVisible }) => {
       };
     });
 
+    console.log(data);
     dispatch(cashInOut(data));
 
     cashOutRef.current?.resetFields();
@@ -98,7 +99,7 @@ const Menu = ({ visible, setVisible }) => {
             }
           >
             <Form.Header>{point}</Form.Header>
-            <Form.Item name="cash-in" label="開分" rules={[{ required: true }]}>
+            <Form.Item name="aft-in" label="開分" rules={[{ required: true }]}>
               <Input placeholder="請輸入" />
             </Form.Item>
           </Form>
@@ -114,11 +115,7 @@ const Menu = ({ visible, setVisible }) => {
               </Button>
             }
           >
-            <Form.Item
-              name="cash-out"
-              label="洗分"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="aft-out" label="洗分" rules={[{ required: true }]}>
               <Input placeholder="請輸入" />
             </Form.Item>
           </Form>

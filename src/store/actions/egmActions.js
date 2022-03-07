@@ -124,11 +124,11 @@ export const cashInOut = ({
   try {
     let url;
 
-    if (type === 'cash-in') {
+    if (type === 'aft-in') {
       url = `${agentServer.api}/${egmAPi.aftIn}`;
     }
 
-    if (type === 'cash-out') {
+    if (type === 'aft-out') {
       url = `${agentServer.api}/${egmAPi.aftOut}`;
     }
 
@@ -160,6 +160,11 @@ export const cashInOut = ({
   }
 };
 
+export const setAftFormData = (formData) => ({
+  type: egmActionTypes.SET_AFT_FORM,
+  payload: { formData },
+});
+
 // Clear Status
 export const clearSelectEgmData = () => ({
   type: egmActionTypes.CLEAR_SELECT_EGM_DATA,
@@ -171,4 +176,8 @@ export const clearButtonPressStatus = () => ({
 
 export const clearCashInOutStatus = () => ({
   type: egmActionTypes.CLEAR_CASH_IN_OUT_STATUS,
+});
+
+export const clearAftForm = () => ({
+  type: egmActionTypes.CLEAR_AFT_FORM,
 });

@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+
+import PropTypes from 'prop-types';
+
+import { useSelector } from 'react-redux';
 
 import classnames from 'classnames';
 
 import styles from './MainBtn.module.scss';
 
-const MainBtn = () => {
-  const [isAuto, setIsAuto] = useState(false);
+const MainBtn = ({
+  mainBtnClick,
+  setMainBtnClick,
+  mainBtnHandler,
+  autoSpinHandler,
+  stopAutoSpinHandler,
+  setIsAuto,
+  isAuto,
+}) => {
+  const { data } = useSelector((state) => state.selectEgm);
 
-  const [mainBtnClick, setMainBtnClick] = useState({
-    auto: false,
-    max: false,
-    spin: false,
-  });
+  const { buttonList } = data || {};
+
+  const btnList = buttonList?.filter(
+    (btn) => btn.button_name === 'max' || btn.button_name === 'spin',
+  );
 
   // Main button 動畫邏輯判斷
-  const onClickHandler = ({ target }) => {
-    const { id } = target;
-
+  const animationHandler = (id) => {
     if (id === 'auto') {
       setIsAuto((prev) => !prev);
     }
@@ -40,6 +50,23 @@ const MainBtn = () => {
     }, 200);
   };
 
+  const onClickHandler = ({ target }, code) => {
+    const { id } = target;
+    animationHandler(id);
+    if (id === 'auto') return;
+    mainBtnHandler({ name: id, code });
+  };
+
+  useEffect(() => {
+    if (isAuto) {
+      autoSpinHandler();
+    }
+
+    if (!isAuto) {
+      stopAutoSpinHandler();
+    }
+  }, [isAuto, autoSpinHandler, stopAutoSpinHandler]);
+
   return (
     <div className={styles['main-btn-holder']}>
       <div
@@ -47,36 +74,47 @@ const MainBtn = () => {
         role="presentation"
         onClick={onClickHandler}
         className={`
-            ${styles['main-btn']} 
-            ${styles['btn-auto']} 
-            ${classnames({ 'main-btn-animation': mainBtnClick.auto })}
-          `}
-      />
-      <div
-        id="max"
-        role="presentation"
-        onClick={onClickHandler}
-        className={`
-            ${styles['main-btn']} 
-            ${styles['btn-max']} 
-            ${classnames({ 'main-btn-animation': mainBtnClick.max })}
-          `}
-      />
-      <div
-        id="spin"
-        role="presentation"
-        onClick={onClickHandler}
-        className={`
-            ${styles['main-btn']} 
-            ${styles['btn-spin']} 
+            ${styles['main-btn']}
+            ${styles['btn-auto']}
             ${classnames({
-          'main-btn-animation': mainBtnClick.spin,
-          'main-btn-animation-auto': isAuto,
+          'main-btn-animation': mainBtnClick.auto,
         })}
           `}
       />
+      {btnList
+        && btnList.map((btn) => (
+          <div
+            key={btn.id}
+            id={btn.button_name}
+            code={btn.code}
+            role="presentation"
+            onClick={(e) => onClickHandler(e, btn.code)}
+            className={`
+            ${styles['main-btn']}
+            ${styles[`btn-${btn.button_name}`]}
+            ${classnames({
+              'main-btn-animation': mainBtnClick[btn.button_name],
+              'main-btn-animation-auto': btn.button_name === 'spin' && isAuto,
+            })}
+          `}
+          />
+        ))}
     </div>
   );
+};
+
+MainBtn.propTypes = {
+  mainBtnClick: PropTypes.shape({
+    auto: PropTypes.bool,
+    max: PropTypes.bool,
+    spin: PropTypes.bool,
+  }).isRequired,
+  setMainBtnClick: PropTypes.func.isRequired,
+  mainBtnHandler: PropTypes.func.isRequired,
+  autoSpinHandler: PropTypes.func.isRequired,
+  stopAutoSpinHandler: PropTypes.func.isRequired,
+  setIsAuto: PropTypes.func.isRequired,
+  isAuto: PropTypes.bool.isRequired,
 };
 
 export default MainBtn;

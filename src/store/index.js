@@ -14,6 +14,7 @@ import {
   egmButtonPressReducer,
   cashInOutReducer,
   brandReducer,
+  aftFormReducer,
 } from './reducers/egmReducer';
 
 const persistConfig = {
@@ -30,12 +31,12 @@ const reducer = combineReducers({
   cashInOut: cashInOutReducer,
   brand: brandReducer,
   crypto: cryptoReducer,
+  aftForm: aftFormReducer,
 });
 
 const rootReducer = (state, action) => {
   if (action.type === 'RESET_STORE') {
     storage.removeItem('persist:root');
-    console.log(storage);
     return reducer(undefined, action);
   }
 

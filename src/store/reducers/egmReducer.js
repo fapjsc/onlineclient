@@ -181,3 +181,21 @@ export const brandReducer = (state = brandState, action) => {
       return state;
   }
 };
+
+const aftFormData = {
+  data: null,
+};
+
+export const aftFormReducer = (state = aftFormData, action) => {
+  switch (action.type) {
+    case egmActionTypes.SET_AFT_FORM:
+      return {
+        data: action.payload.formData,
+      };
+
+    case egmActionTypes.CLEAR_AFT_FORM:
+      return aftFormData;
+    default:
+      return state;
+  }
+};
