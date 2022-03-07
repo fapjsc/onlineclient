@@ -192,7 +192,7 @@ const Aristocrat = ({ gameName }) => {
 
       {/* Video */}
       <section className={styles['video-box']}>
-        <Video rtcUrl="webrtc://220.135.67.240/game/12" />
+        <Video rtcUrl="webrtc://220.135.67.240/game/11" />
       </section>
 
       {/* CashInOut Button */}

@@ -5,7 +5,7 @@ import Aristocrat from '../../components/game-play/Aristocrat/Aristocrat';
 const GamePlay = () => {
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
   const { name } = SelectEgmData || {};
-  console.log('game play => ', name);
+  // console.log('game play => ', name);
 
   return <Aristocrat gameName={name} />;
 };

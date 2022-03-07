@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 // Antd
-import { Image } from 'antd-mobile';
+import { Image, Dialog } from 'antd-mobile';
 
 // Router
 import { useNavigate } from 'react-router-dom';
@@ -56,15 +56,27 @@ const SlotList = () => {
 
   useEffect(() => {
     if (egmListError && brandListError) {
-      alert(egmListError && brandListError);
+      Dialog.alert({
+        content: '無法取得遊戲清單及廠牌清單',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
     }
 
     if (!brandListError && egmListError) {
-      alert(egmListError);
+      Dialog.alert({
+        content: '無法取得遊戲清單',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
     }
 
     if (brandListError && !egmListError) {
-      alert(brandListError);
+      Dialog.alert({
+        content: '無法取得廠牌清單',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
     }
   }, [egmListError, brandListError]);
 

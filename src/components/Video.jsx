@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 
+import { Dialog } from 'antd-mobile';
+
 import PropTypes from 'prop-types';
 import { SrsRtcPlayerAsync } from '../utils/srs-sdk';
 
@@ -17,13 +19,18 @@ const Video = ({ rtcUrl: url }) => {
     sdkRef.current
       .play(url)
       // .play('webrtc://220.135.67.240/game/11')
-      // eslint-disable-next-line
       .then((session) => {
+        console.log(session);
         if (cameraRef.current) cameraRef.current.srcObject = sdkRef.current.stream;
       })
       .catch((e) => {
         console.log(e, 'error catch');
         sdkRef.current.close();
+        Dialog.alert({
+          content: '無法獲取影像',
+          closeOnMaskClick: true,
+          confirmText: '確定',
+        });
       });
     // eslint-disable-next-line
   }, [url]);
