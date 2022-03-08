@@ -49,7 +49,6 @@ const Menu = ({ visible, setVisible }) => {
       };
     });
 
-    console.log(data);
     dispatch(cashInOut(data));
 
     cashOutRef.current?.resetFields();

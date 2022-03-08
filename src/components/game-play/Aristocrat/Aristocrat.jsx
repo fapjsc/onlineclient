@@ -28,6 +28,9 @@ import {
   clearButtonPressStatus,
 } from '../../../store/actions/egmActions';
 
+// Hooks
+import useDidUpdateEffect from '../../../hooks/useDidUpdatedEffect';
+
 // Styles
 import styles from './Aristocrat.module.scss';
 import '../../../sass/animation.scss';
@@ -70,16 +73,17 @@ const Aristocrat = ({ gameName }) => {
   const subBtnRef = useRef();
   const intervalID = useRef();
 
-  useEffect(() => {
+  // 跳過第一次render，只有showSubBtn 改變才執行動畫邏輯
+  useDidUpdateEffect(() => {
     const tl = gsap.timeline();
 
     if (showSubBtn) {
       tl.to(subBtnRef.current, {
-        y: -40,
-        duration: 0.3,
+        y: '-80%',
+        duration: 0.4,
         ease: 'ease.out',
       }).to(subBtnRef.current, {
-        y: 0,
+        y: '-70%',
         duration: 1,
         ease: 'bounce.out',
       });
@@ -87,17 +91,18 @@ const Aristocrat = ({ gameName }) => {
 
     if (!showSubBtn) {
       tl.to(subBtnRef.current, {
-        y: -40,
+        y: '-80%',
         duration: 0.3,
         ease: 'ease.in',
       }).to(subBtnRef.current, {
-        y: '70%',
-        duration: 1,
+        y: '0%',
+        duration: 1.2,
         ease: 'bounce.out',
       });
     }
   }, [showSubBtn]);
 
+  // Auto Spin
   const autoSpinHandler = useCallback(() => {
     dispatch(buttonPress({ name: 'spin', code: 'spin', ip }));
     intervalID.current = setInterval(() => {
@@ -105,6 +110,7 @@ const Aristocrat = ({ gameName }) => {
     }, 3000);
   }, [dispatch, ip]);
 
+  // Stop Auto Spin
   const stopAutoSpinHandler = useCallback(() => {
     clearInterval(intervalID.current);
   }, [intervalID]);
@@ -183,6 +189,7 @@ const Aristocrat = ({ gameName }) => {
         isCashInOutClick={isCashInOutClick}
         setIsCashInOutClick={setIsCashInOutClick}
         aftLoading={aftLoading}
+        point={point}
       />
 
       {/* Menu */}
@@ -192,7 +199,7 @@ const Aristocrat = ({ gameName }) => {
 
       {/* Video */}
       <section className={styles['video-box']}>
-        <Video rtcUrl="webrtc://220.135.67.240/game/11" />
+        <Video rtcUrl="webrtc://220.135.67.240/test/999" />
       </section>
 
       {/* CashInOut Button */}

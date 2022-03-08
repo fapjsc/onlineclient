@@ -17,68 +17,98 @@ import {
   getBrandList,
 } from '../../store/actions/egmActions';
 
+import LoadingPage from '../../pages/LoadingPage';
+
+import { egmActionTypes } from '../../store/types';
+
 // Styles
 import styles from './SlotList.module.scss';
 
 const SlotList = () => {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
-  // eslint-disable-next-line
-  const { data: egmListData, error: egmListError } = useSelector(
-    (state) => state.egmList,
-  );
-  const { data: brandListData, error: brandListError } = useSelector(
-    (state) => state.brand,
-  );
+  const {
+    data: egmListData,
+    error: egmListError,
+    isLoading: egmListLoading,
+  } = useSelector((state) => state.egmList);
 
-  const { data: selectEgmDta } = useSelector((state) => state.selectEgm);
+  const {
+    data: brandListData,
+    error: brandListError,
+    isLoading: brandListLoading,
+  } = useSelector((state) => state.brand);
+
+  const {
+    data: selectEgmDta,
+    isLoading: selectEgmLoading,
+    error: selectEgmError,
+  } = useSelector((state) => state.selectEgm);
+
   const { id: egmID } = selectEgmDta || {};
 
-  // console.log(egmListData);
+  const selectEgmHandler = (id) => {
+    dispatch(selectEgm(id));
+  };
 
   useEffect(() => {
     dispatch(getEgmList());
     dispatch(getBrandList());
   }, [dispatch]);
 
-  // eslint-disable-next-line
-  const selectEgmHandler = (id) => {
-    dispatch(selectEgm(id));
-  };
-
+  // 有egmID 代表select egm 成功
   useEffect(() => {
     if (egmID) {
       navigate('/game-play');
     }
   }, [egmID, navigate]);
 
+  // Get brand error
   useEffect(() => {
-    if (egmListError && brandListError) {
+    if (brandListError) {
       Dialog.alert({
-        content: '無法取得遊戲清單及廠牌清單',
+        content: brandListError,
         closeOnMaskClick: true,
         confirmText: '確定',
+        onConfirm: () => {
+          dispatch({ type: egmActionTypes.CLEAR_BRAND_LIST_STATUS });
+        },
       });
     }
+  }, [brandListError, dispatch]);
 
-    if (!brandListError && egmListError) {
+  // Get egm list error
+  useEffect(() => {
+    if (egmListError) {
       Dialog.alert({
-        content: '無法取得遊戲清單',
+        content: egmListError,
         closeOnMaskClick: true,
         confirmText: '確定',
+        onConfirm: () => {
+          dispatch({ type: egmActionTypes.CLEAR_EGM_LIST_STATUS });
+        },
       });
     }
+  }, [egmListError, dispatch, selectEgmError]);
 
-    if (brandListError && !egmListError) {
+  // Select egm error
+  useEffect(() => {
+    if (selectEgmError) {
       Dialog.alert({
-        content: '無法取得廠牌清單',
+        content: selectEgmError,
         closeOnMaskClick: true,
         confirmText: '確定',
+        onConfirm: () => {
+          dispatch({ type: egmActionTypes.CLEAR_SELECT_EGM_DATA });
+        },
       });
     }
-  }, [egmListError, brandListError]);
+  }, [selectEgmError, dispatch]);
+
+  if (selectEgmLoading || egmListLoading || brandListLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <section className={styles.container}>

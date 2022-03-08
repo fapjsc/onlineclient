@@ -1,5 +1,43 @@
 import { egmActionTypes } from '../types';
 
+// Brand
+const brandState = {
+  isLoading: false,
+  data: null,
+  error: '',
+};
+
+export const brandReducer = (state = brandState, action) => {
+  switch (action.type) {
+    case egmActionTypes.SETUP_BRAND_LIST_BEGIN:
+      return {
+        isLoading: true,
+        data: null,
+        error: '',
+      };
+
+    case egmActionTypes.SETUP_BRAND_LIST_SUCCESS:
+      return {
+        isLoading: false,
+        data: action.payload.brandList,
+        error: '',
+      };
+
+    case egmActionTypes.SETUP_BRAND_LIST_ERROR:
+      return {
+        isLoading: false,
+        data: null,
+        error: action.payload.error,
+      };
+
+    case egmActionTypes.CLEAR_BRAND_LIST_STATUS:
+      return brandState;
+
+    default:
+      return state;
+  }
+};
+
 // Get Egm List
 const emgListState = {
   isLoading: false,
@@ -29,6 +67,10 @@ export const egmListReducer = (state = emgListState, action) => {
         data: null,
         error: action.payload.error,
       };
+
+    case egmActionTypes.CLEAR_EGM_LIST_STATUS:
+      return emgListState;
+
     default:
       return state;
   }
@@ -141,41 +183,6 @@ export const cashInOutReducer = (state = cashInOutState, action) => {
 
     case egmActionTypes.CLEAR_CASH_IN_OUT_STATUS:
       return cashInOutState;
-
-    default:
-      return state;
-  }
-};
-
-// Brand
-const brandState = {
-  isLoading: false,
-  data: null,
-  error: '',
-};
-
-export const brandReducer = (state = brandState, action) => {
-  switch (action.type) {
-    case egmActionTypes.SETUP_BRAND_LIST_BEGIN:
-      return {
-        isLoading: true,
-        data: null,
-        error: '',
-      };
-
-    case egmActionTypes.SETUP_BRAND_LIST_SUCCESS:
-      return {
-        isLoading: false,
-        data: action.payload.brandList,
-        error: '',
-      };
-
-    case egmActionTypes.SETUP_BRAND_LIST_ERROR:
-      return {
-        isLoading: false,
-        data: null,
-        error: action.payload.error,
-      };
 
     default:
       return state;

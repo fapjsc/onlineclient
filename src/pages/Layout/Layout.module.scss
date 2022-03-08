@@ -4,12 +4,16 @@
       rgb(#000, 0.7),
       rgb(#000, 0.7)
     ),
-    url(../../assets/big-bg.jpg);
+    url(../../assets/big-bg.webp);
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+
+
+ 
   // background-color: blue;
 }
 
@@ -23,7 +27,7 @@
 // }
 
 .container {
-  background-image: url(../../assets/bg.jpg);
+  background-image: url(../../assets/bg.webp);
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -31,6 +35,23 @@
   height: 99%;
   position: relative;
   border-radius: 10px;
+
+  .notify-box {
+    position: absolute;
+    top: 14.5%;
+    width: 100%;
+    height: 3.2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+
+    .notify {
+      height: 98%;
+      width: 83%;
+      background-color: transparent;
+    }
+  }
 
   @media only screen and(max-width: 414px) {
     height: 99%;

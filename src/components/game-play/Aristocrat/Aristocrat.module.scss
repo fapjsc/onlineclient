@@ -33,9 +33,8 @@
   }
 
   .sub-btn-box {
-    margin-top: auto;
     position: absolute;
-    bottom: 0;
+    bottom: -20%;
     width: 100%;
     height: 28%;
     display: flex;
@@ -44,5 +43,5 @@
 }
 
 .koi {
-  background-image: url("../../../assets/game-machine/Aristocrat/bg/koi.jpg");
+  background-image: url("../../../assets/game-machine/Aristocrat/bg/koi.webp");
 }

@@ -8,11 +8,7 @@ import {
 } from 'react-router-dom';
 
 import ProtectRouter from './routes/ProtectRouter';
-
-// import HomePage from './pages/home/HomePage';
 import LoadingPage from './pages/LoadingPage';
-// import Layout from './pages/Layout/Layout';
-// import GamePlayPage from './pages/game-play/GamePlayPage';
 
 import './App.scss';
 
@@ -21,8 +17,8 @@ const Layout = React.lazy(() => import('./pages/Layout/Layout'));
 const HomePage = React.lazy(() => import('./pages/home/HomePage'));
 
 const App = () => (
-  <Router>
-    <Suspense fallback={<LoadingPage />}>
+  <Suspense fallback={<LoadingPage />}>
+    <Router>
       <Routes>
         <Route
           path="/game-play"
@@ -42,8 +38,8 @@ const App = () => (
         {/* <Route path="*" element={<LoadingPage />} /> */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </Suspense>
-  </Router>
+    </Router>
+  </Suspense>
 );
 
 export default App;

@@ -12,11 +12,13 @@ import crypto from 'crypto';
 
 // Antd
 import {
-  Form, Input, Button, TabBar, Modal, Space, Toast,
+  Form, Input, Button, TabBar, Modal, Space, Dialog,
 } from 'antd-mobile';
 
 // Icon
 import { PhonebookOutline, AppstoreOutline } from 'antd-mobile-icons';
+
+import { rootActionTypes } from '../store/types';
 
 // actions
 // eslint-disable-next-line
@@ -64,26 +66,38 @@ const LoginForm = ({ visible, setVisible }) => {
 
   useEffect(() => {
     if (cryptoError && userError) {
-      Toast.show({
+      Dialog.alert({
         content: '登入錯誤，請稍後再試',
-        icon: 'fail',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+        onClose: () => {
+          dispatch({ type: rootActionTypes.RESET_STORE });
+        },
       });
     }
 
     if (cryptoError && !userError) {
-      Toast.show({
+      Dialog.alert({
         content: cryptoError,
-        icon: 'fail',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+        onClose: () => {
+          dispatch({ type: rootActionTypes.RESET_STORE });
+        },
       });
     }
 
     if (!cryptoError && userError) {
-      Toast.show({
+      Dialog.alert({
         content: userError,
-        icon: 'fail',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+        onClose: () => {
+          dispatch({ type: rootActionTypes.RESET_STORE });
+        },
       });
     }
-  }, [userError, cryptoError]);
+  }, [userError, cryptoError, dispatch]);
 
   useEffect(() => {
     if (!cryptoKey) return;

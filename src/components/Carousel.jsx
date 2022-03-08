@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Swiper, Image } from 'antd-mobile';
 
-import carousel1 from '../assets/carousel-1.jpg';
-import carousel2 from '../assets/carousel-2.jpg';
+import carousel1 from '../assets/carousel-1.webp';
+import carousel2 from '../assets/carousel-2.webp';
 
 import useWindowSize from '../hooks/useWindowSize';
 

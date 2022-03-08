@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import styles from './SubBtn.module.scss';
 
-import subBtnHeaderImage from '../../../assets/button/sub-btn-header.png';
+import subBtnHeaderImage from '../../../assets/button/sub-btn-header.webp';
 
 const SubBtn = ({
   showSubBtn,
@@ -24,9 +24,9 @@ const SubBtn = ({
 
         try {
           //eslint-disable-next-line
-          imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}.png`);
+          imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}.webp`);
           //eslint-disable-next-line
-          imgObjSelect = require(`../../../assets/button/aristocrat/sub/en/${name}-select.png`);
+          imgObjSelect = require(`../../../assets/button/aristocrat/sub/en/${name}-select.webp`);
         } catch (error) {
           console.log(error);
         }
@@ -54,7 +54,9 @@ const SubBtn = ({
       <div
         className={`
             ${styles['sub-btn-header-box']} 
-            ${classnames({ 'sub-btn-header-animation': !showSubBtn })}
+            ${classnames({
+          'sub-btn-header-animation': !showSubBtn,
+        })}
           `}
         onClick={() => setShowSubBtn((prev) => !prev)}
         role="presentation"

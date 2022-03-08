@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import NumberFormat from 'react-number-format';
+
 import classnames from 'classnames';
 
 import PropTypes from 'prop-types';
@@ -27,6 +29,9 @@ import cashChipsSelectImage from '../../assets/開洗分介面/btn_cashchips_sel
 import junkImage from '../../assets/開洗分介面/btn_junketschips_normal.jpg';
 import junkSelectImage from '../../assets/開洗分介面/btn_junketschips_sel.jpg';
 
+// Helpers
+// import { thousandsFormat } from '../../utils/helper';
+
 const amountArr = [
   '1000',
   '2000',
@@ -38,7 +43,12 @@ const amountArr = [
   '8000',
 ];
 
-const AftForm = ({ isCashInOutClick, setIsCashInOutClick, aftLoading }) => {
+const AftForm = ({
+  isCashInOutClick,
+  setIsCashInOutClick,
+  aftLoading,
+  point,
+}) => {
   const [showContent, setShowContent] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [currentAmount, setCurrentAmount] = useState('');
@@ -198,7 +208,21 @@ const AftForm = ({ isCashInOutClick, setIsCashInOutClick, aftLoading }) => {
             }}
           >
             <div className={styles.title}>
-              {`選擇金額 (${typeText()}${currentAmount})`}
+              <div style={{ display: 'flex' }}>
+                <span>{`選擇金額：${typeText()}`}</span>
+                <NumberFormat
+                  value={currentAmount}
+                  displayType="text"
+                  thousandSeparator
+                />
+              </div>
+              {/* <span>{`選擇金額 (${typeText()}${currentAmount})`}</span> */}
+              <NumberFormat
+                value={point}
+                displayType="text"
+                thousandSeparator
+                prefix="現有："
+              />
             </div>
 
             <div className={styles['amount-box']}>
@@ -236,10 +260,12 @@ AftForm.propTypes = {
   isCashInOutClick: PropTypes.bool.isRequired,
   setIsCashInOutClick: PropTypes.func.isRequired,
   aftLoading: PropTypes.bool,
+  point: PropTypes.number,
 };
 
 AftForm.defaultProps = {
   aftLoading: false,
+  point: null,
 };
 
 export default AftForm;

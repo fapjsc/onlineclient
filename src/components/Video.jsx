@@ -5,7 +5,7 @@ import { Dialog } from 'antd-mobile';
 import PropTypes from 'prop-types';
 import { SrsRtcPlayerAsync } from '../utils/srs-sdk';
 
-const Video = ({ rtcUrl: url }) => {
+const Video = ({ rtcUrl: url, close, play }) => {
   const cameraRef = useRef();
   const sdkRef = useRef();
 
@@ -22,6 +22,7 @@ const Video = ({ rtcUrl: url }) => {
       .then((session) => {
         console.log(session);
         if (cameraRef.current) cameraRef.current.srcObject = sdkRef.current.stream;
+        console.log(sdkRef.current.stream.getVideoTracks());
       })
       .catch((e) => {
         console.log(e, 'error catch');
@@ -38,7 +39,21 @@ const Video = ({ rtcUrl: url }) => {
   useEffect(() => {
     startPlay();
     cameraRef.current.muted = false;
+    console.log(sdkRef.current.stream.getVideoTracks());
   }, [startPlay]);
+
+  useEffect(() => {
+    if (close) {
+      sdkRef.current.close();
+    }
+  }, [close]);
+
+  useEffect(() => {
+    if (play) {
+      startPlay();
+      cameraRef.current.muted = false;
+    }
+  }, [play, startPlay]);
 
   return (
     <video
@@ -59,6 +74,13 @@ const Video = ({ rtcUrl: url }) => {
 
 Video.propTypes = {
   rtcUrl: PropTypes.string.isRequired,
+  close: PropTypes.bool,
+  play: PropTypes.bool,
+};
+
+Video.defaultProps = {
+  close: false,
+  play: false,
 };
 
 export default Video;

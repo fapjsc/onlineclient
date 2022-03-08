@@ -47,7 +47,6 @@ export const getBrandList = () => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
-    console.log(error);
     if (response?.status !== 401) {
       dispatch({
         type: egmActionTypes.SETUP_BRAND_LIST_ERROR,
@@ -60,8 +59,10 @@ export const getBrandList = () => async (dispatch) => {
 };
 
 // Select Egm
+// eslint-disable-next-line
 export const selectEgm = (id) => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_SELECT_EGM_BEGIN });
+
   try {
     const { data } = await authFetch.post(
       `${agentServer.api}/${egmAPi.selectEgm}`,

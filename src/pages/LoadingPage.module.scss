@@ -1,0 +1,25 @@
+.container {
+  background-image:
+    linear-gradient(
+      to right bottom,
+      rgb(#000, 0.7),
+      rgb(#000, 0.7)
+    ),
+    url(../assets/big-bg.webp);
+  width: 100vw;
+  height: 100vh;
+}
+
+.box {
+  color: #f5f5f5;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  width: 20rem;
+  height: 10rem;
+  transform: translateX(50%) translateY(-70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
