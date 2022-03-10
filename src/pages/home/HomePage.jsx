@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { CSSTransition } from 'react-transition-group';
+
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,29 +49,54 @@ const HomePage = () => {
   return (
     <>
       <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />
-
       <div className={styles.container}>
-        {currentAction === 'home' && (
+        <CSSTransition
+          in={currentAction === 'home'}
+          classNames="animation-item"
+          timeout={100}
+          mountOnEnter
+          unmountOnExit
+        >
           <section className={styles['content-landing-box']}>
             <Carousel />
             <HomeAction setShowLoginForm={setShowLoginForm} isAuth={isAuth} />
           </section>
-        )}
+        </CSSTransition>
 
-        {currentAction !== 'home' && (
+        <CSSTransition
+          in={currentAction !== 'home' && currentAction !== 'user'}
+          classNames="animation-item"
+          timeout={100}
+          mountOnEnter
+          unmountOnExit
+        >
           <section className={styles['content-box']}>
             <HomeHeader
               setCurrentAction={setCurrentActionHandler}
               currentAction={currentAction}
             />
 
-            {currentAction === 'game-type' && (
+            <CSSTransition
+              in={currentAction === 'game-type'}
+              classNames="animation-item"
+              timeout={100}
+              mountOnEnter
+              unmountOnExit
+            >
               <GameType setCurrentAction={setCurrentActionHandler} />
-            )}
+            </CSSTransition>
 
-            {currentAction === 'slot-list' && <SlotList />}
+            <CSSTransition
+              in={currentAction === 'slot-list'}
+              classNames="animation-item"
+              timeout={100}
+              mountOnEnter
+              unmountOnExit
+            >
+              <SlotList />
+            </CSSTransition>
           </section>
-        )}
+        </CSSTransition>
       </div>
 
       <HomeButton setCurrentAction={setCurrentActionHandler} />

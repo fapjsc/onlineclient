@@ -19,10 +19,9 @@ const Video = ({ rtcUrl: url, close, play }) => {
     sdkRef.current
       .play(url)
       // .play('webrtc://220.135.67.240/game/11')
+      // eslint-disable-next-line
       .then((session) => {
-        console.log(session);
         if (cameraRef.current) cameraRef.current.srcObject = sdkRef.current.stream;
-        console.log(sdkRef.current.stream.getVideoTracks());
       })
       .catch((e) => {
         console.log(e, 'error catch');
@@ -39,7 +38,6 @@ const Video = ({ rtcUrl: url, close, play }) => {
   useEffect(() => {
     startPlay();
     cameraRef.current.muted = false;
-    console.log(sdkRef.current.stream.getVideoTracks());
   }, [startPlay]);
 
   useEffect(() => {

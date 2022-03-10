@@ -81,12 +81,14 @@ const selectEgmState = {
   isLoading: false,
   data: null,
   error: '',
+  currentBtnPress: null,
 };
 
 export const selectEgmReducer = (state = selectEgmState, action) => {
   switch (action.type) {
     case egmActionTypes.SETUP_SELECT_EGM_BEGIN:
       return {
+        ...state,
         isLoading: true,
         data: null,
         error: '',
@@ -94,6 +96,7 @@ export const selectEgmReducer = (state = selectEgmState, action) => {
 
     case egmActionTypes.SETUP_SELECT_EGM_SUCCESS:
       return {
+        ...state,
         isLoading: false,
         data: action.payload.selectEgm,
         error: '',
@@ -101,9 +104,16 @@ export const selectEgmReducer = (state = selectEgmState, action) => {
 
     case egmActionTypes.SETUP_SELECT_EGM_ERROR:
       return {
+        ...state,
         isLoading: false,
         data: null,
         error: action.payload.error,
+      };
+
+    case egmActionTypes.SETUP_CURRENT_BTN_PRESS:
+      return {
+        ...state,
+        currentBtnPress: action.payload.currentBtnCode,
       };
 
     case egmActionTypes.CLEAR_SELECT_EGM_DATA:

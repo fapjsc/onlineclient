@@ -1,4 +1,25 @@
-// 千分位加上小數點
-export const thousandsFormat = (text) => (text * 1).toFixed(0).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+export const getEgmImage = ({ model, brandName }) => {
+  let image;
+  try {
+    // eslint-disable-next-line
+    image = require(`../assets/slot-list/${brandName}/${model}.webp`);
+  } catch (error) {
+    // eslint-disable-next-line
+    image = require(`../assets/slot-list/找不到圖片.png`);
+  }
 
-export const temp = () => {};
+  return image;
+};
+
+export const getBrandImage = (brand) => {
+  let image;
+  try {
+    // eslint-disable-next-line
+    image = require(`../assets/brand/${brand}.png`);
+  } catch (error) {
+    // eslint-disable-next-line
+    image = require(`../assets/slot-list/找不到圖片.png`);
+  }
+
+  return image;
+};

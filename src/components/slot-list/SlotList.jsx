@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 
 // Antd
-import { Image, Dialog } from 'antd-mobile';
+import { Image, Dialog, Toast } from 'antd-mobile';
 
 // Router
 import { useNavigate } from 'react-router-dom';
 
+// Redux
 import { useDispatch, useSelector } from 'react-redux';
-
-import koiImage from '../../assets/button/slot-list/Aristocrat/btn-koi.png';
 
 // actions
 import {
@@ -17,9 +16,10 @@ import {
   getBrandList,
 } from '../../store/actions/egmActions';
 
-import LoadingPage from '../../pages/LoadingPage';
-
 import { egmActionTypes } from '../../store/types';
+
+// Helper
+import { getEgmImage, getBrandImage } from '../../utils/helper';
 
 // Styles
 import styles from './SlotList.module.scss';
@@ -31,13 +31,13 @@ const SlotList = () => {
   const {
     data: egmListData,
     error: egmListError,
-    isLoading: egmListLoading,
+    // isLoading: egmListLoading,
   } = useSelector((state) => state.egmList);
 
   const {
     data: brandListData,
     error: brandListError,
-    isLoading: brandListLoading,
+    // isLoading: brandListLoading,
   } = useSelector((state) => state.brand);
 
   const {
@@ -106,32 +106,32 @@ const SlotList = () => {
     }
   }, [selectEgmError, dispatch]);
 
-  if (selectEgmLoading || egmListLoading || brandListLoading) {
-    return <LoadingPage />;
-  }
+  useEffect(() => {
+    if (selectEgmLoading) {
+      Toast.show({
+        icon: 'loading',
+        content: '加载中…',
+      });
+    }
+
+    if (!selectEgmLoading) {
+      Toast.clear();
+    }
+  }, [selectEgmLoading]);
 
   return (
     <section className={styles.container}>
       <div className={styles['brand-box']}>
         {brandListData
-          && Object.keys(brandListData).map((brand) => {
-            let imgObj;
-            try {
-              //eslint-disable-next-line
-              imgObj = require(`../../assets/brand/${brand}.png`);
-            } catch (error) {
-              console.log(error);
-            }
-            return (
-              <div
-                key={brand}
-                className={styles.brand}
-                style={{ backgroundImage: imgObj && `url(${imgObj})` }}
-              >
-                {!imgObj && <span>{brand}</span>}
-              </div>
-            );
-          })}
+          && Object.keys(brandListData)?.map((brand) => (
+            <div
+              key={brand}
+              className={styles.brand}
+              style={{ backgroundImage: getBrandImage(brand) }}
+            >
+              <Image src={getBrandImage(brand)} />
+            </div>
+          ))}
       </div>
 
       <div className={styles['slot-box']}>
@@ -142,7 +142,13 @@ const SlotList = () => {
             role="presentation"
             className={styles['slot-btn']}
           >
-            <Image src={koiImage} />
+            <Image
+              src={getEgmImage({
+                model: egm.model,
+                brandName: egm.brand_name,
+              })}
+              alt="Egm"
+            />
           </div>
         ))}
       </div>

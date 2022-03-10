@@ -1,59 +1,25 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Router
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // Antd
-import {
-  Popup, Form, Input, Button,
-} from 'antd-mobile';
+import { Popup, Button } from 'antd-mobile';
 import { AppOutline } from 'antd-mobile-icons';
 
 // Actions
 import {
   clearSelectEgmData,
-  cashInOut,
   clearButtonPressStatus,
   clearCashInOutStatus,
 } from '../../store/actions/egmActions';
 
 const Menu = ({ visible, setVisible }) => {
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
-  const { data: userData } = useSelector((state) => state.user);
-
-  const { online } = userData || {};
-  const { online_id: onlineId, point } = online || {};
-
-  const { data: selectEgmData } = useSelector((state) => state.selectEgm);
-
-  const { ip } = selectEgmData || {};
-
-  const cashInRef = useRef();
-  const cashOutRef = useRef();
-
-  const onFinish = (values) => {
-    let data = { onlineId, ip };
-
-    Object.entries(values).forEach(([key, value]) => {
-      data = {
-        ...data,
-        type: key,
-        cashAmount: value,
-      };
-    });
-
-    dispatch(cashInOut(data));
-
-    cashOutRef.current?.resetFields();
-    cashInRef.current?.resetFields();
-  };
 
   const exitGameHandler = () => {
     dispatch(clearButtonPressStatus());
@@ -61,11 +27,6 @@ const Menu = ({ visible, setVisible }) => {
     dispatch(clearSelectEgmData());
   };
 
-  useEffect(() => {
-    if (!ip) {
-      navigate('/');
-    }
-  }, [ip, navigate]);
   return (
     <>
       <AppOutline
@@ -87,42 +48,9 @@ const Menu = ({ visible, setVisible }) => {
         position="right"
         bodyStyle={{ minWidth: '40vw' }}
       >
-        <div style={{ padding: '1rem', width: '100%' }}>
-          <Form
-            ref={cashInRef}
-            onFinish={onFinish}
-            footer={
-              <Button block type="submit" color="primary" size="large">
-                確定
-              </Button>
-            }
-          >
-            <Form.Header>{point}</Form.Header>
-            <Form.Item name="aft-in" label="開分" rules={[{ required: true }]}>
-              <Input placeholder="請輸入" />
-            </Form.Item>
-          </Form>
-        </div>
-
-        <div style={{ padding: '1rem', width: '100%' }}>
-          <Form
-            ref={cashOutRef}
-            onFinish={onFinish}
-            footer={
-              <Button block type="submit" color="primary" size="large">
-                確定
-              </Button>
-            }
-          >
-            <Form.Item name="aft-out" label="洗分" rules={[{ required: true }]}>
-              <Input placeholder="請輸入" />
-            </Form.Item>
-          </Form>
-        </div>
-
         <div style={{ padding: '1rem' }}>
           <Button color="danger" size="large" onClick={exitGameHandler}>
-            離開
+            <Link to="/">離開</Link>
           </Button>
         </div>
       </Popup>

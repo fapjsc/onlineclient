@@ -21,9 +21,7 @@ const MainBtn = ({
 
   const { buttonList } = data || {};
 
-  const btnList = buttonList?.filter(
-    (btn) => btn.button_name === 'max' || btn.button_name === 'spin',
-  );
+  const btnList = buttonList?.filter((btn) => btn.button_name === 'max');
 
   // Main button 動畫邏輯判斷
   const animationHandler = (id) => {
@@ -99,6 +97,20 @@ const MainBtn = ({
           `}
           />
         ))}
+
+      <div
+        id="spin"
+        role="presentation"
+        onClick={onClickHandler}
+        className={`
+            ${styles['main-btn']}
+            ${styles['btn-spin']}
+            ${classnames({
+          'main-btn-animation': mainBtnClick.spin,
+          'main-btn-animation-auto': isAuto,
+        })}
+          `}
+      />
     </div>
   );
 };

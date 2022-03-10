@@ -92,7 +92,7 @@ const AftForm = ({
       return '現金碼';
     }
 
-    if (selectChipType === 'junkets') {
+    if (selectChipType === 'promo') {
       return '泥瑪';
     }
 
@@ -191,12 +191,14 @@ const AftForm = ({
                 role="presentation"
                 onClick={() => setSelectChipType('cash')}
               />
-              <img
-                src={selectChipType === 'junkets' ? junkSelectImage : junkImage}
-                alt="junkets"
-                role="presentation"
-                onClick={() => setSelectChipType('junkets')}
-              />
+              {aftType !== 'aft-out' && (
+                <img
+                  src={selectChipType === 'promo' ? junkSelectImage : junkImage}
+                  alt="promo"
+                  role="presentation"
+                  onClick={() => setSelectChipType('promo')}
+                />
+              )}
             </div>
           </nav>
 

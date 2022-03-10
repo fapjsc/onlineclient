@@ -110,12 +110,12 @@ const LoginForm = ({ visible, setVisible }) => {
     );
 
     formValue = {
-      ...formValue,
       password: password,
+      [activeKey]: formValue[activeKey],
     };
 
     dispatch(setupUser({ currentUser: formValue, endPoint: 'login' }));
-  }, [cryptoKey, dispatch]);
+  }, [cryptoKey, dispatch, activeKey]);
 
   return (
     <Modal

@@ -1,1 +1,32 @@
+// enter
+.animation-item-enter {
+  opacity: 0;
+}
 
+.animation-item-enter-active {
+  opacity: 0;
+}
+
+.animation-item-enter-done {
+  opacity: 1;
+  transition: all 400ms ease-in;
+}
+
+// exit
+  .animation-item-exit {
+  opacity: 1;
+}
+
+.animation-item-exit-active {
+  opacity: 0;
+}
+
+body {
+  background-image:
+    linear-gradient(
+      to right bottom,
+      rgb(#000, 0.7),
+      rgb(#000, 0.7)
+    ),
+    url(./assets/big-bg.webp);
+}

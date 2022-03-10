@@ -13,6 +13,7 @@ import { Dialog } from 'antd-mobile';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
+import Wrapper from './Wrapper';
 import Menu from '../Menu';
 import Video from '../../Video';
 import MainBtn from './MainBtn';
@@ -31,11 +32,15 @@ import {
 // Hooks
 import useDidUpdateEffect from '../../../hooks/useDidUpdatedEffect';
 
+// Types
+import { egmActionTypes } from '../../../store/types';
+
 // Styles
 import styles from './Aristocrat.module.scss';
 import '../../../sass/animation.scss';
 
-const Aristocrat = ({ gameName }) => {
+// eslint-disable-next-line
+const Aristocrat = ({ model, image }) => {
   // Init State
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
@@ -60,14 +65,18 @@ const Aristocrat = ({ gameName }) => {
   const { data: aftFormData } = useSelector((state) => state.aftForm);
   const { aftType, currentAmount, selectChipType } = aftFormData || {};
 
-  const { data: selectEgmData } = useSelector((state) => state.selectEgm);
-  const { buttonList, ip } = selectEgmData || {};
+  const { data: selectEgmData, currentBtnPress } = useSelector(
+    (state) => state.selectEgm,
+  );
+  const { buttonList, ip, stream_url: url } = selectEgmData || {};
 
   const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
 
-  const { error: aftError, isLoading: aftLoading } = useSelector(
-    (state) => state.cashInOut,
-  );
+  const {
+    error: aftError,
+    isLoading: aftLoading,
+    data: aftData,
+  } = useSelector((state) => state.cashInOut);
 
   // Ref
   const subBtnRef = useRef();
@@ -79,7 +88,7 @@ const Aristocrat = ({ gameName }) => {
 
     if (showSubBtn) {
       tl.to(subBtnRef.current, {
-        y: '-80%',
+        y: '-75%',
         duration: 0.4,
         ease: 'ease.out',
       }).to(subBtnRef.current, {
@@ -91,11 +100,11 @@ const Aristocrat = ({ gameName }) => {
 
     if (!showSubBtn) {
       tl.to(subBtnRef.current, {
-        y: '-80%',
+        y: '-75%',
         duration: 0.3,
         ease: 'ease.in',
       }).to(subBtnRef.current, {
-        y: '0%',
+        y: '5%',
         duration: 1.2,
         ease: 'bounce.out',
       });
@@ -104,11 +113,11 @@ const Aristocrat = ({ gameName }) => {
 
   // Auto Spin
   const autoSpinHandler = useCallback(() => {
-    dispatch(buttonPress({ name: 'spin', code: 'spin', ip }));
+    dispatch(buttonPress({ code: currentBtnPress, ip }));
     intervalID.current = setInterval(() => {
-      dispatch(buttonPress({ name: 'spin', code: 'spin', ip }));
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
     }, 3000);
-  }, [dispatch, ip]);
+  }, [dispatch, ip, currentBtnPress]);
 
   // Stop Auto Spin
   const stopAutoSpinHandler = useCallback(() => {
@@ -117,17 +126,51 @@ const Aristocrat = ({ gameName }) => {
 
   // Main Button Press
   const mainBtnHandler = ({ name, code }) => {
-    dispatch(buttonPress({ name, code, ip }));
+    if (!currentBtnPress) {
+      Dialog.alert({
+        content: '請先選擇倍率按鈕',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
+
+      return;
+    }
+
+    switch (name) {
+      case 'spin':
+        dispatch(buttonPress({ code: currentBtnPress, ip }));
+        break;
+
+      case 'max':
+        dispatch(buttonPress({ code, ip }));
+        dispatch({
+          type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+          payload: { currentBtnCode: code },
+        });
+        break;
+
+      default:
+        alert('button error');
+    }
   };
 
   // Sub Button Press
-  const subBtnClickHandler = ({ name, code }) => {
+  const subBtnClickHandler = ({ name, code, spinEffect }) => {
+    if (currentSubBtn) return;
     setCurrentSubBtn(name);
     dispatch(buttonPress({ name, code, ip }));
 
+    // 如果是bet按鈕才紀錄
+    if (spinEffect === 1) {
+      dispatch({
+        type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+        payload: { currentBtnCode: code },
+      });
+    }
+
     setTimeout(() => {
       setCurrentSubBtn('');
-    }, 800);
+    }, 1000);
   };
 
   // Aft Submit
@@ -143,13 +186,36 @@ const Aristocrat = ({ gameName }) => {
     dispatch(cashInOut(data));
   };
 
-  // 如果有aft form data , 就call 開洗分api
+  // 如果有aft form data , 就call開洗分api
   useEffect(() => {
     if (aftFormData) {
       aftSubmitHandler();
     }
     // eslint-disable-next-line
   }, [aftFormData]);
+
+  // 開洗分成功
+  useEffect(() => {
+    if (aftData) {
+      let text;
+      if (aftType === 'aft-in') {
+        text = '開分';
+      }
+
+      if (aftType === 'aft-out') {
+        text = '洗分';
+      }
+      Dialog.alert({
+        content: `${text}成功`,
+        closeOnMaskClick: true,
+        confirmText: '確定',
+        onClose: () => {
+          dispatch(clearCashInOutStatus());
+          setIsCashInOutClick(false);
+        },
+      });
+    }
+  }, [aftData, dispatch, aftType]);
 
   // 按鈕錯誤
   useEffect(() => {
@@ -177,13 +243,14 @@ const Aristocrat = ({ gameName }) => {
         confirmText: '確定',
         onClose: () => {
           dispatch(clearCashInOutStatus());
+          setIsCashInOutClick(false);
         },
       });
     }
   }, [aftError, dispatch]);
 
   return (
-    <article className={`${styles.container} ${styles[gameName]}`}>
+    <Wrapper img={image} className={styles.container} model={model}>
       {/* 開洗分表單 */}
       <AftForm
         isCashInOutClick={isCashInOutClick}
@@ -199,7 +266,7 @@ const Aristocrat = ({ gameName }) => {
 
       {/* Video */}
       <section className={styles['video-box']}>
-        <Video rtcUrl="webrtc://220.135.67.240/test/999" />
+        <Video rtcUrl={url} />
       </section>
 
       {/* CashInOut Button */}
@@ -231,16 +298,16 @@ const Aristocrat = ({ gameName }) => {
           subBtnClickHandler={subBtnClickHandler}
         />
       </section>
-    </article>
+    </Wrapper>
   );
 };
 
 Aristocrat.propTypes = {
-  gameName: PropTypes.string,
+  model: PropTypes.string.isRequired,
 };
 
-Aristocrat.defaultProps = {
-  gameName: 'koi',
-};
+// Aristocrat.defaultProps = {
+//   model: 'koi',
+// };
 
 export default Aristocrat;

@@ -5,7 +5,7 @@ import { Mask, SpinLoading, Space } from 'antd-mobile';
 import styles from './LoadingPage.module.scss';
 
 const LoadingPage = () => (
-  <Mask visible>
+  <Mask visible opacity={0.7}>
     <div className={styles.container}>
       <div className={styles.box}>
         <Space>

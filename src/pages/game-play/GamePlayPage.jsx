@@ -1,19 +1,35 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
+
+// Antd
+import { Dialog } from 'antd-mobile';
+
 import LoadingPage from '../LoadingPage';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 
 const GamePlay = () => {
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
-  const { name } = SelectEgmData || {};
-  // console.log('game play => ', name);
+  const { model, brand_name: brandName } = SelectEgmData || {};
 
-  return (
-    <Suspense fallback={<LoadingPage />}>
-      <Aristocrat gameName={name} />
-    </Suspense>
-  );
+  if (!model || !brandName) {
+    return <LoadingPage />;
+  }
+
+  let image;
+
+  try {
+    // eslint-disable-next-line
+    image = require(`../../assets/game-machine/${brandName}/bg/${model}.webp`);
+  } catch (error) {
+    Dialog.alert({
+      content: '無法獲取EGM圖片',
+      closeOnMaskClick: true,
+      confirmText: '確定',
+    });
+  }
+
+  return <Aristocrat model={model} image={image} />;
 };
 
 export default GamePlay;

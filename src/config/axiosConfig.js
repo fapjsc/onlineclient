@@ -22,12 +22,12 @@ authFetch.interceptors.response.use(
   (error) => {
     const { response } = error;
 
-    if (!response) {
-      Dialog.alert({
-        content: '請稍後再試',
-        confirmText: '確定',
-      });
-    }
+    // if (!response) {
+    //   Dialog.alert({
+    //     content: '沒有回應，請稍後再試',
+    //     confirmText: '確定',
+    //   });
+    // }
 
     if (response?.status === 401) {
       Dialog.alert({

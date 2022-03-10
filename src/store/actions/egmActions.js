@@ -25,7 +25,7 @@ export const getEgmList = () => async (dispatch) => {
       dispatch({
         type: egmActionTypes.SETUP_EGM_LIST_ERROR,
         payload: {
-          error: response.data.message || 'get egm list fail',
+          error: response?.data?.message || 'get egm list fail',
         },
       });
     }
@@ -51,7 +51,7 @@ export const getBrandList = () => async (dispatch) => {
       dispatch({
         type: egmActionTypes.SETUP_BRAND_LIST_ERROR,
         payload: {
-          error: response.data.message || 'get brand list fail',
+          error: response?.data?.message || 'get brand list fail',
         },
       });
     }
@@ -79,7 +79,7 @@ export const selectEgm = (id) => async (dispatch) => {
       dispatch({
         type: egmActionTypes.SETUP_SELECT_EGM_ERROR,
         payload: {
-          error: response.data.message || 'select egm fail',
+          error: response?.data?.message || 'select egm fail',
         },
       });
     }
@@ -110,7 +110,7 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
       dispatch({
         type: egmActionTypes.BUTTON_PRESS_ERROR,
         payload: {
-          error: response.data.message || 'button press fail',
+          error: response?.data?.message || 'button press fail',
         },
       });
     }
@@ -118,7 +118,7 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
 };
 
 export const cashInOut = ({
-  onlineId, ip, cashAmount, type,
+  onlineId, ip, cashAmount, type, chipType,
 }) => async (dispatch) => {
   dispatch({ type: egmActionTypes.CASH_IN_OUT_BEGIN });
 
@@ -137,6 +137,7 @@ export const cashInOut = ({
       onlineId,
       ip,
       cashAmount,
+      type: chipType,
     });
 
     dispatch({
@@ -149,12 +150,13 @@ export const cashInOut = ({
       payload: { onlineData: data.result },
     });
   } catch (error) {
-    const { response } = error;
+    const { response } = error || {};
+
     if (response?.status !== 401) {
       dispatch({
         type: egmActionTypes.CASH_IN_OUT_ERROR,
         payload: {
-          error: response.data.message || 'cash in out fail',
+          error: response?.data?.message || 'cash in out fail',
         },
       });
     }

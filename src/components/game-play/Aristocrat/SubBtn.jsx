@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+
+// eslint-disable-next-line
+import { Image, Space } from 'antd-mobile';
 import styles from './SubBtn.module.scss';
 
 import subBtnHeaderImage from '../../../assets/button/sub-btn-header.webp';
@@ -12,30 +15,47 @@ const SubBtn = ({
   currentSubBtn,
   subBtnClickHandler,
 }) => {
+  const getImage = (name) => {
+    let imgObj;
+    try {
+      //eslint-disable-next-line
+      imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}.webp`);
+    } catch (error) {
+      console.log(error);
+    }
+
+    return imgObj;
+  };
+
+  const getImageSelect = (name) => {
+    let imgObj;
+    try {
+      //eslint-disable-next-line
+      imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}-select.webp`);
+    } catch (error) {
+      console.log(error);
+    }
+
+    return imgObj;
+  };
+
   const subBtnEl = buttonList
     && buttonList
-      .filter((btn) => btn.button_name !== 'max' && btn.button_name !== 'spin')
+      .filter(
+        (btn) => btn.button_name !== 'max' && btn.button_name !== 'take-win',
+      )
       .sort((a, b) => b.id - a.id)
       .map((btn) => {
-        const { button_name: name, code } = btn || {};
+        const { button_name: name, code, spin_effect: spinEffect } = btn || {};
 
-        let imgObj;
-        let imgObjSelect;
-
-        try {
-          //eslint-disable-next-line
-          imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}.webp`);
-          //eslint-disable-next-line
-          imgObjSelect = require(`../../../assets/button/aristocrat/sub/en/${name}-select.webp`);
-        } catch (error) {
-          console.log(error);
-        }
+        const imgObj = getImage(name);
+        const imgObjSelect = getImageSelect(name);
 
         return (
           <div
             key={name}
             role="presentation"
-            onClick={() => subBtnClickHandler({ code, name })}
+            onClick={() => subBtnClickHandler({ code, name, spinEffect })}
             style={{
               transform:
                 currentSubBtn === name && 'translateY(-10px) scale(1.15)',
