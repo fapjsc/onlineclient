@@ -47,8 +47,6 @@ const HomePage = () => {
     dispatch(clearSelectEgmData());
   }, [isSelectEgm, dispatch]);
 
-  console.log(currentAction, 'currentAction');
-
   return (
     <>
       <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />

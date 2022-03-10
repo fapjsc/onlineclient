@@ -9,8 +9,9 @@ const Video = ({
   rtcUrl: url,
   close,
   play,
-  videoPlayHandler,
-  setShowBtnPlay,
+  clickToPlay,
+  setIsPlaying,
+  setClickToPlay,
 }) => {
   const cameraRef = useRef();
   const sdkRef = useRef();
@@ -38,7 +39,6 @@ const Video = ({
           confirmText: '確定',
         });
       });
-    // eslint-disable-next-line
   }, [url]);
 
   useEffect(() => {
@@ -61,24 +61,26 @@ const Video = ({
 
   useEffect(() => {
     const { current } = cameraRef || {};
+
     if (!current) return;
 
-    const canPlay = () => {
-      videoPlayHandler(current);
-    };
-
     const isPlay = () => {
-      setShowBtnPlay(false);
+      setIsPlaying(true);
+      setClickToPlay(false);
     };
-    current.addEventListener('canplay', canPlay);
 
     current.addEventListener('play', isPlay);
 
     return () => {
-      current.removeEventListener('canplay', canPlay);
       current.removeEventListener('play', isPlay);
     };
-  }, [cameraRef, videoPlayHandler, setShowBtnPlay]);
+  }, [cameraRef, setIsPlaying, setClickToPlay]);
+
+  useEffect(() => {
+    if (clickToPlay) {
+      cameraRef.current.play();
+    }
+  }, [clickToPlay]);
 
   return (
     <>
@@ -102,15 +104,17 @@ Video.propTypes = {
   rtcUrl: PropTypes.string.isRequired,
   close: PropTypes.bool,
   play: PropTypes.bool,
-  videoPlayHandler: PropTypes.func,
-  setShowBtnPlay: PropTypes.func,
+  clickToPlay: PropTypes.bool,
+  setIsPlaying: PropTypes.func,
+  setClickToPlay: PropTypes.func,
 };
 
 Video.defaultProps = {
   close: false,
   play: false,
-  videoPlayHandler: null,
-  setShowBtnPlay: null,
+  clickToPlay: false,
+  setIsPlaying: null,
+  setClickToPlay: null,
 };
 
 export default Video;

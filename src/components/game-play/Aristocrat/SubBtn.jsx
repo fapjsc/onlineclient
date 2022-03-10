@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { gsap } from 'gsap';
 
-// eslint-disable-next-line
-import { Image, Space } from 'antd-mobile';
+// import { Image, Space } from 'antd-mobile';
 import styles from './SubBtn.module.scss';
 
 import subBtnHeaderImage from '../../../assets/button/sub-btn-header.webp';

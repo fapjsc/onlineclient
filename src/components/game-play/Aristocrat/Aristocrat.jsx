@@ -45,7 +45,8 @@ const Aristocrat = ({ model, image }) => {
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
   const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
-  const [showBtnPlay, setShowBtnPlay] = useState(true);
+  const [clickToPlay, setClickToPlay] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [mainBtnClick, setMainBtnClick] = useState({
     auto: false,
@@ -79,7 +80,7 @@ const Aristocrat = ({ model, image }) => {
   // Ref
   const subBtnRef = useRef();
   const intervalID = useRef();
-  const videoRef = useRef();
+  // const videoRef = useRef();
 
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
@@ -93,8 +94,6 @@ const Aristocrat = ({ model, image }) => {
       return;
     }
     if (!allowSendBtnPressReq) return;
-
-    console.log('call main', allowSendBtnPressReq, name);
 
     setAllowSendBtnPressReq(false);
 
@@ -147,18 +146,25 @@ const Aristocrat = ({ model, image }) => {
     setCurrentSubBtn(name);
     dispatch(buttonPress({ name, code, ip }));
 
+    let timer;
+
     // 如果是bet按鈕才紀錄
     if (spinEffect === 1) {
+      timer = apiConfig.apiTimeSpace;
       dispatch({
         type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
         payload: { currentBtnCode: code },
       });
     }
 
+    if (spinEffect !== 1) {
+      timer = apiConfig.apiShortTimeSpace;
+    }
+
     setTimeout(() => {
       setCurrentSubBtn('');
       setAllowSendBtnPressReq(true);
-    }, apiConfig.apiTimeSpace);
+    }, timer);
   };
 
   // Aft Submit Call Api
@@ -249,13 +255,8 @@ const Aristocrat = ({ model, image }) => {
     }
   }, [aftError, dispatch]);
 
-  const videoPlayHandler = useCallback((ref) => {
-    videoRef.current = ref;
-  }, []);
-
   const clickPlayHandler = () => {
-    setShowBtnPlay(false);
-    videoRef.current?.play();
+    setClickToPlay(true);
   };
 
   return (
@@ -277,12 +278,13 @@ const Aristocrat = ({ model, image }) => {
       <section className={styles['video-box']}>
         <Video
           rtcUrl={url}
-          videoPlayHandler={videoPlayHandler}
-          setShowBtnPlay={setShowBtnPlay}
+          clickToPlay={clickToPlay}
+          setIsPlaying={setIsPlaying}
+          setClickToPlay={setClickToPlay}
         />
       </section>
 
-      {showBtnPlay && (
+      {!isPlaying && (
         <button
           type="button"
           style={{
