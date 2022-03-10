@@ -47,6 +47,7 @@ const Aristocrat = ({ model, image }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
+  const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
 
   const [mainBtnClick, setMainBtnClick] = useState({
     auto: false,
@@ -82,7 +83,59 @@ const Aristocrat = ({ model, image }) => {
   const subBtnRef = useRef();
   const intervalID = useRef();
 
-  // 跳過第一次render，只有showSubBtn 改變才執行動畫邏輯
+  // Main Button Press Call api
+  const mainBtnHandler = ({ name, code }) => {
+    if (!currentBtnPress) {
+      Dialog.alert({
+        content: '請先選擇倍率按鈕',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
+
+      return;
+    }
+    if (!allowSendBtnPressReq) return;
+    setAllowSendBtnPressReq(false);
+    switch (name) {
+      case 'spin':
+        dispatch(buttonPress({ code: currentBtnPress, ip }));
+        break;
+
+      case 'max':
+        dispatch(buttonPress({ code, ip }));
+        dispatch({
+          type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+          payload: { currentBtnCode: code },
+        });
+        break;
+
+      default:
+        Dialog.alert({
+          content: '按鈕錯誤',
+          closeOnMaskClick: true,
+          confirmText: '確定',
+        });
+    }
+
+    setTimeout(() => {
+      setAllowSendBtnPressReq(true);
+    }, 3000);
+  };
+
+  // Auto Spin
+  const autoSpinHandler = useCallback(() => {
+    dispatch(buttonPress({ code: currentBtnPress, ip }));
+    intervalID.current = setInterval(() => {
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+    }, 3000);
+  }, [dispatch, ip, currentBtnPress]);
+
+  // Stop Auto Spin
+  const stopAutoSpinHandler = useCallback(() => {
+    clearInterval(intervalID.current);
+  }, [intervalID]);
+
+  // 跳過第一次render，只有showSubBtn改變才執行動畫邏輯
   useDidUpdateEffect(() => {
     const tl = gsap.timeline();
 
@@ -111,49 +164,6 @@ const Aristocrat = ({ model, image }) => {
     }
   }, [showSubBtn]);
 
-  // Auto Spin
-  const autoSpinHandler = useCallback(() => {
-    dispatch(buttonPress({ code: currentBtnPress, ip }));
-    intervalID.current = setInterval(() => {
-      dispatch(buttonPress({ code: currentBtnPress, ip }));
-    }, 3000);
-  }, [dispatch, ip, currentBtnPress]);
-
-  // Stop Auto Spin
-  const stopAutoSpinHandler = useCallback(() => {
-    clearInterval(intervalID.current);
-  }, [intervalID]);
-
-  // Main Button Press
-  const mainBtnHandler = ({ name, code }) => {
-    if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
-
-      return;
-    }
-
-    switch (name) {
-      case 'spin':
-        dispatch(buttonPress({ code: currentBtnPress, ip }));
-        break;
-
-      case 'max':
-        dispatch(buttonPress({ code, ip }));
-        dispatch({
-          type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
-          payload: { currentBtnCode: code },
-        });
-        break;
-
-      default:
-        alert('button error');
-    }
-  };
-
   // Sub Button Press
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
     if (currentSubBtn) return;
@@ -170,10 +180,10 @@ const Aristocrat = ({ model, image }) => {
 
     setTimeout(() => {
       setCurrentSubBtn('');
-    }, 1000);
+    }, 3000);
   };
 
-  // Aft Submit
+  // Aft Submit Call Api
   const aftSubmitHandler = () => {
     const data = {
       cashAmount: currentAmount,

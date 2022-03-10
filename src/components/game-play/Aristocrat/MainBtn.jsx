@@ -39,13 +39,13 @@ const MainBtn = ({
       [id]: true,
     }));
 
-    // 200ms後重新設定為false (動畫結束時間為150ms)
+    // 300ms後重新設定為false (動畫結束時間為150ms)
     setTimeout(() => {
       setMainBtnClick((prev) => ({
         ...prev,
         [id]: false,
       }));
-    }, 200);
+    }, 300);
   };
 
   const onClickHandler = ({ target }, code) => {

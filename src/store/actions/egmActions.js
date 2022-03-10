@@ -1,5 +1,3 @@
-// import axios from 'axios';
-
 import { authFetch } from '../../config/axiosConfig';
 
 import { egmAPi, agentServer } from '../../apis';
@@ -21,7 +19,10 @@ export const getEgmList = () => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
-    if (response?.status !== 401) {
+    // ˋ401 => 身份驗證失敗
+    //  429 => 重複請求
+    //  以上兩種錯誤統一在axios config 處理
+    if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.SETUP_EGM_LIST_ERROR,
         payload: {
@@ -47,7 +48,7 @@ export const getBrandList = () => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
-    if (response?.status !== 401) {
+    if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.SETUP_BRAND_LIST_ERROR,
         payload: {
@@ -59,7 +60,6 @@ export const getBrandList = () => async (dispatch) => {
 };
 
 // Select Egm
-// eslint-disable-next-line
 export const selectEgm = (id) => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_SELECT_EGM_BEGIN });
 
@@ -75,7 +75,7 @@ export const selectEgm = (id) => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
-    if (response?.status !== 401) {
+    if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.SETUP_SELECT_EGM_ERROR,
         payload: {
@@ -106,7 +106,7 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
-    if (response?.status !== 401) {
+    if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.BUTTON_PRESS_ERROR,
         payload: {
@@ -152,7 +152,7 @@ export const cashInOut = ({
   } catch (error) {
     const { response } = error || {};
 
-    if (response?.status !== 401) {
+    if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.CASH_IN_OUT_ERROR,
         payload: {

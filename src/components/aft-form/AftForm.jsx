@@ -21,13 +21,13 @@ import { setAftFormData, clearAftForm } from '../../store/actions/egmActions';
 import styles from './AftForm.module.scss';
 
 // Components
-import aftInImage from '../../assets/開洗分介面/btn_creditin_normal.png';
-import aftOutImage from '../../assets/開洗分介面/btn_creditout_normal.png';
-import closeImage from '../../assets/開洗分介面/btn_close_normal.png';
-import cashChipsImage from '../../assets/開洗分介面/btn_cashchips_normal.jpg';
-import cashChipsSelectImage from '../../assets/開洗分介面/btn_cashchips_sel.jpg';
-import junkImage from '../../assets/開洗分介面/btn_junketschips_normal.jpg';
-import junkSelectImage from '../../assets/開洗分介面/btn_junketschips_sel.jpg';
+import aftInImage from '../../assets/開洗分介面/btn_creditin_normal.webp';
+import aftOutImage from '../../assets/開洗分介面/btn_creditout_normal.webp';
+import closeImage from '../../assets/開洗分介面/btn_close_normal.webp';
+import cashChipsImage from '../../assets/開洗分介面/btn_cashchips_normal.webp';
+import cashChipsSelectImage from '../../assets/開洗分介面/btn_cashchips_sel.webp';
+import junkImage from '../../assets/開洗分介面/btn_junketschips_normal.webp';
+import junkSelectImage from '../../assets/開洗分介面/btn_junketschips_sel.webp';
 
 // Helpers
 // import { thousandsFormat } from '../../utils/helper';
