@@ -45,6 +45,7 @@ const Aristocrat = ({ model, image }) => {
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
   const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
+  const [showBtnPlay, setShowBtnPlay] = useState(true);
 
   const [mainBtnClick, setMainBtnClick] = useState({
     auto: false,
@@ -78,6 +79,7 @@ const Aristocrat = ({ model, image }) => {
   // Ref
   const subBtnRef = useRef();
   const intervalID = useRef();
+  const videoRef = useRef();
 
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
@@ -247,6 +249,15 @@ const Aristocrat = ({ model, image }) => {
     }
   }, [aftError, dispatch]);
 
+  const videoPlayHandler = useCallback((ref) => {
+    videoRef.current = ref;
+  }, []);
+
+  const clickPlayHandler = () => {
+    setShowBtnPlay(false);
+    videoRef.current?.play();
+  };
+
   return (
     <Wrapper img={image} className={styles.container} model={model}>
       {/* 開洗分表單 */}
@@ -264,8 +275,33 @@ const Aristocrat = ({ model, image }) => {
 
       {/* Video */}
       <section className={styles['video-box']}>
-        <Video rtcUrl={url} />
+        <Video
+          rtcUrl={url}
+          videoPlayHandler={videoPlayHandler}
+          setShowBtnPlay={setShowBtnPlay}
+        />
       </section>
+
+      {showBtnPlay && (
+        <button
+          type="button"
+          style={{
+            width: '10rem',
+            height: '10rem',
+            backgroundColor: 'transparent',
+            color: 'white',
+            position: 'absolute',
+            top: '30%',
+            left: '50%',
+            transform: 'translateX(-50%) translateY(-50%)',
+          }}
+          onClick={() => {
+            clickPlayHandler();
+          }}
+        >
+          點擊後開始播放
+        </button>
+      )}
 
       {/* CashInOut Button */}
       <CashInOutBtn

@@ -5,7 +5,13 @@ import { Dialog } from 'antd-mobile';
 import PropTypes from 'prop-types';
 import { SrsRtcPlayerAsync } from '../utils/srs-sdk';
 
-const Video = ({ rtcUrl: url, close, play }) => {
+const Video = ({
+  rtcUrl: url,
+  close,
+  play,
+  videoPlayHandler,
+  setShowBtnPlay,
+}) => {
   const cameraRef = useRef();
   const sdkRef = useRef();
 
@@ -53,20 +59,42 @@ const Video = ({ rtcUrl: url, close, play }) => {
     }
   }, [play, startPlay]);
 
+  useEffect(() => {
+    const { current } = cameraRef || {};
+    if (!current) return;
+
+    const canPlay = () => {
+      videoPlayHandler(current);
+    };
+
+    const isPlay = () => {
+      setShowBtnPlay(false);
+    };
+    current.addEventListener('canplay', canPlay);
+
+    current.addEventListener('play', isPlay);
+
+    return () => {
+      current.removeEventListener('canplay', canPlay);
+      current.removeEventListener('play', isPlay);
+    };
+  }, [cameraRef, videoPlayHandler, setShowBtnPlay]);
+
   return (
-    <video
-      ref={cameraRef}
-      id="video-webrtc"
-      muted
-      autoPlay
-      controls
-      playsInline
-      style={{
-        objectFit: 'contain',
-        height: '100%',
-        width: '100%',
-      }}
-    />
+    <>
+      <video
+        ref={cameraRef}
+        id="video-webrtc"
+        muted
+        autoPlay="autoplay"
+        playsInline
+        style={{
+          objectFit: 'contain',
+          height: '100%',
+          width: '100%',
+        }}
+      />
+    </>
   );
 };
 
@@ -74,11 +102,15 @@ Video.propTypes = {
   rtcUrl: PropTypes.string.isRequired,
   close: PropTypes.bool,
   play: PropTypes.bool,
+  videoPlayHandler: PropTypes.func,
+  setShowBtnPlay: PropTypes.func,
 };
 
 Video.defaultProps = {
   close: false,
   play: false,
+  videoPlayHandler: null,
+  setShowBtnPlay: null,
 };
 
 export default Video;
