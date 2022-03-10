@@ -23,6 +23,10 @@ const HomeHeader = ({ setCurrentAction, currentAction }) => {
       title: '老虎機',
       sub: 'SLOT GAME',
     },
+    user: {
+      title: '會員中心',
+      sub: 'Member Centre',
+    },
   };
 
   // eslint-disable-next-line

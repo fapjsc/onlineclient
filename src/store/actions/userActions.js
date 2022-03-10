@@ -72,4 +72,4 @@ export const updateOnline = ({ onlineData }) => ({
   payload: { onlineData },
 });
 
-export const logout = { type: rootActionTypes.RESET_STORE };
+export const logout = () => ({ type: rootActionTypes.RESET_STORE });

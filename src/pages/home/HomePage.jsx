@@ -13,6 +13,7 @@ import HomeHeader from '../../components/home-header/HomeHeader';
 import GameType from '../../components/game-type/GameType';
 import SlotList from '../../components/slot-list/SlotList';
 import LoginForm from '../../components/LoginForm';
+import User from '../../components/user/User';
 
 // Actions
 import { clearSelectEgmData } from '../../store/actions/egmActions';
@@ -46,6 +47,8 @@ const HomePage = () => {
     dispatch(clearSelectEgmData());
   }, [isSelectEgm, dispatch]);
 
+  console.log(currentAction, 'currentAction');
+
   return (
     <>
       <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />
@@ -64,7 +67,7 @@ const HomePage = () => {
         </CSSTransition>
 
         <CSSTransition
-          in={currentAction !== 'home' && currentAction !== 'user'}
+          in={currentAction !== 'home'}
           classNames="animation-item"
           timeout={100}
           mountOnEnter
@@ -94,6 +97,16 @@ const HomePage = () => {
               unmountOnExit
             >
               <SlotList />
+            </CSSTransition>
+
+            <CSSTransition
+              in={currentAction === 'user'}
+              classNames="animation-item"
+              timeout={100}
+              mountOnEnter
+              unmountOnExit
+            >
+              <User />
             </CSSTransition>
           </section>
         </CSSTransition>

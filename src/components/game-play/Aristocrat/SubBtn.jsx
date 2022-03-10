@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { gsap } from 'gsap';
 
 // eslint-disable-next-line
 import { Image, Space } from 'antd-mobile';
@@ -8,7 +9,12 @@ import styles from './SubBtn.module.scss';
 
 import subBtnHeaderImage from '../../../assets/button/sub-btn-header.webp';
 
+// Hooks
+import useDidUpdateEffect from '../../../hooks/useDidUpdatedEffect';
+
 const SubBtn = ({
+  // eslint-disable-next-line
+  subBtnRef,
   showSubBtn,
   setShowSubBtn,
   buttonList,
@@ -68,6 +74,34 @@ const SubBtn = ({
           />
         );
       });
+
+  // 跳過第一次render，只有showSubBtn改變才執行動畫邏輯
+  useDidUpdateEffect(() => {
+    const tl = gsap.timeline();
+    if (showSubBtn) {
+      tl.to(subBtnRef, {
+        y: '-75%',
+        duration: 0.4,
+        ease: 'ease.out',
+      }).to(subBtnRef, {
+        y: '-70%',
+        duration: 1,
+        ease: 'bounce.out',
+      });
+    }
+
+    if (!showSubBtn) {
+      tl.to(subBtnRef, {
+        y: '-75%',
+        duration: 0.3,
+        ease: 'ease.in',
+      }).to(subBtnRef, {
+        y: '5%',
+        duration: 1.2,
+        ease: 'bounce.out',
+      });
+    }
+  }, [showSubBtn]);
 
   return (
     <>

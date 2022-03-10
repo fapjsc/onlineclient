@@ -2,8 +2,6 @@ import React, {
   useRef, useState, useCallback, useEffect,
 } from 'react';
 
-import { gsap } from 'gsap';
-
 import PropTypes from 'prop-types';
 
 // Antd
@@ -29,17 +27,16 @@ import {
   clearButtonPressStatus,
 } from '../../../store/actions/egmActions';
 
-// Hooks
-import useDidUpdateEffect from '../../../hooks/useDidUpdatedEffect';
-
 // Types
 import { egmActionTypes } from '../../../store/types';
+
+// Config
+import { apiConfig } from '../../../apis';
 
 // Styles
 import styles from './Aristocrat.module.scss';
 import '../../../sass/animation.scss';
 
-// eslint-disable-next-line
 const Aristocrat = ({ model, image }) => {
   // Init State
   const [showSubBtn, setShowSubBtn] = useState(false);
@@ -60,7 +57,6 @@ const Aristocrat = ({ model, image }) => {
 
   const { data: userData } = useSelector((state) => state.user);
   const { online } = userData || {};
-  // eslint-disable-next-line
   const { online_id: onlineId, point } = online || {};
 
   const { data: aftFormData } = useSelector((state) => state.aftForm);
@@ -95,7 +91,11 @@ const Aristocrat = ({ model, image }) => {
       return;
     }
     if (!allowSendBtnPressReq) return;
+
+    console.log('call main', allowSendBtnPressReq, name);
+
     setAllowSendBtnPressReq(false);
+
     switch (name) {
       case 'spin':
         dispatch(buttonPress({ code: currentBtnPress, ip }));
@@ -119,15 +119,15 @@ const Aristocrat = ({ model, image }) => {
 
     setTimeout(() => {
       setAllowSendBtnPressReq(true);
-    }, 3000);
+    }, apiConfig.apiTimeSpace);
   };
 
-  // Auto Spin
+  // Auto Spin Cal Api
   const autoSpinHandler = useCallback(() => {
     dispatch(buttonPress({ code: currentBtnPress, ip }));
     intervalID.current = setInterval(() => {
       dispatch(buttonPress({ code: currentBtnPress, ip }));
-    }, 3000);
+    }, apiConfig.apiTimeSpace);
   }, [dispatch, ip, currentBtnPress]);
 
   // Stop Auto Spin
@@ -135,38 +135,13 @@ const Aristocrat = ({ model, image }) => {
     clearInterval(intervalID.current);
   }, [intervalID]);
 
-  // 跳過第一次render，只有showSubBtn改變才執行動畫邏輯
-  useDidUpdateEffect(() => {
-    const tl = gsap.timeline();
-
-    if (showSubBtn) {
-      tl.to(subBtnRef.current, {
-        y: '-75%',
-        duration: 0.4,
-        ease: 'ease.out',
-      }).to(subBtnRef.current, {
-        y: '-70%',
-        duration: 1,
-        ease: 'bounce.out',
-      });
-    }
-
-    if (!showSubBtn) {
-      tl.to(subBtnRef.current, {
-        y: '-75%',
-        duration: 0.3,
-        ease: 'ease.in',
-      }).to(subBtnRef.current, {
-        y: '5%',
-        duration: 1.2,
-        ease: 'bounce.out',
-      });
-    }
-  }, [showSubBtn]);
-
-  // Sub Button Press
+  // Sub Button Press call api
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
     if (currentSubBtn) return;
+    if (!allowSendBtnPressReq) return;
+
+    setAllowSendBtnPressReq(false);
+
     setCurrentSubBtn(name);
     dispatch(buttonPress({ name, code, ip }));
 
@@ -180,7 +155,8 @@ const Aristocrat = ({ model, image }) => {
 
     setTimeout(() => {
       setCurrentSubBtn('');
-    }, 3000);
+      setAllowSendBtnPressReq(true);
+    }, apiConfig.apiTimeSpace);
   };
 
   // Aft Submit Call Api
@@ -195,6 +171,17 @@ const Aristocrat = ({ model, image }) => {
 
     dispatch(cashInOut(data));
   };
+
+  // Auto Spin handle
+  useEffect(() => {
+    if (isAuto) {
+      autoSpinHandler();
+    }
+
+    if (!isAuto) {
+      stopAutoSpinHandler();
+    }
+  }, [isAuto, autoSpinHandler, stopAutoSpinHandler]);
 
   // 如果有aft form data , 就call開洗分api
   useEffect(() => {
@@ -230,6 +217,7 @@ const Aristocrat = ({ model, image }) => {
   // 按鈕錯誤
   useEffect(() => {
     if (btnPressError) {
+      setAllowSendBtnPressReq(true);
       setMainBtnClick({ auto: false, max: false, spin: false });
       setIsAuto(false);
       Dialog.alert({
@@ -289,8 +277,6 @@ const Aristocrat = ({ model, image }) => {
       <section className={styles['main-btn-box']}>
         <MainBtn
           mainBtnHandler={mainBtnHandler}
-          autoSpinHandler={autoSpinHandler}
-          stopAutoSpinHandler={stopAutoSpinHandler}
           mainBtnClick={mainBtnClick}
           setMainBtnClick={setMainBtnClick}
           isAuto={isAuto}
@@ -301,6 +287,7 @@ const Aristocrat = ({ model, image }) => {
       {/* Sub Button */}
       <section ref={subBtnRef} className={styles['sub-btn-box']}>
         <SubBtn
+          subBtnRef={subBtnRef.current}
           showSubBtn={showSubBtn}
           setShowSubBtn={setShowSubBtn}
           buttonList={buttonList || []}
@@ -314,6 +301,7 @@ const Aristocrat = ({ model, image }) => {
 
 Aristocrat.propTypes = {
   model: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
 };
 
 // Aristocrat.defaultProps = {

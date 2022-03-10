@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -12,8 +12,6 @@ const MainBtn = ({
   mainBtnClick,
   setMainBtnClick,
   mainBtnHandler,
-  autoSpinHandler,
-  stopAutoSpinHandler,
   setIsAuto,
   isAuto,
 }) => {
@@ -54,16 +52,6 @@ const MainBtn = ({
     if (id === 'auto') return;
     mainBtnHandler({ name: id, code });
   };
-
-  useEffect(() => {
-    if (isAuto) {
-      autoSpinHandler();
-    }
-
-    if (!isAuto) {
-      stopAutoSpinHandler();
-    }
-  }, [isAuto, autoSpinHandler, stopAutoSpinHandler]);
 
   return (
     <div className={styles['main-btn-holder']}>
@@ -123,8 +111,6 @@ MainBtn.propTypes = {
   }).isRequired,
   setMainBtnClick: PropTypes.func.isRequired,
   mainBtnHandler: PropTypes.func.isRequired,
-  autoSpinHandler: PropTypes.func.isRequired,
-  stopAutoSpinHandler: PropTypes.func.isRequired,
   setIsAuto: PropTypes.func.isRequired,
   isAuto: PropTypes.bool.isRequired,
 };

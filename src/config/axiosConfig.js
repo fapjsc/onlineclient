@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { Dialog } from 'antd-mobile';
 import { store } from '../store';
-import { rootActionTypes } from '../store/types';
+// import { rootActionTypes } from '../store/types';
+import { logout } from '../store/actions/userActions';
 
 const { CancelToken } = axios;
 let requestQueue = [];
 
-// request攔截
+// request攔截調用
 const handleRequest = ({ config }) => {
+  if (!config) return;
   // 抽取四個參數不同於其他的請求
   const {
     url, method, data = {}, params = {},
@@ -36,8 +38,9 @@ const handleRequest = ({ config }) => {
   }
 };
 
-// response 攔截
+// response攔截調用
 const handleResponse = ({ config }) => {
+  if (!config) return;
   const {
     url,
     data = JSON.stringify({}),
@@ -66,11 +69,13 @@ authFetch.interceptors.request.use(
 
 authFetch.interceptors.response.use(
   (response) => {
-    handleResponse({ config: response.config });
+    handleResponse({ config: response?.config });
+
     return response;
   },
   (error) => {
     const { response } = error;
+    handleResponse({ config: response?.config });
     // 這裡統一處理429和401錯誤
     // 目前僅先定義401錯誤
     if (response?.status === 401) {
@@ -78,7 +83,8 @@ authFetch.interceptors.response.use(
         content: '無效的TOKEN',
         confirmText: '重新登入',
         onConfirm: () => {
-          store.dispatch({ type: rootActionTypes.RESET_STORE });
+          store.dispatch(logout());
+          // store.dispatch({ type: rootActionTypes.RESET_STORE });
         },
       });
     }

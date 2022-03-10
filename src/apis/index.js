@@ -15,3 +15,8 @@ export const egmAPi = {
   aftOut: 'aftOut',
   getBrandList: 'egmBrandList',
 };
+
+export const apiConfig = {
+  // btn press api 3 秒 call 一次
+  apiTimeSpace: 3000,
+};
