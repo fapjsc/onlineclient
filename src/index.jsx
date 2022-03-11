@@ -9,12 +9,10 @@ import { store, persisStore } from './store';
 import App from './App';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persisStore}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persisStore}>
+      <App />
+    </PersistGate>
+  </Provider>,
   document.getElementById('root'),
 );

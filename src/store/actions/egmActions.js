@@ -1,4 +1,4 @@
-import { authFetch } from '../../config/axiosConfig';
+import { authFetch, axiosFetch } from '../../config/axiosConfig';
 
 import { egmAPi, agentServer } from '../../apis';
 
@@ -9,7 +9,7 @@ export const getEgmList = () => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_EGM_LIST_BEGIN });
 
   try {
-    const { data } = await authFetch.get(
+    const { data } = await axiosFetch.get(
       `${agentServer.api}/${egmAPi.getEgmList}`,
     );
 
@@ -38,7 +38,7 @@ export const getBrandList = () => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_BRAND_LIST_BEGIN });
 
   try {
-    const { data } = await authFetch.get(
+    const { data } = await axiosFetch.get(
       `${agentServer.api}/${egmAPi.getBrandList}`,
     );
 

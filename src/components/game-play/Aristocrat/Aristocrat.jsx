@@ -5,7 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 // Antd
-import { Dialog } from 'antd-mobile';
+import { Dialog, Toast } from 'antd-mobile';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,6 +25,7 @@ import {
   cashInOut,
   clearCashInOutStatus,
   clearButtonPressStatus,
+  clearSelectEgmData,
 } from '../../../store/actions/egmActions';
 
 // Types
@@ -38,6 +39,7 @@ import styles from './Aristocrat.module.scss';
 import '../../../sass/animation.scss';
 
 const Aristocrat = ({ model, image }) => {
+  console.log('aristocrat');
   // Init State
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
@@ -45,14 +47,14 @@ const Aristocrat = ({ model, image }) => {
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
   const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
-  const [clickToPlay, setClickToPlay] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-
   const [mainBtnClick, setMainBtnClick] = useState({
     auto: false,
     max: false,
     spin: false,
   });
+
+  const [playStatus, setPlayStatus] = useState('');
+  const [playVideo, setPlayVideo] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
@@ -80,7 +82,7 @@ const Aristocrat = ({ model, image }) => {
   // Ref
   const subBtnRef = useRef();
   const intervalID = useRef();
-  // const videoRef = useRef();
+  const sdkRef = useRef();
 
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
@@ -255,8 +257,50 @@ const Aristocrat = ({ model, image }) => {
     }
   }, [aftError, dispatch]);
 
+  // 視訊播放狀態
+  useEffect(() => {
+    Toast.clear();
+
+    Toast.config({
+      position: 'center',
+      duration: 0,
+    });
+
+    if (playStatus === 'loading' || playStatus === 'wait') {
+      Toast.show({
+        icon: 'loading',
+        content: '視訊加载中…',
+      });
+    }
+
+    if (playStatus === 'error') {
+      Toast.show({
+        icon: 'fail',
+        content: '視訊出錯了',
+      });
+
+      if (playStatus === 'stalled') {
+        Toast.show({
+          icon: 'fail',
+          content: '視訊格式無法使用',
+        });
+      }
+    }
+  }, [playStatus]);
+
   const clickPlayHandler = () => {
-    setClickToPlay(true);
+    setPlayVideo(true);
+  };
+
+  const exitGameHandler = () => {
+    sdkRef.current?.close();
+    dispatch(clearButtonPressStatus());
+    dispatch(clearCashInOutStatus());
+    dispatch(clearSelectEgmData());
+  };
+
+  const getSdkRef = (ref) => {
+    sdkRef.current = ref;
   };
 
   return (
@@ -271,20 +315,24 @@ const Aristocrat = ({ model, image }) => {
 
       {/* Menu */}
       <section style={{ paddingLeft: '1rem', paddingTop: '5px' }}>
-        <Menu visible={showMenu} setVisible={setShowMenu} />
+        <Menu
+          visible={showMenu}
+          setVisible={setShowMenu}
+          exitGameHandler={exitGameHandler}
+        />
       </section>
 
       {/* Video */}
       <section className={styles['video-box']}>
         <Video
           rtcUrl={url}
-          clickToPlay={clickToPlay}
-          setIsPlaying={setIsPlaying}
-          setClickToPlay={setClickToPlay}
+          play={playVideo}
+          setPlayStatus={setPlayStatus}
+          getSdkRef={getSdkRef}
         />
       </section>
 
-      {!isPlaying && (
+      {playStatus === 'canPlay' && (
         <button
           type="button"
           style={{

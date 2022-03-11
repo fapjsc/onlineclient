@@ -31,13 +31,13 @@ const SlotList = () => {
   const {
     data: egmListData,
     error: egmListError,
-    // isLoading: egmListLoading,
+    isLoading: egmListLoading,
   } = useSelector((state) => state.egmList);
 
   const {
     data: brandListData,
     error: brandListError,
-    // isLoading: brandListLoading,
+    isLoading: brandListLoading,
   } = useSelector((state) => state.brand);
 
   const {
@@ -60,6 +60,7 @@ const SlotList = () => {
   // 有egmID 代表select egm 成功
   useEffect(() => {
     if (egmID) {
+      // console.log('test');
       navigate('/game-play');
     }
   }, [egmID, navigate]);
@@ -107,17 +108,23 @@ const SlotList = () => {
   }, [selectEgmError, dispatch]);
 
   useEffect(() => {
+    Toast.clear();
     if (selectEgmLoading) {
       Toast.show({
         icon: 'loading',
         content: '加载中…',
+        position: 'center',
       });
     }
 
-    if (!selectEgmLoading) {
-      Toast.clear();
+    if (egmListLoading || brandListLoading) {
+      Toast.show({
+        icon: 'loading',
+        content: '遊戲加载中…',
+        position: 'center',
+      });
     }
-  }, [selectEgmLoading]);
+  }, [selectEgmLoading, egmListLoading, brandListLoading]);
 
   return (
     <section className={styles.container}>

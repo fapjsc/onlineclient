@@ -59,6 +59,7 @@ export const authFetch = axios.create({
 authFetch.interceptors.request.use(
   (config) => {
     const token = store.getState()?.user?.data?.token || '';
+
     config.headers.common.Authorization = `Bearer ${token}`;
 
     handleRequest({ config });
@@ -93,4 +94,26 @@ authFetch.interceptors.response.use(
   },
 );
 
-export const temp = () => {};
+export const axiosFetch = axios.create({
+  baseURL: '/online',
+});
+
+axiosFetch.interceptors.request.use(
+  (config) => {
+    handleRequest({ config });
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+axiosFetch.interceptors.response.use(
+  (response) => {
+    handleResponse({ config: response?.config });
+    return response;
+  },
+  (error) => {
+    const { response } = error;
+    handleResponse({ config: response?.config });
+    return Promise.reject(error);
+  },
+);

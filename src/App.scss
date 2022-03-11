@@ -21,7 +21,7 @@
   opacity: 0;
 }
 
-body {
+#root {
   background-image:
     linear-gradient(
       to right bottom,
@@ -29,4 +29,12 @@ body {
       rgb(#000, 0.7)
     ),
     url(./assets/big-bg.webp);
+}
+
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
 }
