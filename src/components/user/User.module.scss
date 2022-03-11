@@ -1,0 +1,46 @@
+.container {
+  overflow-y: scroll;
+  height: 85%;
+  color: white;
+
+  @media only screen and(max-width: 557px) {
+     padding-top: 0.5rem;
+  }
+
+  .header {
+    // background-color: rgb(423 134 443 / 50%);
+
+    height: 40%;
+
+    .avatar {
+    //   background-color: green;
+      height: 70%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      img {
+        border-radius: 100%;
+      }
+
+      svg {
+        font-size: 2.5rem;
+      }
+    }
+
+    .text {
+    //   background-color: blue;
+      height: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+
+  .content {
+    height: 60%;
+    background-color: rgb(122 123 443 / 50%);
+
+  }
+}
