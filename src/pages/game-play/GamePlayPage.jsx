@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { CSSTransition } from 'react-transition-group';
+
 // Antd
 import { Dialog } from 'antd-mobile';
 
@@ -12,10 +14,6 @@ const GamePlay = () => {
   console.log('gamePlay');
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
   const { model, brand_name: brandName } = SelectEgmData || {};
-
-  if (!model || !brandName) {
-    return <LoadingPage />;
-  }
 
   let image;
 
@@ -32,7 +30,20 @@ const GamePlay = () => {
     }
   }
 
-  return <Aristocrat model={model} image={image} />;
+  return (
+    <>
+      <CSSTransition
+        in={!model || !brandName}
+        classNames="animation-item"
+        timeout={1000}
+        mountOnEnter
+        unmountOnExit
+      >
+        <LoadingPage />
+      </CSSTransition>
+      <Aristocrat model={model} image={image} />
+    </>
+  );
 };
 
 export default GamePlay;

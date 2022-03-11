@@ -60,7 +60,6 @@ const SlotList = () => {
   // 有egmID 代表select egm 成功
   useEffect(() => {
     if (egmID) {
-      // console.log('test');
       navigate('/game-play');
     }
   }, [egmID, navigate]);

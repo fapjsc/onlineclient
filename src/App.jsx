@@ -24,14 +24,12 @@ const HomePage = React.lazy(() => import('./pages/home/HomePage'));
 const AnimatedSwitch = () => {
   const location = useLocation();
 
-  console.log(location, 'key');
-
   return (
     <TransitionGroup component={null}>
       <CSSTransition
         key={location.key}
         classNames="animation-item"
-        timeout={300}
+        timeout={500}
       >
         <Routes>
           <Route

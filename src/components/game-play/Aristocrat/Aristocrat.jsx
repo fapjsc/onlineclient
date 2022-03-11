@@ -4,6 +4,8 @@ import React, {
 
 import PropTypes from 'prop-types';
 
+import { useNavigate } from 'react-router-dom';
+
 // Antd
 import { Dialog, Toast } from 'antd-mobile';
 
@@ -83,6 +85,8 @@ const Aristocrat = ({ model, image }) => {
   const subBtnRef = useRef();
   const intervalID = useRef();
   const sdkRef = useRef();
+
+  const navigate = useNavigate();
 
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
@@ -294,6 +298,7 @@ const Aristocrat = ({ model, image }) => {
 
   const exitGameHandler = () => {
     sdkRef.current?.close();
+    navigate('/');
     dispatch(clearButtonPressStatus());
     dispatch(clearCashInOutStatus());
     dispatch(clearSelectEgmData());
