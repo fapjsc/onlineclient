@@ -1,6 +1,6 @@
 export const agentServer = {
-  api: 'http://192.168.10.119:3030/online',
-  // api: 'http://220.135.67.240:8000/online',
+  // api: 'http://192.168.10.119:3030/online',
+  api: 'http://220.135.67.240:8000/online',
 };
 
 export const authApi = {
