@@ -18,7 +18,6 @@ import styles from './User.module.scss';
 const User = () => {
   const { isMobile } = useRwd();
   const dispatch = useDispatch();
-  console.log('user');
   return (
     <section className={styles.container}>
       <div className={styles.header}>

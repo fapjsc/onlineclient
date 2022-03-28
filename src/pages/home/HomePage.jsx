@@ -47,6 +47,10 @@ const HomePage = () => {
     dispatch(clearSelectEgmData());
   }, [isSelectEgm, dispatch]);
 
+  const userOnEnter = () => {
+    console.log('user entered');
+  };
+
   return (
     <>
       <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />
@@ -103,6 +107,7 @@ const HomePage = () => {
               timeout={100}
               mountOnEnter
               unmountOnExit
+              onEntered={userOnEnter}
             >
               <User />
             </CSSTransition>

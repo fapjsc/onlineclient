@@ -2,6 +2,9 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
+// eslint-disable-next-line
+import { Dialog } from 'antd-mobile';
+
 import { useSelector } from 'react-redux';
 
 import classnames from 'classnames';
@@ -49,7 +52,6 @@ const MainBtn = ({
   const onClickHandler = ({ target }, code) => {
     const { id } = target;
     animationHandler(id);
-    if (id === 'auto') return;
     mainBtnHandler({ name: id, code });
   };
 

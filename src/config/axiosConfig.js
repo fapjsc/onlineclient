@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Dialog } from 'antd-mobile';
 import { store } from '../store';
-// import { rootActionTypes } from '../store/types';
 import { logout } from '../store/actions/userActions';
+
+// import { rootActionTypes } from '../store/types';
 
 const { CancelToken } = axios;
 let requestQueue = [];
@@ -14,6 +15,7 @@ const handleRequest = ({ config }) => {
   const {
     url, method, data = {}, params = {},
   } = config;
+
   const jData = JSON.stringify(data);
   const jParams = JSON.stringify(params);
 
@@ -23,6 +25,7 @@ const handleRequest = ({ config }) => {
       && item.data === jData
       && item.params === jParams,
   );
+
   if (pending.length) {
     // 這裡是重點，實例化CancelToken時，對參數c立即進行調用，立即取消當前請求
     config.cancelToken = new CancelToken((c) => c(429));

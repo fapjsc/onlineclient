@@ -18,7 +18,13 @@ export const egmAPi = {
 };
 
 export const apiConfig = {
-  // btn press api 3 秒 call 一次
+  // @File       Aristocrat.jsx
+  // @Function   mainBtnHandler, autoSpinHandler, subBtnClickHandler
+  // @desc       發送main btn api 時間, sub btn bet 類型發送api 及動畫時間
   apiTimeSpace: 3000,
+
+  // @File       Aristocrat.jsx
+  // @Function   subBtnClickHandler
+  // @desc       sub btn  選線動畫時間
   apiShortTimeSpace: 500,
 };

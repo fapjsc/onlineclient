@@ -1,14 +1,12 @@
 import axios from 'axios';
 
-
 export const SrsRtcPlayerAsync = () => {
-
   let self = {};
 
-  self.play = async url => {
+  self.play = async (url) => {
     let conf = self.__internal.prepareUrl(url);
 
-    self.pc.addTransceiver('audio', {direction: 'recvonly'});
+    self.pc.addTransceiver('audio', { direction: 'recvonly' });
     self.pc.addTransceiver('video', { direction: 'recvonly' });
 
     let offer = await self.pc.createOffer();
@@ -34,7 +32,7 @@ export const SrsRtcPlayerAsync = () => {
         contentType: 'application/json',
         dataType: 'json',
       })
-        .then(data => {
+        .then((data) => {
           console.log('Got answer: ', data);
           if (data.code) {
             reject(data);
@@ -43,18 +41,23 @@ export const SrsRtcPlayerAsync = () => {
 
           resolve(data.data);
         })
-        .catch(e => {
+        .catch((e) => {
           reject(e);
           console.log(e);
         });
     });
 
     await self.pc.setRemoteDescription(
-      new RTCSessionDescription({ type: 'answer', sdp: session.sdp })
+      new RTCSessionDescription({ type: 'answer', sdp: session.sdp }),
     );
 
     session.simulator =
-      conf.schema + '//' + conf.urlObject.server + ':' + conf.port + '/rtc/v1/nack/';
+      conf.schema +
+      '//' +
+      conf.urlObject.server +
+      ':' +
+      conf.port +
+      '/rtc/v1/nack/';
 
     return session;
   };
@@ -67,7 +70,7 @@ export const SrsRtcPlayerAsync = () => {
 
   // The callback when got remote track.
   // Note that the onaddstream is deprecated, @see https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/onaddstream
-  self.ontrack = event => {
+  self.ontrack = (event) => {
     // https://webrtc.org/getting-started/remote-streams
     self.stream.addTrack(event.track);
   };
@@ -75,7 +78,7 @@ export const SrsRtcPlayerAsync = () => {
   // Internal APIs.
   self.__internal = {
     defaultPath: '/rtc/v1/play/',
-    prepareUrl: webrtcUrl => {
+    prepareUrl: (webrtcUrl) => {
       let urlObject = self.__internal.parse(webrtcUrl);
 
       // If user specifies the schema, use it as API schema.
@@ -115,7 +118,7 @@ export const SrsRtcPlayerAsync = () => {
           .substr(0, 7),
       };
     },
-    parse: url => {
+    parse: (url) => {
       // @see: http://stackoverflow.com/questions/10469575/how-to-use-location-object-to-parse-url-without-redirecting-the-page-in-javascri
       let a = document.createElement('a');
       a.href = url

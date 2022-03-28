@@ -4,8 +4,6 @@ import React, {
 
 import PropTypes from 'prop-types';
 
-import { useNavigate } from 'react-router-dom';
-
 // Antd
 import { Dialog, Toast } from 'antd-mobile';
 
@@ -19,15 +17,11 @@ import Video from '../../Video';
 import MainBtn from './MainBtn';
 import SubBtn from './SubBtn';
 import CashInOutBtn from './CashInOutBtn';
-import AftForm from '../../aft-form/AftForm';
 
 // Actions
 import {
   buttonPress,
-  cashInOut,
-  clearCashInOutStatus,
   clearButtonPressStatus,
-  clearSelectEgmData,
 } from '../../../store/actions/egmActions';
 
 // Types
@@ -40,13 +34,24 @@ import { apiConfig } from '../../../apis';
 import styles from './Aristocrat.module.scss';
 import '../../../sass/animation.scss';
 
-const Aristocrat = ({ model, image }) => {
+const Aristocrat = ({
+  model,
+  image,
+  getSdkRef,
+  setIsCashInOutClick,
+  isCashInOutClick,
+  url,
+  buttonList,
+  ip,
+  currentBtnPress,
+  setShowMenu,
+  showMenu,
+  exitGameHandler,
+}) => {
   console.log('aristocrat');
   // Init State
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
-  const [showMenu, setShowMenu] = useState(false);
-  const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
   const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
   const [mainBtnClick, setMainBtnClick] = useState({
@@ -61,32 +66,11 @@ const Aristocrat = ({ model, image }) => {
   // Redux
   const dispatch = useDispatch();
 
-  const { data: userData } = useSelector((state) => state.user);
-  const { online } = userData || {};
-  const { online_id: onlineId, point } = online || {};
-
-  const { data: aftFormData } = useSelector((state) => state.aftForm);
-  const { aftType, currentAmount, selectChipType } = aftFormData || {};
-
-  const { data: selectEgmData, currentBtnPress } = useSelector(
-    (state) => state.selectEgm,
-  );
-  const { buttonList, ip, stream_url: url } = selectEgmData || {};
-
   const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
-
-  const {
-    error: aftError,
-    isLoading: aftLoading,
-    data: aftData,
-  } = useSelector((state) => state.cashInOut);
 
   // Ref
   const subBtnRef = useRef();
   const intervalID = useRef();
-  const sdkRef = useRef();
-
-  const navigate = useNavigate();
 
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
@@ -97,14 +81,21 @@ const Aristocrat = ({ model, image }) => {
         confirmText: '確定',
       });
 
+      setIsAuto(false);
+
       return;
     }
+
     if (!allowSendBtnPressReq) return;
 
     setAllowSendBtnPressReq(false);
 
     switch (name) {
       case 'spin':
+        dispatch(buttonPress({ code: currentBtnPress, ip }));
+        break;
+
+      case 'auto':
         dispatch(buttonPress({ code: currentBtnPress, ip }));
         break;
 
@@ -131,7 +122,6 @@ const Aristocrat = ({ model, image }) => {
 
   // Auto Spin Cal Api
   const autoSpinHandler = useCallback(() => {
-    dispatch(buttonPress({ code: currentBtnPress, ip }));
     intervalID.current = setInterval(() => {
       dispatch(buttonPress({ code: currentBtnPress, ip }));
     }, apiConfig.apiTimeSpace);
@@ -144,8 +134,7 @@ const Aristocrat = ({ model, image }) => {
 
   // Sub Button Press call api
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
-    if (currentSubBtn) return;
-    if (!allowSendBtnPressReq) return;
+    if (currentSubBtn || !allowSendBtnPressReq) return;
 
     setAllowSendBtnPressReq(false);
 
@@ -173,19 +162,6 @@ const Aristocrat = ({ model, image }) => {
     }, timer);
   };
 
-  // Aft Submit Call Api
-  const aftSubmitHandler = () => {
-    const data = {
-      cashAmount: currentAmount,
-      ip,
-      onlineId,
-      type: aftType,
-      chipType: selectChipType,
-    };
-
-    dispatch(cashInOut(data));
-  };
-
   // Auto Spin handle
   useEffect(() => {
     if (isAuto) {
@@ -196,37 +172,6 @@ const Aristocrat = ({ model, image }) => {
       stopAutoSpinHandler();
     }
   }, [isAuto, autoSpinHandler, stopAutoSpinHandler]);
-
-  // 如果有aft form data , 就call開洗分api
-  useEffect(() => {
-    if (aftFormData) {
-      aftSubmitHandler();
-    }
-    // eslint-disable-next-line
-  }, [aftFormData]);
-
-  // 開洗分成功
-  useEffect(() => {
-    if (aftData) {
-      let text;
-      if (aftType === 'aft-in') {
-        text = '開分';
-      }
-
-      if (aftType === 'aft-out') {
-        text = '洗分';
-      }
-      Dialog.alert({
-        content: `${text}成功`,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearCashInOutStatus());
-          setIsCashInOutClick(false);
-        },
-      });
-    }
-  }, [aftData, dispatch, aftType]);
 
   // 按鈕錯誤
   useEffect(() => {
@@ -245,22 +190,6 @@ const Aristocrat = ({ model, image }) => {
     }
   }, [btnPressError, dispatch]);
 
-  // 開洗分錯誤
-  useEffect(() => {
-    if (aftError) {
-      setIsCashInOutClick(false);
-      Dialog.alert({
-        content: aftError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearCashInOutStatus());
-          setIsCashInOutClick(false);
-        },
-      });
-    }
-  }, [aftError, dispatch]);
-
   // 視訊播放狀態
   useEffect(() => {
     Toast.clear();
@@ -270,10 +199,17 @@ const Aristocrat = ({ model, image }) => {
       duration: 0,
     });
 
-    if (playStatus === 'loading' || playStatus === 'wait') {
+    if (playStatus === 'loading') {
       Toast.show({
         icon: 'loading',
         content: '視訊加载中…',
+      });
+    }
+
+    if (playStatus === 'wait') {
+      Toast.show({
+        icon: 'loading',
+        content: '視訊等待中…',
       });
     }
 
@@ -296,37 +232,15 @@ const Aristocrat = ({ model, image }) => {
     setPlayVideo(true);
   };
 
-  const exitGameHandler = () => {
-    sdkRef.current?.close();
-    navigate('/');
-    dispatch(clearButtonPressStatus());
-    dispatch(clearCashInOutStatus());
-    dispatch(clearSelectEgmData());
-  };
-
-  const getSdkRef = (ref) => {
-    sdkRef.current = ref;
-  };
-
   return (
     <Wrapper img={image} className={styles.container} model={model}>
-      {/* 開洗分表單 */}
-      <AftForm
-        isCashInOutClick={isCashInOutClick}
-        setIsCashInOutClick={setIsCashInOutClick}
-        aftLoading={aftLoading}
-        point={point}
-      />
-
-      {/* Menu */}
-      <section style={{ paddingLeft: '1rem', paddingTop: '5px' }}>
+      <section style={{ padding: '1rem' }}>
         <Menu
           visible={showMenu}
           setVisible={setShowMenu}
           exitGameHandler={exitGameHandler}
         />
       </section>
-
       {/* Video */}
       <section className={styles['video-box']}>
         <Video
@@ -393,10 +307,20 @@ const Aristocrat = ({ model, image }) => {
 Aristocrat.propTypes = {
   model: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
+  getSdkRef: PropTypes.func.isRequired,
+  setIsCashInOutClick: PropTypes.func.isRequired,
+  isCashInOutClick: PropTypes.bool.isRequired,
+  url: PropTypes.string.isRequired,
+  buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  ip: PropTypes.string.isRequired,
+  currentBtnPress: PropTypes.string,
+  setShowMenu: PropTypes.func.isRequired,
+  showMenu: PropTypes.bool.isRequired,
+  exitGameHandler: PropTypes.func.isRequired,
 };
 
-// Aristocrat.defaultProps = {
-//   model: 'koi',
-// };
+Aristocrat.defaultProps = {
+  currentBtnPress: null,
+};
 
 export default Aristocrat;

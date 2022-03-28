@@ -23,3 +23,17 @@ export const getBrandImage = (brand) => {
 
   return image;
 };
+
+export const getEgmBg = ({ brandName, model }) => {
+  let image;
+
+  try {
+    // eslint-disable-next-line
+    image = require(`../assets/game-machine/${brandName}/${model}.webp`);
+  } catch (error) {
+    // eslint-disable-next-line
+    console.log(error);
+  }
+
+  return image;
+};
