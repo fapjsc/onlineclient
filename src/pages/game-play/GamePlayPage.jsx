@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 // Antd
-import { Dialog } from 'antd-mobile';
+import { Dialog, Toast } from 'antd-mobile';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -26,14 +26,19 @@ import {
 import { getEgmBg } from '../../utils/helper';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
+const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
 
 const GamePlay = () => {
+  // Ref
   const sdkRef = useRef();
 
+  // Router prop
   const navigate = useNavigate();
 
+  // Init state
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [playStatus, setPlayStatus] = useState('');
 
   const dispatch = useDispatch();
 
@@ -136,6 +141,52 @@ const GamePlay = () => {
     }
   }, [aftError, dispatch]);
 
+  // 視訊播放狀態
+  useEffect(() => {
+    Toast.clear();
+
+    Toast.config({
+      position: 'center',
+      duration: 0,
+    });
+
+    if (playStatus === 'loading') {
+      Toast.show({
+        icon: 'loading',
+        content: '視訊加载中…',
+        duration: 1000 * 60,
+        afterClose: () => {
+          if (playStatus === 'loading') {
+            setPlayStatus('error');
+          }
+        },
+      });
+    }
+
+    if (playStatus === 'wait') {
+      Toast.show({
+        icon: 'loading',
+        content: '視訊等待中…',
+      });
+    }
+
+    if (playStatus === 'error') {
+      Toast.show({
+        icon: 'fail',
+        content: '無法獲取視訊',
+        duration: 2000,
+      });
+
+      if (playStatus === 'stalled') {
+        Toast.show({
+          icon: 'fail',
+          content: '視訊格式無法使用',
+          duration: 2000,
+        });
+      }
+    }
+  }, [playStatus]);
+
   return (
     <>
       <CSSTransition
@@ -156,20 +207,41 @@ const GamePlay = () => {
         point={point}
       />
 
-      <Aristocrat
-        model={model}
-        image={image}
-        isCashInOutClick={isCashInOutClick}
-        setIsCashInOutClick={setIsCashInOutClick}
-        buttonList={buttonList}
-        url={url}
-        ip={ip}
-        currentBtnPress={currentBtnPress}
-        getSdkRef={getSdkRef}
-        exitGameHandler={exitGameHandler}
-        showMenu={showMenu}
-        setShowMenu={setShowMenu}
-      />
+      {brandName === 'aristocrat' && (
+        <Aristocrat
+          model={model}
+          image={image}
+          isCashInOutClick={isCashInOutClick}
+          setIsCashInOutClick={setIsCashInOutClick}
+          buttonList={buttonList}
+          url={url}
+          ip={ip}
+          currentBtnPress={currentBtnPress}
+          getSdkRef={getSdkRef}
+          exitGameHandler={exitGameHandler}
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
+          setPlayStatus={setPlayStatus}
+          playStatus={playStatus}
+        />
+      )}
+
+      {brandName === 'aruze' && (
+        <Aruze
+          model={model}
+          image={image}
+          buttonList={buttonList}
+          url={url}
+          ip={ip}
+          getSdkRef={getSdkRef}
+          setPlayStatus={setPlayStatus}
+          playStatus={playStatus}
+          setIsCashInOutClick={setIsCashInOutClick}
+          exitGameHandler={exitGameHandler}
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
+        />
+      )}
     </>
   );
 };

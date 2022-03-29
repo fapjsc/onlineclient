@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  // eslint-disable-next-line
   Navigate,
   useLocation,
 } from 'react-router-dom';
@@ -43,7 +42,7 @@ const AnimatedSwitch = () => {
           </Route>
 
           <Route path="/" element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
+            <Route exact path="/" element={<HomePage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" />} />

@@ -37,3 +37,30 @@ export const getEgmBg = ({ brandName, model }) => {
 
   return image;
 };
+
+export const getSubBtnImg = ({ name, brand }) => {
+  let imgObj;
+  try {
+    //eslint-disable-next-line
+    imgObj = require(`../assets/button/${brand}/sub/en/${name}.webp`);
+  } catch (error) {
+    console.log(error);
+    //eslint-disable-next-line
+    imgObj = require('../assets/button/aruze/sub/en/bet-1.webp');
+  }
+
+  return imgObj;
+};
+
+export const getSubBtnImgSelect = ({ name, brand }) => {
+  let imgObj;
+  try {
+    //eslint-disable-next-line
+    imgObj = require(`../assets/button/${brand}/sub/en/${name}-select.webp`);
+  } catch (error) {
+    //eslint-disable-next-line
+    imgObj = require('../assets/button/aruze/sub/en/bet-100-select.webp');
+  }
+
+  return imgObj;
+};

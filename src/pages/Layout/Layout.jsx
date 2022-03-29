@@ -30,7 +30,7 @@ const Layout = () => {
 
   const { pathname } = useLocation();
 
-  if (pathname?.includes('game-play')) {
+  if (pathname?.includes('game-play') || pathname?.includes('aruze')) {
     return (
       <div
         style={{

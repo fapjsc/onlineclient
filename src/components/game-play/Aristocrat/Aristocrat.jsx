@@ -2,21 +2,22 @@ import React, {
   useRef, useState, useCallback, useEffect,
 } from 'react';
 
+// Prop-Type
 import PropTypes from 'prop-types';
 
 // Antd
-import { Dialog, Toast } from 'antd-mobile';
+import { Dialog } from 'antd-mobile';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import Wrapper from './Wrapper';
+import Wrapper from '../Wrapper';
 import Menu from '../Menu';
 import Video from '../../Video';
 import MainBtn from './MainBtn';
-import SubBtn from './SubBtn';
 import CashInOutBtn from './CashInOutBtn';
+import SubHolder from '../SubBtnHolder';
 
 // Actions
 import {
@@ -29,6 +30,9 @@ import { egmActionTypes } from '../../../store/types';
 
 // Config
 import { apiConfig } from '../../../apis';
+
+// Helpers
+import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 
 // Styles
 import styles from './Aristocrat.module.scss';
@@ -47,9 +51,12 @@ const Aristocrat = ({
   setShowMenu,
   showMenu,
   exitGameHandler,
+  setPlayStatus,
+  playStatus,
 }) => {
   console.log('aristocrat');
   // Init State
+  const [playVideo, setPlayVideo] = useState(false);
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
   const [isAuto, setIsAuto] = useState(false);
@@ -59,9 +66,6 @@ const Aristocrat = ({
     max: false,
     spin: false,
   });
-
-  const [playStatus, setPlayStatus] = useState('');
-  const [playVideo, setPlayVideo] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
@@ -91,28 +95,28 @@ const Aristocrat = ({
     setAllowSendBtnPressReq(false);
 
     switch (name) {
-      case 'spin':
-        dispatch(buttonPress({ code: currentBtnPress, ip }));
-        break;
+    case 'spin':
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      break;
 
-      case 'auto':
-        dispatch(buttonPress({ code: currentBtnPress, ip }));
-        break;
+    case 'auto':
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      break;
 
-      case 'max':
-        dispatch(buttonPress({ code, ip }));
-        dispatch({
-          type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
-          payload: { currentBtnCode: code },
-        });
-        break;
+    case 'max':
+      dispatch(buttonPress({ code, ip }));
+      dispatch({
+        type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+        payload: { currentBtnCode: code },
+      });
+      break;
 
-      default:
-        Dialog.alert({
-          content: '按鈕錯誤',
-          closeOnMaskClick: true,
-          confirmText: '確定',
-        });
+    default:
+      Dialog.alert({
+        content: '按鈕錯誤',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
     }
 
     setTimeout(() => {
@@ -190,47 +194,34 @@ const Aristocrat = ({
     }
   }, [btnPressError, dispatch]);
 
-  // 視訊播放狀態
-  useEffect(() => {
-    Toast.clear();
+  const subBtnEl = buttonList
+    && buttonList
+      ?.filter(
+        (btn) => btn.button_name !== 'max' && btn.button_name !== 'take-win',
+      )
+      .sort((a, b) => b.id - a.id)
+      .map((btn) => {
+        const { button_name: name, code, spin_effect: spinEffect } = btn || {};
+        const imgObj = getSubBtnImg({ name, brand: 'aristocrat' });
+        const imgObjSelect = getSubBtnImgSelect({ name, brand: 'aristocrat' });
 
-    Toast.config({
-      position: 'center',
-      duration: 0,
-    });
-
-    if (playStatus === 'loading') {
-      Toast.show({
-        icon: 'loading',
-        content: '視訊加载中…',
+        return (
+          <div
+            key={name}
+            style={{
+              backgroundImage:
+                currentSubBtn === name
+                  ? `url(${imgObjSelect})`
+                  : `url(${imgObj})`,
+              transform:
+                currentSubBtn === name && 'translateY(-10px) scale(1.15)',
+            }}
+            className={styles['sub-btn']}
+            onClick={() => subBtnClickHandler({ code, name, spinEffect })}
+            role="presentation"
+          />
+        );
       });
-    }
-
-    if (playStatus === 'wait') {
-      Toast.show({
-        icon: 'loading',
-        content: '視訊等待中…',
-      });
-    }
-
-    if (playStatus === 'error') {
-      Toast.show({
-        icon: 'fail',
-        content: '視訊出錯了',
-      });
-
-      if (playStatus === 'stalled') {
-        Toast.show({
-          icon: 'fail',
-          content: '視訊格式無法使用',
-        });
-      }
-    }
-  }, [playStatus]);
-
-  const clickPlayHandler = () => {
-    setPlayVideo(true);
-  };
 
   return (
     <Wrapper img={image} className={styles.container} model={model}>
@@ -265,7 +256,7 @@ const Aristocrat = ({
             transform: 'translateX(-50%) translateY(-50%)',
           }}
           onClick={() => {
-            clickPlayHandler();
+            setPlayVideo(true);
           }}
         >
           點擊後開始播放
@@ -291,13 +282,13 @@ const Aristocrat = ({
 
       {/* Sub Button */}
       <section ref={subBtnRef} className={styles['sub-btn-box']}>
-        <SubBtn
+        <SubHolder
           subBtnRef={subBtnRef.current}
           showSubBtn={showSubBtn}
           setShowSubBtn={setShowSubBtn}
-          buttonList={buttonList || []}
           currentSubBtn={currentSubBtn}
           subBtnClickHandler={subBtnClickHandler}
+          subBtnEl={subBtnEl}
         />
       </section>
     </Wrapper>
@@ -317,6 +308,8 @@ Aristocrat.propTypes = {
   setShowMenu: PropTypes.func.isRequired,
   showMenu: PropTypes.bool.isRequired,
   exitGameHandler: PropTypes.func.isRequired,
+  setPlayStatus: PropTypes.func.isRequired,
+  playStatus: PropTypes.string.isRequired,
 };
 
 Aristocrat.defaultProps = {

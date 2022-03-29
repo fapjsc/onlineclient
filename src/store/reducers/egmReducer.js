@@ -9,32 +9,32 @@ const brandState = {
 
 export const brandReducer = (state = brandState, action) => {
   switch (action.type) {
-    case egmActionTypes.SETUP_BRAND_LIST_BEGIN:
-      return {
-        isLoading: true,
-        data: null,
-        error: '',
-      };
+  case egmActionTypes.SETUP_BRAND_LIST_BEGIN:
+    return {
+      isLoading: true,
+      data: null,
+      error: '',
+    };
 
-    case egmActionTypes.SETUP_BRAND_LIST_SUCCESS:
-      return {
-        isLoading: false,
-        data: action.payload.brandList,
-        error: '',
-      };
+  case egmActionTypes.SETUP_BRAND_LIST_SUCCESS:
+    return {
+      isLoading: false,
+      data: action.payload.brandList,
+      error: '',
+    };
 
-    case egmActionTypes.SETUP_BRAND_LIST_ERROR:
-      return {
-        isLoading: false,
-        data: null,
-        error: action.payload.error,
-      };
+  case egmActionTypes.SETUP_BRAND_LIST_ERROR:
+    return {
+      isLoading: false,
+      data: null,
+      error: action.payload.error,
+    };
 
-    case egmActionTypes.CLEAR_BRAND_LIST_STATUS:
-      return brandState;
+  case egmActionTypes.CLEAR_BRAND_LIST_STATUS:
+    return brandState;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 
@@ -47,32 +47,32 @@ const emgListState = {
 
 export const egmListReducer = (state = emgListState, action) => {
   switch (action.type) {
-    case egmActionTypes.SETUP_EGM_LIST_BEGIN:
-      return {
-        isLoading: true,
-        data: null,
-        error: '',
-      };
+  case egmActionTypes.SETUP_EGM_LIST_BEGIN:
+    return {
+      isLoading: true,
+      data: null,
+      error: '',
+    };
 
-    case egmActionTypes.SETUP_EGM_LIST_SUCCESS:
-      return {
-        isLoading: false,
-        data: action.payload.egmList,
-        error: '',
-      };
+  case egmActionTypes.SETUP_EGM_LIST_SUCCESS:
+    return {
+      isLoading: false,
+      data: action.payload.egmList,
+      error: '',
+    };
 
-    case egmActionTypes.SETUP_EGM_LIST_ERROR:
-      return {
-        isLoading: false,
-        data: null,
-        error: action.payload.error,
-      };
+  case egmActionTypes.SETUP_EGM_LIST_ERROR:
+    return {
+      isLoading: false,
+      data: null,
+      error: action.payload.error,
+    };
 
-    case egmActionTypes.CLEAR_EGM_LIST_STATUS:
-      return emgListState;
+  case egmActionTypes.CLEAR_EGM_LIST_STATUS:
+    return emgListState;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 
@@ -86,41 +86,41 @@ const selectEgmState = {
 
 export const selectEgmReducer = (state = selectEgmState, action) => {
   switch (action.type) {
-    case egmActionTypes.SETUP_SELECT_EGM_BEGIN:
-      return {
-        ...state,
-        isLoading: true,
-        data: null,
-        error: '',
-      };
+  case egmActionTypes.SETUP_SELECT_EGM_BEGIN:
+    return {
+      ...state,
+      isLoading: true,
+      data: null,
+      error: '',
+    };
 
-    case egmActionTypes.SETUP_SELECT_EGM_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        data: action.payload.selectEgm,
-        error: '',
-      };
+  case egmActionTypes.SETUP_SELECT_EGM_SUCCESS:
+    return {
+      ...state,
+      isLoading: false,
+      data: action.payload.selectEgm,
+      error: '',
+    };
 
-    case egmActionTypes.SETUP_SELECT_EGM_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        data: null,
-        error: action.payload.error,
-      };
+  case egmActionTypes.SETUP_SELECT_EGM_ERROR:
+    return {
+      ...state,
+      isLoading: false,
+      data: null,
+      error: action.payload.error,
+    };
 
-    case egmActionTypes.SETUP_CURRENT_BTN_PRESS:
-      return {
-        ...state,
-        currentBtnPress: action.payload.currentBtnCode,
-      };
+  case egmActionTypes.SETUP_CURRENT_BTN_PRESS:
+    return {
+      ...state,
+      currentBtnPress: action.payload.currentBtnCode,
+    };
 
-    case egmActionTypes.CLEAR_SELECT_EGM_DATA:
-      return selectEgmState;
+  case egmActionTypes.CLEAR_SELECT_EGM_DATA:
+    return selectEgmState;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 
@@ -132,32 +132,32 @@ const buttonPressState = {
 };
 export const egmButtonPressReducer = (state = buttonPressState, action) => {
   switch (action.type) {
-    case egmActionTypes.BUTTON_PRESS_BEGIN:
-      return {
-        isLoading: true,
-        data: null,
-        error: '',
-      };
+  case egmActionTypes.BUTTON_PRESS_BEGIN:
+    return {
+      isLoading: true,
+      data: null,
+      error: '',
+    };
 
-    case egmActionTypes.BUTTON_PRESS_SUCCESS:
-      return {
-        isLoading: false,
-        data: action.payload.buttonPressData,
-        error: '',
-      };
+  case egmActionTypes.BUTTON_PRESS_SUCCESS:
+    return {
+      isLoading: false,
+      data: action.payload.buttonPressData,
+      error: '',
+    };
 
-    case egmActionTypes.BUTTON_PRESS_ERROR:
-      return {
-        isLoading: false,
-        data: null,
-        error: action.payload.error,
-      };
+  case egmActionTypes.BUTTON_PRESS_ERROR:
+    return {
+      isLoading: false,
+      data: null,
+      error: action.payload.error,
+    };
 
-    case egmActionTypes.CLEAR_BUTTON_PRESS_STATUS:
-      return buttonPressState;
+  case egmActionTypes.CLEAR_BUTTON_PRESS_STATUS:
+    return buttonPressState;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 
@@ -170,32 +170,32 @@ const cashInOutState = {
 
 export const cashInOutReducer = (state = cashInOutState, action) => {
   switch (action.type) {
-    case egmActionTypes.CASH_IN_OUT_BEGIN:
-      return {
-        isLoading: true,
-        data: null,
-        error: '',
-      };
+  case egmActionTypes.CASH_IN_OUT_BEGIN:
+    return {
+      isLoading: true,
+      data: null,
+      error: '',
+    };
 
-    case egmActionTypes.CASH_IN_OUT_SUCCESS:
-      return {
-        isLoading: false,
-        data: action.payload.cashInOutData,
-        error: '',
-      };
+  case egmActionTypes.CASH_IN_OUT_SUCCESS:
+    return {
+      isLoading: false,
+      data: action.payload.cashInOutData,
+      error: '',
+    };
 
-    case egmActionTypes.CASH_IN_OUT_ERROR:
-      return {
-        isLoading: false,
-        data: null,
-        error: action.payload.error,
-      };
+  case egmActionTypes.CASH_IN_OUT_ERROR:
+    return {
+      isLoading: false,
+      data: null,
+      error: action.payload.error,
+    };
 
-    case egmActionTypes.CLEAR_CASH_IN_OUT_STATUS:
-      return cashInOutState;
+  case egmActionTypes.CLEAR_CASH_IN_OUT_STATUS:
+    return cashInOutState;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 
@@ -205,14 +205,14 @@ const aftFormData = {
 
 export const aftFormReducer = (state = aftFormData, action) => {
   switch (action.type) {
-    case egmActionTypes.SET_AFT_FORM:
-      return {
-        data: action.payload.formData,
-      };
+  case egmActionTypes.SET_AFT_FORM:
+    return {
+      data: action.payload.formData,
+    };
 
-    case egmActionTypes.CLEAR_AFT_FORM:
-      return aftFormData;
-    default:
-      return state;
+  case egmActionTypes.CLEAR_AFT_FORM:
+    return aftFormData;
+  default:
+    return state;
   }
 };

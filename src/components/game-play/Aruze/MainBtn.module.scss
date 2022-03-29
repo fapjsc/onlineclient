@@ -1,0 +1,60 @@
+.container {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .btn {
+    width: 30%;
+    height: 100%;
+    background-position: -3.9rem center;
+    background-size: 50rem;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+    @media only screen and(max-width: 557px) {
+      background-size: 37rem;
+      background-position: -2.85rem center;
+      width: 33%;
+    }
+  }
+
+  .auto {
+    background-image: url(../../../assets/button/aruze/main/en/auto.webp);
+  }
+
+  .max {
+    background-image: url(../../../assets/button/aruze/main/en/max.webp);
+  }
+
+  .spin {
+    background-image: url(../../../assets/button/aruze/main/en/spin.webp);
+  }
+
+  .main-btn-animation {
+    animation: 0.15s main-btn-click steps(3) 1;
+  }
+
+  @keyframes main-btn-click {
+    0% {
+      background-position-x: -3.9rem;
+    }
+
+    100% {
+      background-position-x: -53.9rem;
+    }
+  }
+
+  @media only screen and(max-width: 557px) {
+    @keyframes main-btn-click {
+      0% {
+        background-position-x: -2.85rem;
+      }
+
+      100% {
+        background-position-x: -39.85rem;
+      }
+    }
+  }
+}

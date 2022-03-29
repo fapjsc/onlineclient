@@ -1,135 +1,140 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { gsap } from 'gsap';
+// import React from 'react';
+// import PropTypes from 'prop-types';
+// import classnames from 'classnames';
+// import { gsap } from 'gsap';
 
-// import { Image, Space } from 'antd-mobile';
-import styles from './SubBtn.module.scss';
+// // import { Image, Space } from 'antd-mobile';
+// import styles from './SubBtn.module.scss';
 
-import subBtnHeaderImage from '../../../assets/button/sub-btn-header.webp';
+// import subBtnHeaderImage from '../../../assets/button/sub-btn-header.webp';
 
-// Hooks
-import useDidUpdateEffect from '../../../hooks/useDidUpdatedEffect';
+// // Hooks
+// import useDidUpdateEffect from '../../../hooks/useDidUpdatedEffect';
 
-const SubBtn = ({
-  // eslint-disable-next-line
-  subBtnRef,
-  showSubBtn,
-  setShowSubBtn,
-  buttonList,
-  currentSubBtn,
-  subBtnClickHandler,
-}) => {
-  const getImage = (name) => {
-    let imgObj;
-    try {
-      //eslint-disable-next-line
-      imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}.webp`);
-    } catch (error) {
-      console.log(error);
-    }
+// // Helper
+// import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 
-    return imgObj;
-  };
+// const SubBtn = ({
+//   // eslint-disable-next-line
+//   subBtnRef,
+//   brand,
+//   showSubBtn,
+//   setShowSubBtn,
+//   buttonList,
+//   currentSubBtn,
+//   subBtnClickHandler,
+// }) => {
+//   // const getImage = (name) => {
+//   //   let imgObj;
+//   //   try {
+//   //     //eslint-disable-next-line
+//   //     imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}.webp`);
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //   }
 
-  const getImageSelect = (name) => {
-    let imgObj;
-    try {
-      //eslint-disable-next-line
-      imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}-select.webp`);
-    } catch (error) {
-      console.log(error);
-    }
+//   //   return imgObj;
+//   // };
 
-    return imgObj;
-  };
+//   // const getImageSelect = (name) => {
+//   //   let imgObj;
+//   //   try {
+//   //     //eslint-disable-next-line
+//   //     imgObj = require(`../../../assets/button/aristocrat/sub/en/${name}-select.webp`);
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //   }
 
-  const subBtnEl = buttonList
-    && buttonList
-      .filter(
-        (btn) => btn.button_name !== 'max' && btn.button_name !== 'take-win',
-      )
-      .sort((a, b) => b.id - a.id)
-      .map((btn) => {
-        const { button_name: name, code, spin_effect: spinEffect } = btn || {};
+//   //   return imgObj;
+//   // };
 
-        const imgObj = getImage(name);
-        const imgObjSelect = getImageSelect(name);
+//   const subBtnEl = buttonList
+//     && buttonList
+//       .filter(
+//         (btn) => btn.button_name !== 'max' && btn.button_name !== 'take-win',
+//       )
+//       .sort((a, b) => b.id - a.id)
+//       .map((btn) => {
+//         const { button_name: name, code, spin_effect: spinEffect } = btn || {};
 
-        return (
-          <div
-            key={name}
-            role="presentation"
-            onClick={() => subBtnClickHandler({ code, name, spinEffect })}
-            style={{
-              transform:
-                currentSubBtn === name && 'translateY(-10px) scale(1.15)',
-              backgroundImage:
-                currentSubBtn === name
-                  ? `url(${imgObjSelect})`
-                  : `url(${imgObj})`,
-            }}
-            className={styles['sub-btn']}
-          />
-        );
-      });
+//         const imgObj = getSubBtnImg({ name, brand });
+//         const imgObjSelect = getSubBtnImgSelect({ name, brand });
 
-  // 跳過第一次render，只有showSubBtn改變才執行動畫邏輯
-  useDidUpdateEffect(() => {
-    const tl = gsap.timeline();
-    if (showSubBtn) {
-      tl.to(subBtnRef, {
-        y: '-75%',
-        duration: 0.4,
-        ease: 'ease.out',
-      }).to(subBtnRef, {
-        y: '-70%',
-        duration: 1,
-        ease: 'bounce.out',
-      });
-    }
+//         return (
+//           <div
+//             key={name}
+//             role="presentation"
+//             onClick={() => subBtnClickHandler({ code, name, spinEffect })}
+//             style={{
+//               transform:
+//                 currentSubBtn === name && 'translateY(-10px) scale(1.15)',
+//               backgroundImage:
+//                 currentSubBtn === name
+//                   ? `url(${imgObjSelect})`
+//                   : `url(${imgObj})`,
+//             }}
+//             className={styles['sub-btn']}
+//           />
+//         );
+//       });
 
-    if (!showSubBtn) {
-      tl.to(subBtnRef, {
-        y: '-75%',
-        duration: 0.3,
-        ease: 'ease.in',
-      }).to(subBtnRef, {
-        y: '5%',
-        duration: 1.2,
-        ease: 'bounce.out',
-      });
-    }
-  }, [showSubBtn]);
+//   // 跳過第一次render，只有showSubBtn改變才執行動畫邏輯
+//   useDidUpdateEffect(() => {
+//     const tl = gsap.timeline();
+//     if (showSubBtn) {
+//       tl.to(subBtnRef, {
+//         y: '-75%',
+//         duration: 0.4,
+//         ease: 'ease.out',
+//       }).to(subBtnRef, {
+//         y: '-70%',
+//         duration: 1,
+//         ease: 'bounce.out',
+//       });
+//     }
 
-  return (
-    <>
-      <div
-        className={`
-            ${styles['sub-btn-header-box']} 
-            ${classnames({
-          'sub-btn-header-animation': !showSubBtn,
-        })}
-          `}
-        onClick={() => setShowSubBtn((prev) => !prev)}
-        role="presentation"
-      >
-        <img src={subBtnHeaderImage} alt="sub-btn-header" />
-      </div>
+//     if (!showSubBtn) {
+//       tl.to(subBtnRef, {
+//         y: '-75%',
+//         duration: 0.3,
+//         ease: 'ease.in',
+//       }).to(subBtnRef, {
+//         y: '5%',
+//         duration: 1.2,
+//         ease: 'bounce.out',
+//       });
+//     }
+//   }, [showSubBtn]);
 
-      <div className={styles['sub-btn-holder']}>{subBtnEl}</div>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <div
+//         className={`
+//             ${styles['sub-btn-header-box']}
+//             ${classnames({
+//           'sub-btn-header-animation': !showSubBtn,
+//         })}
+//           `}
+//         onClick={() => setShowSubBtn((prev) => !prev)}
+//         role="presentation"
+//       >
+//         <img src={subBtnHeaderImage} alt="sub-btn-header" />
+//       </div>
 
-SubBtn.propTypes = {
-  showSubBtn: PropTypes.bool.isRequired,
-  setShowSubBtn: PropTypes.func.isRequired,
-  buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currentSubBtn: PropTypes.string.isRequired,
-  subBtnClickHandler: PropTypes.func.isRequired,
-  // subBtnRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
-  //   .isRequired,
-};
+//       <div className={styles['sub-btn-holder']}>{subBtnEl}</div>
+//     </>
+//   );
+// };
 
-export default SubBtn;
+// SubBtn.propTypes = {
+//   showSubBtn: PropTypes.bool.isRequired,
+//   brand: PropTypes.string.isRequired,
+//   setShowSubBtn: PropTypes.func.isRequired,
+//   buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
+//   currentSubBtn: PropTypes.string.isRequired,
+//   subBtnClickHandler: PropTypes.func.isRequired,
+//   // subBtnRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+//   //   .isRequired,
+// };
+
+// export default SubBtn;

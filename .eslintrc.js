@@ -19,18 +19,15 @@ module.exports = {
       'error',
       { declaration: false, assignment: false },
     ],
-    // 'operator-linebreak': [
-    //   'error',
-    //   'after',
-    //   {
-    //     overrides: {
-    //       ':': 'before',
-    //       '&&': 'before',
-    //       '||': 'before',
-    //     },
-    //   },
-    // ],
     'spaced-comment': 'off',
+    'template-curly-spacing': ['off'],
+    indent: [
+      'error',
+      2,
+      {
+        ignoredNodes: ['TemplateLiteral'],
+      },
+    ],
     'no-console': 'warn',
     'consistent-return': 'off',
     'func-names': 'off',

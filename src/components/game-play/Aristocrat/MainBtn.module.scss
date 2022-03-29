@@ -8,7 +8,7 @@
   .main-btn {
     background-size: 50rem;
     background-repeat: no-repeat;
-    background-position: -3.5rem -4rem;
+    background-position: -3.5rem center;
     width: 30%;
     height: 90%;
     cursor: pointer;
@@ -19,20 +19,20 @@
 
     @media only screen and(max-width: 557px) {
       background-size: 40rem;
-      background-position: -3rem -3.6rem;
+      background-position: -3rem center;
       width: 33%;
     }
   }
 
   .btn-auto {
-    background-image: url("../../../assets/button/aristocrat/main/btn-auto.webp");
+    background-image: url('../../../assets/button/aristocrat/main/btn-auto.webp');
   }
 
   .btn-max {
-    background-image: url("../../../assets/button/aristocrat/main/btn-max.webp");
+    background-image: url('../../../assets/button/aristocrat/main/btn-max.webp');
   }
 
   .btn-spin {
-    background-image: url("../../../assets/button/aristocrat/main/btn-repeat.webp");
+    background-image: url('../../../assets/button/aristocrat/main/btn-repeat.webp');
   }
 }
