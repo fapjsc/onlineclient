@@ -11,13 +11,18 @@ import { agentServer, authApi } from '../../apis';
 //   localStorage.setItem('location', location);
 // };
 
+export const autoLogin = (userData) => ({
+  type: userActionTypes.SETUP_USER_SUCCESS,
+  payload: { userData },
+});
+
 export const setupUser = ({ currentUser, endPoint }) => async (dispatch) => {
   dispatch({ type: userActionTypes.SETUP_USER_BEGIN });
 
   try {
     const { data } = await axios.post(
-      `${agentServer.api}/${endPoint}`,
-      currentUser,
+        `${agentServer.api}/${endPoint}`,
+        currentUser,
     );
 
     const { result } = data || {};

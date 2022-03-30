@@ -1,11 +1,12 @@
 export const agentServer = {
-  // api: 'http://192.168.10.119:3030/online',
+  // api: 'http://192.168.10.200:3030/online',
   api: 'http://220.135.67.240:8000/online',
 };
 
 export const authApi = {
   getKey: 'getKey',
   login: 'login',
+  landing: '88894168/autoLogin',
 };
 
 export const egmAPi = {

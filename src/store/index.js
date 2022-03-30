@@ -8,6 +8,7 @@ import storage from 'redux-persist/lib/storage';
 
 // Reducer
 import { userReducer, cryptoReducer } from './reducers/userReducer';
+import { menuReducer } from './reducers/menuReducer';
 import {
   egmListReducer,
   selectEgmReducer,
@@ -32,6 +33,7 @@ const reducer = combineReducers({
   brand: brandReducer,
   crypto: cryptoReducer,
   aftForm: aftFormReducer,
+  menu: menuReducer,
 });
 
 const rootReducer = (state, action) => {

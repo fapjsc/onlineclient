@@ -46,7 +46,10 @@ const Video = ({
   useEffect(() => {
     startPlay();
     videoRef.current.muted = false;
-    getSdkRef(sdkRef.current);
+
+    if (getSdkRef) {
+      getSdkRef(sdkRef.current);
+    }
 
     // eslint-disable-next-line
   }, [startPlay]);
@@ -66,6 +69,7 @@ const Video = ({
 
   // Video tag 監聽器
   useEffect(() => {
+    if (!setPlayStatus) return;
     const { current } = videoRef || {};
 
     if (!current) return;
@@ -133,6 +137,8 @@ const Video = ({
     <video
       ref={videoRef}
       id="video-webrtc"
+      poster="../assets/bg.webp"
+      // controls
       muted
       autoPlay="autoplay"
       playsInline
@@ -140,7 +146,7 @@ const Video = ({
         objectFit: 'contain',
         height: '100%',
         width: '100%',
-        backgroundColor: '#bfbfbf',
+        backgroundColor: '#1f1f1f',
       }}
     />
   );
@@ -148,9 +154,9 @@ const Video = ({
 
 Video.propTypes = {
   rtcUrl: PropTypes.string.isRequired,
+  setPlayStatus: PropTypes.func.isRequired,
   close: PropTypes.bool,
   play: PropTypes.bool,
-  setPlayStatus: PropTypes.func.isRequired,
   getSdkRef: PropTypes.func,
 };
 

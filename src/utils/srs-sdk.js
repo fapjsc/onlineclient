@@ -64,6 +64,7 @@ export const SrsRtcPlayerAsync = () => {
 
   // Close the player.
   self.close = () => {
+    console.log('close sdk')
     self.pc && self.pc.close();
     self.pc = null;
   };

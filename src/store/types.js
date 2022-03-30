@@ -49,6 +49,10 @@ export const egmActionTypes = {
   CLEAR_AFT_FORM: 'CLEAR_AFT_FORM',
 };
 
+export const menuActionTypes = {
+  SET_CURRENT_MENU: 'SET_CURRENT_MENU',
+};
+
 export const rootActionTypes = {
   RESET_STORE: 'RESET_STORE',
 };

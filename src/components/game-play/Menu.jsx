@@ -1,65 +1,109 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Router
-import { Link } from 'react-router-dom';
-
 // Redux
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // Antd
-import { Popup, Button } from 'antd-mobile';
-import { AppOutline } from 'antd-mobile-icons';
+import { Popup } from 'antd-mobile';
+import {
+  AppstoreOutline,
+  CloseOutline,
+  StarOutline,
+  TeamOutline,
+  BankcardOutline,
+  BellOutline,
+  HeartOutline,
+  TravelOutline,
+} from 'antd-mobile-icons';
+
+// Hooks
+import useRwd from '../../hooks/useRwd';
+import useWindowSize from '../../hooks/useWindowSize';
 
 // Actions
-// import {
-//   clearSelectEgmData,
-//   clearButtonPressStatus,
-//   clearCashInOutStatus,
-// } from '../../store/actions/egmActions';
+import { setCurrentMenu } from '../../store/actions/menuActions';
 
-const Menu = ({ visible, setVisible, exitGameHandler }) => (
-  // const dispatch = useDispatch();
+// Styles
+import styles from './Menu.module.scss';
 
-  // const exitGameHandler = () => {
-  //   dispatch(clearButtonPressStatus());
-  //   dispatch(clearCashInOutStatus());
-  //   dispatch(clearSelectEgmData());
-  // };
+const menuLis = [
+  { id: 'jp', icon: <StarOutline />, name: 'JP彩金' },
+  { id: 'cs', icon: <BellOutline />, name: '線上客服' },
+  { id: 'wallet', icon: <BankcardOutline />, name: '我的錢包' },
+  { id: 'friends', icon: <TeamOutline />, name: '好友' },
+  { id: 'online', icon: <HeartOutline />, name: '直播' },
+  { id: 'leave', icon: <TravelOutline />, name: '返回大廳' },
+];
 
-  <>
-    <AppOutline
-      onClick={() => {
-        setVisible(true);
-      }}
-      style={{
-        color: '#fff',
+// eslint-disable-next-line
+const Menu = ({ visible, setVisible, exitGameHandler }) => {
+  const { isMobile } = useRwd();
+  const [height, width] = useWindowSize();
 
-        fontSize: '2rem',
-        cursor: 'pointer',
-      }}
-    />
-    <Popup
-      visible={visible}
-      onMaskClick={() => {
-        setVisible(false);
-      }}
-      position="right"
-      bodyStyle={{ minWidth: '40vw' }}
-    >
-      <div style={{ padding: '1rem' }}>
-        <Button color="danger" size="large" onClick={exitGameHandler}>
-          <Link to="/">離開</Link>
-        </Button>
-      </div>
-      <div style={{ padding: '1rem' }}>
-        <Button onClick={() => window.location.reload()} color="primary">
-          Reload
-        </Button>
-      </div>
-    </Popup>
-  </>
-);
+  // Redux
+  const dispatch = useDispatch();
+
+  const onClickHandler = (id) => {
+    if (!id) return;
+
+    if (id === 'leave') {
+      exitGameHandler();
+    } else {
+      dispatch(setCurrentMenu(id));
+    }
+
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <AppstoreOutline
+        onClick={() => {
+          setVisible(true);
+        }}
+        style={{
+          color: '#fff',
+          fontSize: '1.4rem',
+          cursor: 'pointer',
+        }}
+      />
+      <Popup
+        visible={visible}
+        position={isMobile ? 'top' : 'right'}
+        getContainer={null}
+        onMaskClick={() => {
+          setVisible(false);
+        }}
+        bodyStyle={{
+          height: isMobile ? '60vh' : height,
+          width: isMobile ? width : '45vw',
+        }}
+      >
+        <section className={styles['content-box']}>
+          {menuLis.map((el) => (
+            <div key={el.id} className={styles['border-wrap']}>
+              <div
+                id={el.id}
+                role="presentation"
+                onClick={() => onClickHandler(el.id)}
+                className={styles.item}
+              >
+                <span>{el.icon}</span>
+                <span>{el.name}</span>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section className={styles.close}>
+          <CloseOutline onClick={() => setVisible(false)} />
+        </section>
+      </Popup>
+    </>
+  );
+};
+
 Menu.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,

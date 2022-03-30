@@ -1,4 +1,12 @@
 .container {
+  .menu-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-top: 1%;
+    padding-right: 1%;
+  }
+
   .sub-btn-box {
     position: absolute;
     bottom: -20%;

@@ -30,7 +30,22 @@ const Layout = () => {
 
   const { pathname } = useLocation();
 
-  if (pathname?.includes('game-play') || pathname?.includes('aruze')) {
+  if (pathname?.includes('autoLogin')) {
+    return (
+      <div
+        style={{
+          height,
+          width,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Outlet />
+      </div>
+    );
+  }
+
+  if (pathname?.includes('game-play')) {
     return (
       <div
         style={{

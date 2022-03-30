@@ -225,7 +225,7 @@ const Aristocrat = ({
 
   return (
     <Wrapper img={image} className={styles.container} model={model}>
-      <section style={{ padding: '1rem' }}>
+      <section className={styles['menu-box']}>
         <Menu
           visible={showMenu}
           setVisible={setShowMenu}

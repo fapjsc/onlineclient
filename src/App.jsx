@@ -12,6 +12,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import ProtectRouter from './routes/ProtectRouter';
 import LoadingPage from './pages/LoadingPage';
+import LandingPage from './pages/LandingPage';
 
 import './App.scss';
 
@@ -41,11 +42,12 @@ const AnimatedSwitch = () => {
             <Route path="/game-play" element={<GamePlayPage />} />
           </Route>
 
-          <Route path="/" element={<Layout />}>
-            <Route exact path="/" element={<HomePage />} />
+          <Route element={<Layout />}>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/autoLogin" element={<LandingPage />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </CSSTransition>
     </TransitionGroup>

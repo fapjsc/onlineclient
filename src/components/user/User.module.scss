@@ -1,20 +1,17 @@
 .container {
   overflow-y: scroll;
   height: 85%;
-  color: white;
+  // color: #f2f2f2;
 
   @media only screen and(max-width: 557px) {
-     padding-top: 0.5rem;
+    padding-top: 0.5rem;
   }
 
   .header {
-    // background-color: rgb(423 134 443 / 50%);
-
-    height: 40%;
+    height: 30%;
 
     .avatar {
-    //   background-color: green;
-      height: 70%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -23,24 +20,16 @@
       img {
         border-radius: 100%;
       }
-
-      svg {
-        font-size: 2.5rem;
-      }
-    }
-
-    .text {
-    //   background-color: blue;
-      height: 30%;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
     }
   }
 
   .content {
-    height: 60%;
-    background-color: rgb(122 123 443 / 50%);
-
+    height: 70%;
+    // background-color: rgb(122 123 443 / 50%);
   }
+}
+
+
+.adm-list {
+  background-color: red !important;
 }

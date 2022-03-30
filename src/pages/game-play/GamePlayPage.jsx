@@ -13,6 +13,7 @@ import { CSSTransition } from 'react-transition-group';
 // Components
 import LoadingPage from '../LoadingPage';
 import AftForm from '../../components/aft-form/AftForm';
+import Jackpot from '../../components/jackpot/Jackpot';
 
 // Actions
 import {
@@ -21,6 +22,8 @@ import {
   clearButtonPressStatus,
   clearSelectEgmData,
 } from '../../store/actions/egmActions';
+
+import { setCurrentMenu } from '../../store/actions/menuActions';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
@@ -40,6 +43,7 @@ const GamePlay = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [playStatus, setPlayStatus] = useState('');
 
+  // Redux
   const dispatch = useDispatch();
 
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
@@ -62,6 +66,8 @@ const GamePlay = () => {
     (state) => state.selectEgm,
   );
   const { buttonList, ip, stream_url: url } = selectEgmData || {};
+
+  const { currentMenu } = useSelector((state) => state.menu);
 
   let image;
 
@@ -92,6 +98,7 @@ const GamePlay = () => {
     dispatch(clearButtonPressStatus());
     dispatch(clearCashInOutStatus());
     dispatch(clearSelectEgmData());
+    dispatch(setCurrentMenu(''));
   };
 
   // 如果有aft form data , 就call開洗分api
@@ -153,34 +160,29 @@ const GamePlay = () => {
     if (playStatus === 'loading') {
       Toast.show({
         icon: 'loading',
-        content: '視訊加载中…',
+        content: '遊戲視訊加载中…',
         duration: 1000 * 60,
-        afterClose: () => {
-          if (playStatus === 'loading') {
-            setPlayStatus('error');
-          }
-        },
       });
     }
 
     if (playStatus === 'wait') {
       Toast.show({
         icon: 'loading',
-        content: '視訊等待中…',
+        content: '遊戲視訊等待中…',
       });
     }
 
     if (playStatus === 'error') {
       Toast.show({
         icon: 'fail',
-        content: '無法獲取視訊',
+        content: '無法獲取遊戲視訊',
         duration: 2000,
       });
 
       if (playStatus === 'stalled') {
         Toast.show({
           icon: 'fail',
-          content: '視訊格式無法使用',
+          content: '遊戲視訊格式無法使用',
           duration: 2000,
         });
       }
@@ -198,6 +200,9 @@ const GamePlay = () => {
       >
         <LoadingPage />
       </CSSTransition>
+
+      {/* Jackpot */}
+      <Jackpot visible={currentMenu === 'jp'} />
 
       {/* 開洗分表單 */}
       <AftForm

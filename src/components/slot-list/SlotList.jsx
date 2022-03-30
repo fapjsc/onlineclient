@@ -154,6 +154,7 @@ const SlotList = () => {
                 brandName: egm.brand_name,
               })}
               alt="Egm"
+              style={{ height: '100%' }}
             />
           </div>
         ))}

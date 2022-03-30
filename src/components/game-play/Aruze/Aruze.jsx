@@ -83,14 +83,18 @@ const Aruze = ({
     );
   });
 
+  console.log(playStatus);
+
   return (
     <Wrapper img={image} className={styles.container}>
       {/* Menu */}
-      <Menu
-        visible={showMenu}
-        setVisible={setShowMenu}
-        exitGameHandler={exitGameHandler}
-      />
+      <section className={styles['menu-box']}>
+        <Menu
+          visible={showMenu}
+          setVisible={setShowMenu}
+          exitGameHandler={exitGameHandler}
+        />
+      </section>
 
       {/* Video */}
       <section className={styles['video-box']}>
@@ -101,14 +105,29 @@ const Aruze = ({
             setPlayStatus={setPlayStatus}
             getSdkRef={getSdkRef}
           />
-
-          {playStatus === 'canPlay' && (
-            <button onClick={() => setPlayVideo(true)} type="button">
-              點擊後開始播放
-            </button>
-          )}
         </div>
       </section>
+
+      {playStatus === 'canPlay' && (
+        <button
+          type="button"
+          style={{
+            width: '10rem',
+            height: '10rem',
+            backgroundColor: 'transparent',
+            color: 'white',
+            position: 'absolute',
+            top: '30%',
+            left: '50%',
+            transform: 'translateX(-50%) translateY(-50%)',
+          }}
+          onClick={() => {
+            setPlayVideo(true);
+          }}
+        >
+          點擊後開始播放
+        </button>
+      )}
 
       {/* Aft Button */}
       <section className={styles['cash-in-out-box']}>
