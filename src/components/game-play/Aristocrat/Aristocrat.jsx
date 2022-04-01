@@ -199,7 +199,7 @@ const Aristocrat = ({
       ?.filter(
         (btn) => btn.button_name !== 'max' && btn.button_name !== 'take-win',
       )
-      .sort((a, b) => b.id - a.id)
+      .sort((a, b) => a.sequence - b.sequence)
       .map((btn) => {
         const { button_name: name, code, spin_effect: spinEffect } = btn || {};
         const imgObj = getSubBtnImg({ name, brand: 'aristocrat' });

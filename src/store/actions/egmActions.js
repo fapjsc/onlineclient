@@ -13,6 +13,8 @@ export const getEgmList = () => async (dispatch) => {
       `${agentServer.api}/${egmAPi.getEgmList}`,
     );
 
+    console.log(data.result);
+
     dispatch({
       type: egmActionTypes.SETUP_EGM_LIST_SUCCESS,
       payload: { egmList: data.result },
@@ -92,12 +94,12 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
 
   try {
     const { data } = await authFetch.post(
-      `${agentServer.api}/${egmAPi.buttonPress}`,
-      {
-        ip,
-        code,
-        name,
-      },
+        `${agentServer.api}/${egmAPi.buttonPress}`,
+        {
+          ip,
+          code,
+          name,
+        },
     );
 
     dispatch({

@@ -64,24 +64,27 @@ const Aruze = ({
     }, 800);
   };
 
-  const subBtnEl = buttonList.map((btn) => {
-    const { button_name: name, code, spin_effect: spinEffect } = btn || {};
-    const imgObj = getSubBtnImg({ name, brand: 'aruze' });
-    const imgObjSelect = getSubBtnImgSelect({ name, brand: 'aruze' });
-    return (
-      <div
-        key={name}
-        role="presentation"
-        className={styles['sub-btn']}
-        onClick={() => subBtnClickHandler({ code, name, spinEffect })}
-        style={{
-          backgroundImage: `url(${imgObj}), url(${imgObjSelect})`,
-          backgroundSize: currentSubBtn === name ? '0 0,75%' : '75%, 0 0',
-          transform: currentSubBtn === name && 'translateY(-10px) scale(1.15)',
-        }}
-      />
-    );
-  });
+  const subBtnEl = buttonList
+    .sort((a, b) => a.sequence - b.sequence)
+    .map((btn) => {
+      const { button_name: name, code, spin_effect: spinEffect } = btn || {};
+      const imgObj = getSubBtnImg({ name, brand: 'aruze' });
+      const imgObjSelect = getSubBtnImgSelect({ name, brand: 'aruze' });
+      return (
+        <div
+          key={name}
+          role="presentation"
+          className={styles['sub-btn']}
+          onClick={() => subBtnClickHandler({ code, name, spinEffect })}
+          style={{
+            backgroundImage: `url(${imgObj}), url(${imgObjSelect})`,
+            backgroundSize: currentSubBtn === name ? '0 0,75%' : '75%, 0 0',
+            transform:
+              currentSubBtn === name && 'translateY(-10px) scale(1.15)',
+          }}
+        />
+      );
+    });
 
   console.log(playStatus);
 

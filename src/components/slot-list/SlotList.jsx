@@ -133,9 +133,9 @@ const SlotList = () => {
             <div
               key={brand}
               className={styles.brand}
-              style={{ backgroundImage: getBrandImage(brand) }}
+              // style={{ backgroundImage: getBrandImage(brand) }}
             >
-              <Image src={getBrandImage(brand)} />
+              <Image src={getBrandImage(brand)} style={{ height: '100%' }} />
             </div>
           ))}
       </div>
