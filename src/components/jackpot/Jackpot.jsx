@@ -1,10 +1,15 @@
 import React, { useState, useRef } from 'react';
 
 // Redux
+// eslint-disable-next-line
 import { useDispatch, useSelector } from 'react-redux';
 
 // Antd
-import { Popup, Result, DotLoading } from 'antd-mobile';
+import {
+  Popup, Result, DotLoading, Button,
+} from 'antd-mobile';
+
+import { CloseCircleOutline } from 'antd-mobile-icons';
 
 // Components
 import Video from '../Video';
@@ -53,10 +58,9 @@ const Jackpot = ({ visible }) => {
       visible={visible}
       position={isMobile ? 'bottom' : 'left'}
       destroyOnClose
-      maskStyle={{ backgroundColor: 'transparent' }}
-      onMaskClick={() => {
-        dispatch(setCurrentMenu(''));
-      }}
+      maskStyle={{ display: 'none' }}
+      onMaskClick={false}
+      style={{ position: 'relative' }}
       afterClose={() => {
         sdkRef.current.close();
       }}
@@ -77,6 +81,28 @@ const Jackpot = ({ visible }) => {
       {jpPlayStatus === 'error' && (
         <Result status="error" title="無法獲取彩金視訊" style={resultStyles} />
       )}
+
+      <div
+        style={{
+          position: 'absolute',
+          bottom: isMobile ? '100%' : 0,
+          right: 0,
+          width: '100%',
+          transform: 'translateY(100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: isMobile ? 'flex-end' : 'center',
+        }}
+      >
+        <Button
+          style={{ backgroundColor: 'transparent', border: 'none' }}
+          onClick={() => {
+            dispatch(setCurrentMenu(''));
+          }}
+        >
+          <CloseCircleOutline style={{ fontSize: '3rem', color: '#bfbfbf' }} />
+        </Button>
+      </div>
 
       <Video
         rtcUrl={url}

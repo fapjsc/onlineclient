@@ -8,12 +8,16 @@ import { useNavigate } from 'react-router-dom';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 
+// Transition
 import { CSSTransition } from 'react-transition-group';
 
 // Components
 import LoadingPage from '../LoadingPage';
 import AftForm from '../../components/aft-form/AftForm';
 import Jackpot from '../../components/jackpot/Jackpot';
+
+// Hooks
+import useRwd from '../../hooks/useRwd';
 
 // Actions
 import {
@@ -34,6 +38,10 @@ const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'))
 const GamePlay = () => {
   // Ref
   const sdkRef = useRef();
+
+  // Hooks
+  // eslint-disable-next-line
+  const { isMobile } = useRwd();
 
   // Router prop
   const navigate = useNavigate();
@@ -212,41 +220,58 @@ const GamePlay = () => {
         point={point}
       />
 
-      {brandName === 'aristocrat' && (
-        <Aristocrat
-          model={model}
-          image={image}
-          isCashInOutClick={isCashInOutClick}
-          setIsCashInOutClick={setIsCashInOutClick}
-          buttonList={buttonList}
-          url={url}
-          ip={ip}
-          currentBtnPress={currentBtnPress}
-          getSdkRef={getSdkRef}
-          exitGameHandler={exitGameHandler}
-          showMenu={showMenu}
-          setShowMenu={setShowMenu}
-          setPlayStatus={setPlayStatus}
-          playStatus={playStatus}
-        />
-      )}
+      {/* <div
+        style={{
+          height: '100vh',
+          backgroundColor: 'red',
+          // marginRight: currentMenu === 'jp' && !isMobile && '-30%',
+          // transition: 'all 0.4s',
+        }}
+      > */}
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          marginRight: currentMenu === 'jp' && !isMobile && '-30%',
+          transition: 'all 0.35s',
+        }}
+      >
+        {brandName === 'aristocrat' && (
+          <Aristocrat
+            model={model}
+            image={image}
+            buttonList={buttonList}
+            url={url}
+            ip={ip}
+            getSdkRef={getSdkRef}
+            setPlayStatus={setPlayStatus}
+            playStatus={playStatus}
+            exitGameHandler={exitGameHandler}
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            setIsCashInOutClick={setIsCashInOutClick}
+            isCashInOutClick={isCashInOutClick}
+            currentBtnPress={currentBtnPress}
+          />
+        )}
 
-      {brandName === 'aruze' && (
-        <Aruze
-          model={model}
-          image={image}
-          buttonList={buttonList}
-          url={url}
-          ip={ip}
-          getSdkRef={getSdkRef}
-          setPlayStatus={setPlayStatus}
-          playStatus={playStatus}
-          setIsCashInOutClick={setIsCashInOutClick}
-          exitGameHandler={exitGameHandler}
-          showMenu={showMenu}
-          setShowMenu={setShowMenu}
-        />
-      )}
+        {brandName === 'aruze' && (
+          <Aruze
+            model={model}
+            image={image}
+            buttonList={buttonList}
+            url={url}
+            ip={ip}
+            getSdkRef={getSdkRef}
+            setPlayStatus={setPlayStatus}
+            playStatus={playStatus}
+            exitGameHandler={exitGameHandler}
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            setIsCashInOutClick={setIsCashInOutClick}
+          />
+        )}
+      </div>
     </>
   );
 };

@@ -19,6 +19,7 @@ import {
 import { egmActionTypes } from '../../store/types';
 
 // Helper
+// eslint-disable-next-line
 import { getEgmImage, getBrandImage } from '../../utils/helper';
 
 // Styles
@@ -35,6 +36,7 @@ const SlotList = () => {
   } = useSelector((state) => state.egmList);
 
   const {
+    // eslint-disable-next-line
     data: brandListData,
     error: brandListError,
     isLoading: brandListLoading,
@@ -130,12 +132,11 @@ const SlotList = () => {
       <div className={styles['brand-box']}>
         {brandListData
           && Object.keys(brandListData)?.map((brand) => (
-            <div
-              key={brand}
-              className={styles.brand}
-              // style={{ backgroundImage: getBrandImage(brand) }}
-            >
-              <Image src={getBrandImage(brand)} style={{ height: '100%' }} />
+            <div key={brand}>
+              <Image
+                src={getBrandImage(brand)}
+                style={{ height: '100%', width: '100%' }}
+              />
             </div>
           ))}
       </div>

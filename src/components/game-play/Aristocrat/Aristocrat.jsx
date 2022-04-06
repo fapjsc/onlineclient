@@ -121,14 +121,14 @@ const Aristocrat = ({
 
     setTimeout(() => {
       setAllowSendBtnPressReq(true);
-    }, apiConfig.apiTimeSpace);
+    }, apiConfig.mainBtnApiTimeSpace);
   };
 
   // Auto Spin Cal Api
   const autoSpinHandler = useCallback(() => {
     intervalID.current = setInterval(() => {
       dispatch(buttonPress({ code: currentBtnPress, ip }));
-    }, apiConfig.apiTimeSpace);
+    }, apiConfig.mainBtnApiTimeSpace);
   }, [dispatch, ip, currentBtnPress]);
 
   // Stop Auto Spin
@@ -147,9 +147,9 @@ const Aristocrat = ({
 
     let timer;
 
-    // 如果是bet按鈕才紀錄
+    // 如果是line按鈕才紀錄
     if (spinEffect === 1) {
-      timer = apiConfig.apiTimeSpace;
+      timer = apiConfig.lineBtnTimeSpace;
       dispatch({
         type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
         payload: { currentBtnCode: code },
@@ -157,7 +157,7 @@ const Aristocrat = ({
     }
 
     if (spinEffect !== 1) {
-      timer = apiConfig.apiShortTimeSpace;
+      timer = apiConfig.betBtnTimeSpace;
     }
 
     setTimeout(() => {
@@ -204,7 +204,6 @@ const Aristocrat = ({
         const { button_name: name, code, spin_effect: spinEffect } = btn || {};
         const imgObj = getSubBtnImg({ name, brand: 'aristocrat' });
         const imgObjSelect = getSubBtnImgSelect({ name, brand: 'aristocrat' });
-
         return (
           <div
             key={name}
@@ -224,74 +223,79 @@ const Aristocrat = ({
       });
 
   return (
-    <Wrapper img={image} className={styles.container} model={model}>
-      <section className={styles['menu-box']}>
-        <Menu
-          visible={showMenu}
-          setVisible={setShowMenu}
-          exitGameHandler={exitGameHandler}
-        />
-      </section>
-      {/* Video */}
-      <section className={styles['video-box']}>
-        <Video
-          rtcUrl={url}
-          play={playVideo}
-          setPlayStatus={setPlayStatus}
-          getSdkRef={getSdkRef}
-        />
-      </section>
-
-      {playStatus === 'canPlay' && (
-        <button
-          type="button"
-          style={{
-            width: '10rem',
-            height: '10rem',
-            backgroundColor: 'transparent',
-            color: 'white',
-            position: 'absolute',
-            top: '30%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-          }}
-          onClick={() => {
-            setPlayVideo(true);
-          }}
+    <>
+      <Wrapper img={image} className={styles.container} model={model}>
+        <section
+          className={styles['menu-box']}
+          // style={{ transform: 'translateX(-50%)' }}
         >
-          點擊後開始播放
-        </button>
-      )}
+          <Menu
+            visible={showMenu}
+            setVisible={setShowMenu}
+            exitGameHandler={exitGameHandler}
+          />
+        </section>
+        {/* Video */}
+        <section className={styles['video-box']}>
+          <Video
+            rtcUrl={url}
+            play={playVideo}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
+          />
+        </section>
 
-      {/* CashInOut Button */}
-      <CashInOutBtn
-        isCashInOutClick={isCashInOutClick}
-        setIsCashInOutClick={setIsCashInOutClick}
-      />
+        {playStatus === 'canPlay' && (
+          <button
+            type="button"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              backgroundColor: 'transparent',
+              color: 'white',
+              position: 'absolute',
+              top: '30%',
+              left: '50%',
+              transform: 'translateX(-50%) translateY(-50%)',
+            }}
+            onClick={() => {
+              setPlayVideo(true);
+            }}
+          >
+            點擊後開始播放
+          </button>
+        )}
 
-      {/* Main Button */}
-      <section className={styles['main-btn-box']}>
-        <MainBtn
-          mainBtnHandler={mainBtnHandler}
-          mainBtnClick={mainBtnClick}
-          setMainBtnClick={setMainBtnClick}
-          isAuto={isAuto}
-          setIsAuto={setIsAuto}
+        {/* Aft Button */}
+        <CashInOutBtn
+          isCashInOutClick={isCashInOutClick}
+          setIsCashInOutClick={setIsCashInOutClick}
         />
-      </section>
 
-      {/* Sub Button */}
-      <section ref={subBtnRef} className={styles['sub-btn-box']}>
-        <SubHolder
-          subBtnRef={subBtnRef.current}
-          showSubBtn={showSubBtn}
-          setShowSubBtn={setShowSubBtn}
-          currentSubBtn={currentSubBtn}
-          subBtnClickHandler={subBtnClickHandler}
-          subBtnEl={subBtnEl}
-        />
-      </section>
-    </Wrapper>
+        {/* Main Button */}
+        <section className={styles['main-btn-box']}>
+          <MainBtn
+            mainBtnHandler={mainBtnHandler}
+            mainBtnClick={mainBtnClick}
+            setMainBtnClick={setMainBtnClick}
+            isAuto={isAuto}
+            setIsAuto={setIsAuto}
+          />
+        </section>
+
+        {/* Sub Button */}
+        <section ref={subBtnRef} className={styles['sub-btn-box']}>
+          <SubHolder
+            subBtnRef={subBtnRef.current}
+            showSubBtn={showSubBtn}
+            setShowSubBtn={setShowSubBtn}
+            currentSubBtn={currentSubBtn}
+            subBtnClickHandler={subBtnClickHandler}
+            subBtnEl={subBtnEl}
+          />
+        </section>
+      </Wrapper>
+    </>
   );
 };
 
