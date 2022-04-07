@@ -51,6 +51,8 @@ const GamePlay = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [playStatus, setPlayStatus] = useState('');
 
+  console.log(playStatus, 'status');
+
   // Redux
   const dispatch = useDispatch();
 
@@ -158,8 +160,6 @@ const GamePlay = () => {
 
   // 視訊播放狀態
   useEffect(() => {
-    Toast.clear();
-
     Toast.config({
       position: 'center',
       duration: 0,
@@ -195,6 +195,10 @@ const GamePlay = () => {
         });
       }
     }
+
+    return () => {
+      Toast.clear();
+    };
   }, [playStatus]);
 
   return (
@@ -220,14 +224,6 @@ const GamePlay = () => {
         point={point}
       />
 
-      {/* <div
-        style={{
-          height: '100vh',
-          backgroundColor: 'red',
-          // marginRight: currentMenu === 'jp' && !isMobile && '-30%',
-          // transition: 'all 0.4s',
-        }}
-      > */}
       <div
         style={{
           height: '100%',

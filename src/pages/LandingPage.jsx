@@ -4,8 +4,7 @@ import React, { useEffect } from 'react';
 import { Toast, Button } from 'antd-mobile';
 
 // Redux
-// eslint-disable-next-line
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // Router props
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,10 +21,11 @@ import { autoLogin } from '../store/actions/userActions';
 // APis
 import { agentServer, authApi } from '../apis';
 
-const landing = async (session) => {
+const landing = async ({ playerAccount, hash }) => {
   const url = `${agentServer.api}/${authApi.landing}`;
   const response = await axiosFetch.post(url, {
-    data: session,
+    playerAccount,
+    hash,
   });
   const { data } = response || {};
   return data;
@@ -34,7 +34,8 @@ const landing = async (session) => {
 const LandingPage = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const session = params.get('session');
+  const playerAccount = params.get('playerAccount');
+  const hash = params.get('hash');
 
   // Router
   const navigate = useNavigate();
@@ -52,8 +53,8 @@ const LandingPage = () => {
 
   // 加密完成後呼叫landing api
   useEffect(() => {
-    sendRequest(session);
-  }, [session, sendRequest]);
+    sendRequest({ playerAccount, hash });
+  }, [playerAccount, hash, sendRequest]);
 
   // Landing 狀態
   useEffect(() => {

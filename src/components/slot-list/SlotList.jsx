@@ -109,7 +109,6 @@ const SlotList = () => {
   }, [selectEgmError, dispatch]);
 
   useEffect(() => {
-    Toast.clear();
     if (selectEgmLoading) {
       Toast.show({
         icon: 'loading',
@@ -125,6 +124,10 @@ const SlotList = () => {
         position: 'center',
       });
     }
+
+    return () => {
+      Toast.clear();
+    };
   }, [selectEgmLoading, egmListLoading, brandListLoading]);
 
   return (

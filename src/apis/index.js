@@ -32,5 +32,5 @@ export const apiConfig = {
   // @File       Aristocrat.jsx
   // @Function   mainBtnHandler  autoSpinHandler
   // @desc       發送main btn api 時間
-  mainBtnApiTimeSpace: 3000,
+  mainBtnApiTimeSpace: 3200,
 };

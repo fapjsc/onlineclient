@@ -70,38 +70,39 @@ const Video = ({
   // Video tag 監聽器
   useEffect(() => {
     if (!setPlayStatus) return;
+
     const { current } = videoRef || {};
 
     if (!current) return;
 
     const loadstart = () => {
       setPlayStatus('loading');
-      console.log('視訊開始下载');
+      // console.log('視訊開始下载');
     };
 
     const canPlay = () => {
       setPlayStatus('canPlay');
-      console.log('準備好播放了');
+      // console.log('準備好播放了');
     };
 
     const Play = () => {
       setPlayStatus('isPlaying');
-      console.log('正在播放');
+      // console.log('正在播放');
     };
 
     const waiting = () => {
       setPlayStatus('wait');
-      console.log('視訊加載等待');
+      // console.log('視訊加載等待');
     };
 
     const error = () => {
       setPlayStatus('error');
-      console.log('視訊出错了');
+      // console.log('視訊出错了');
     };
 
     const stalled = () => {
       setPlayStatus('stalled');
-      console.log('瀏覽器嘗試獲取媒體數據，但數據不可用');
+      // console.log('瀏覽器嘗試獲取媒體數據，但數據不可用');
     };
 
     const canplaythrough = () => {

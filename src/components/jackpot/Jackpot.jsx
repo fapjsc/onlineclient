@@ -1,15 +1,15 @@
 import React, { useState, useRef } from 'react';
 
+// Prop type
+import PropTypes from 'prop-types';
+
 // Redux
-// eslint-disable-next-line
 import { useDispatch, useSelector } from 'react-redux';
 
 // Antd
 import {
-  Popup, Result, DotLoading, Button,
+  Popup, Result, DotLoading, Image,
 } from 'antd-mobile';
-
-import { CloseCircleOutline } from 'antd-mobile-icons';
 
 // Components
 import Video from '../Video';
@@ -17,7 +17,11 @@ import Video from '../Video';
 // Hooks
 import useRwd from '../../hooks/useRwd';
 
+// Actions
 import { setCurrentMenu } from '../../store/actions/menuActions';
+
+// Images
+import closeImag from '../../assets/開洗分介面/btn_close_normal.webp';
 
 // eslint-disable-next-line
 // const url = 'webrtc://192.168.10.119/game/71';
@@ -34,7 +38,6 @@ const resultStyles = {
   flexDirection: 'column',
 };
 
-// eslint-disable-next-line
 const Jackpot = ({ visible }) => {
   const { isMobile } = useRwd();
 
@@ -92,16 +95,19 @@ const Jackpot = ({ visible }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: isMobile ? 'flex-end' : 'center',
+          padding: '5px',
         }}
       >
-        <Button
-          style={{ backgroundColor: 'transparent', border: 'none' }}
+        <Image
+          src={closeImag}
+          width="1.5rem"
+          style={{
+            cursor: 'pointer',
+          }}
           onClick={() => {
             dispatch(setCurrentMenu(''));
           }}
-        >
-          <CloseCircleOutline style={{ fontSize: '3rem', color: '#bfbfbf' }} />
-        </Button>
+        />
       </div>
 
       <Video
@@ -111,6 +117,10 @@ const Jackpot = ({ visible }) => {
       />
     </Popup>
   );
+};
+
+Jackpot.propTypes = {
+  visible: PropTypes.bool.isRequired,
 };
 
 export default Jackpot;
