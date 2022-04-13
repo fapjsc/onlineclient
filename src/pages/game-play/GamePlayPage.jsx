@@ -34,6 +34,8 @@ import { getEgmBg } from '../../utils/helper';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
+const Igt = React.lazy(() => import('../../components/game-play/Igt/Igt'));
+const Yoshimune = React.lazy(() => import('../../components/game-play/Yoshimune/Yoshimune'));
 
 const GamePlay = () => {
   // Ref
@@ -49,7 +51,10 @@ const GamePlay = () => {
   // Init state
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [playStatus, setPlayStatus] = useState('');
+  const [playStatus, setPlayStatus] = useState('loading');
+  const [playVideo, setPlayVideo] = useState(false);
+  const [showSubBtn, setShowSubBtn] = useState(false);
+  const [currentSubBtn, setCurrentSubBtn] = useState('');
 
   console.log(playStatus, 'status');
 
@@ -165,35 +170,40 @@ const GamePlay = () => {
       duration: 0,
     });
 
-    if (playStatus === 'loading') {
+    switch (playStatus) {
+    case 'loading':
       Toast.show({
         icon: 'loading',
         content: '遊戲視訊加载中…',
         duration: 1000 * 60,
       });
-    }
+      break;
 
-    if (playStatus === 'wait') {
+    case 'wait':
       Toast.show({
         icon: 'loading',
         content: '遊戲視訊等待中…',
       });
-    }
+      break;
 
-    if (playStatus === 'error') {
+    case 'error':
       Toast.show({
         icon: 'fail',
         content: '無法獲取遊戲視訊',
         duration: 2000,
       });
+      break;
 
-      if (playStatus === 'stalled') {
-        Toast.show({
-          icon: 'fail',
-          content: '遊戲視訊格式無法使用',
-          duration: 2000,
-        });
-      }
+    case 'stalled':
+      Toast.show({
+        icon: 'fail',
+        content: '遊戲視訊格式無法使用',
+        duration: 2000,
+      });
+      break;
+
+    default:
+      Toast.clear();
     }
 
     return () => {
@@ -248,6 +258,12 @@ const GamePlay = () => {
             setIsCashInOutClick={setIsCashInOutClick}
             isCashInOutClick={isCashInOutClick}
             currentBtnPress={currentBtnPress}
+            playVideo={playVideo}
+            setPlayVideo={setPlayVideo}
+            showSubBtn={showSubBtn}
+            setShowSubBtn={setShowSubBtn}
+            currentSubBtn={currentSubBtn}
+            setCurrentSubBtn={setCurrentSubBtn}
           />
         )}
 
@@ -265,6 +281,49 @@ const GamePlay = () => {
             showMenu={showMenu}
             setShowMenu={setShowMenu}
             setIsCashInOutClick={setIsCashInOutClick}
+            isCashInOutClick={isCashInOutClick}
+            currentBtnPress={currentBtnPress}
+            playVideo={playVideo}
+            setPlayVideo={setPlayVideo}
+            showSubBtn={showSubBtn}
+            setShowSubBtn={setShowSubBtn}
+            currentSubBtn={currentSubBtn}
+            setCurrentSubBtn={setCurrentSubBtn}
+          />
+        )}
+
+        {brandName === 'igt' && (
+          <Igt
+            model={model}
+            image={image}
+            buttonList={buttonList}
+            url={url}
+            ip={ip}
+            getSdkRef={getSdkRef}
+            setPlayStatus={setPlayStatus}
+            playStatus={playStatus}
+            exitGameHandler={exitGameHandler}
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            setIsCashInOutClick={setIsCashInOutClick}
+            isCashInOutClick={isCashInOutClick}
+            currentBtnPress={currentBtnPress}
+            playVideo={playVideo}
+            setPlayVideo={setPlayVideo}
+            showSubBtn={showSubBtn}
+            setShowSubBtn={setShowSubBtn}
+            currentSubBtn={currentSubBtn}
+            setCurrentSubBtn={setCurrentSubBtn}
+          />
+        )}
+
+        {brandName === 'yoshimune' && (
+          <Yoshimune
+            model={model}
+            image={image}
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            exitGameHandler={exitGameHandler}
           />
         )}
       </div>

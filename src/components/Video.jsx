@@ -106,7 +106,7 @@ const Video = ({
     };
 
     const canplaythrough = () => {
-      console.log('視頻能夠不停頓地一直播放');
+      console.log('視訊能夠不停頓地一直播放');
     };
 
     const loadeddata = () => {

@@ -1,10 +1,17 @@
 .container {
   overflow-y: scroll;
   height: 85%;
-  // color: #f2f2f2;
 
   @media only screen and(max-width: 557px) {
     padding-top: 0.5rem;
+  }
+
+  .list {
+    color: #d9d9d9;
+  }
+
+  .list-item {
+    background-color: #282828;
   }
 
   .header {
@@ -27,9 +34,4 @@
     height: 70%;
     // background-color: rgb(122 123 443 / 50%);
   }
-}
-
-
-.adm-list {
-  background-color: red !important;
 }

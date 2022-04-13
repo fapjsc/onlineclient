@@ -14,6 +14,7 @@ import { logout } from '../../store/actions/userActions';
 // Hooks
 import useRwd from '../../hooks/useRwd';
 
+// Styles
 import styles from './User.module.scss';
 
 const User = () => {
@@ -23,6 +24,14 @@ const User = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.user);
   const { online, member_account: account, mail_address: email } = data || {};
+
+  const contentArr = [
+    { content: online?.id, text: 'ID' },
+    { content: online?.level, text: 'Level' },
+    { content: account, text: '帳號' },
+    { content: email, text: 'Email' },
+    { content: online?.point, text: '點數' },
+  ];
 
   if (!data) {
     return (
@@ -42,7 +51,7 @@ const User = () => {
 
   return (
     <section className={styles.container}>
-      <div className={styles.header}>
+      <header className={styles.header}>
         <div className={styles.avatar}>
           <Button color="danger" onClick={() => dispatch(logout())}>
             儲值
@@ -55,39 +64,17 @@ const User = () => {
           />
           <Button onClick={() => dispatch(logout())}>登出</Button>
         </div>
-      </div>
+      </header>
       <div className={styles.content}>
-        <List header="會員資料">
-          <List.Item>
-            <Space>
-              <span>ID:</span>
-              <span>{online.id}</span>
-            </Space>
-          </List.Item>
-          <List.Item>
-            <Space>
-              <span>LEVEL:</span>
-              <span>{online.level}</span>
-            </Space>
-          </List.Item>
-          <List.Item>
-            <Space>
-              <span>帳號:</span>
-              <span>{account}</span>
-            </Space>
-          </List.Item>
-          <List.Item>
-            <Space>
-              <span>EMAIL:</span>
-              <span>{email}</span>
-            </Space>
-          </List.Item>
-          <List.Item>
-            <Space>
-              <span>點數:</span>
-              <span>{online.point}</span>
-            </Space>
-          </List.Item>
+        <List header="會員資料" className={styles.list}>
+          {contentArr.map((el) => (
+            <List.Item className={styles['list-item']}>
+              <Space>
+                <span>{`${el.text} :`}</span>
+                <span>{el.content}</span>
+              </Space>
+            </List.Item>
+          ))}
         </List>
       </div>
     </section>

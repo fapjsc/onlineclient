@@ -53,12 +53,17 @@ const Aristocrat = ({
   exitGameHandler,
   setPlayStatus,
   playStatus,
+  playVideo,
+  setPlayVideo,
+  showSubBtn,
+  setShowSubBtn,
+  currentSubBtn,
+  setCurrentSubBtn,
 }) => {
-  console.log('aristocrat');
   // Init State
-  const [playVideo, setPlayVideo] = useState(false);
-  const [showSubBtn, setShowSubBtn] = useState(false);
-  const [currentSubBtn, setCurrentSubBtn] = useState('');
+  // const [playVideo, setPlayVideo] = useState(false);
+  // const [showSubBtn, setShowSubBtn] = useState(false);
+  // const [currentSubBtn, setCurrentSubBtn] = useState('');
   const [isAuto, setIsAuto] = useState(false);
   const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
   const [mainBtnClick, setMainBtnClick] = useState({
@@ -225,10 +230,7 @@ const Aristocrat = ({
   return (
     <>
       <Wrapper img={image} className={styles.container} model={model}>
-        <section
-          className={styles['menu-box']}
-          // style={{ transform: 'translateX(-50%)' }}
-        >
+        <section className={styles['menu-box']}>
           <Menu
             visible={showMenu}
             setVisible={setShowMenu}
@@ -314,6 +316,12 @@ Aristocrat.propTypes = {
   exitGameHandler: PropTypes.func.isRequired,
   setPlayStatus: PropTypes.func.isRequired,
   playStatus: PropTypes.string.isRequired,
+  playVideo: PropTypes.bool.isRequired,
+  setPlayVideo: PropTypes.func.isRequired,
+  showSubBtn: PropTypes.bool.isRequired,
+  setShowSubBtn: PropTypes.func.isRequired,
+  currentSubBtn: PropTypes.string.isRequired,
+  setCurrentSubBtn: PropTypes.func.isRequired,
 };
 
 Aristocrat.defaultProps = {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 // Prop-Type
 import PropTypes from 'prop-types';
@@ -30,32 +30,34 @@ const buttonList = [
 ];
 
 const Aruze = ({
-  image,
   // model,
-  // buttonList,
+  image,
   getSdkRef,
-  url,
-  // ip,
-  setPlayStatus,
-  playStatus,
   setIsCashInOutClick,
+  // isCashInOutClick,
+  url,
+  // buttonList,
+  // ip,
+  // currentBtnPress,
   setShowMenu,
   showMenu,
   exitGameHandler,
+  setPlayStatus,
+  playStatus,
+  playVideo,
+  setPlayVideo,
+  showSubBtn,
+  setShowSubBtn,
+  currentSubBtn,
+  setCurrentSubBtn,
 }) => {
   console.log('Aruze');
-
-  // Init State
-  const [showSubBtn, setShowSubBtn] = useState(false);
-  const [currentSubBtn, setCurrentSubBtn] = useState('');
-  const [playVideo, setPlayVideo] = useState(false);
 
   // Ref
   const subBtnRef = useRef();
 
+  // eslint-disable-next-line
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
-    console.log(code, spinEffect);
-
     if (currentSubBtn) return;
     setCurrentSubBtn(name);
 
@@ -85,8 +87,6 @@ const Aruze = ({
         />
       );
     });
-
-  console.log(playStatus);
 
   return (
     <Wrapper img={image} className={styles.container}>
@@ -172,15 +172,27 @@ Aruze.propTypes = {
   // model: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   getSdkRef: PropTypes.func.isRequired,
-  url: PropTypes.string.isRequired,
   setIsCashInOutClick: PropTypes.func.isRequired,
+  // isCashInOutClick: PropTypes.bool.isRequired,
+  url: PropTypes.string.isRequired,
   // buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
   // ip: PropTypes.string.isRequired,
+  // currentBtnPress: PropTypes.string,
+  setShowMenu: PropTypes.func.isRequired,
+  showMenu: PropTypes.bool.isRequired,
+  exitGameHandler: PropTypes.func.isRequired,
   setPlayStatus: PropTypes.func.isRequired,
   playStatus: PropTypes.string.isRequired,
-  exitGameHandler: PropTypes.func.isRequired,
-  showMenu: PropTypes.bool.isRequired,
-  setShowMenu: PropTypes.func.isRequired,
+  playVideo: PropTypes.bool.isRequired,
+  setPlayVideo: PropTypes.func.isRequired,
+  showSubBtn: PropTypes.bool.isRequired,
+  setShowSubBtn: PropTypes.func.isRequired,
+  currentSubBtn: PropTypes.string.isRequired,
+  setCurrentSubBtn: PropTypes.func.isRequired,
+};
+
+Aruze.defaultProps = {
+  // currentBtnPress: null,
 };
 
 export default Aruze;

@@ -22,6 +22,9 @@ import { egmActionTypes } from '../../store/types';
 // eslint-disable-next-line
 import { getEgmImage, getBrandImage } from '../../utils/helper';
 
+import loadingImg from '../../assets/slot-list/loading.png';
+import notFoundImg from '../../assets/slot-list/找不到圖片.png';
+
 // Styles
 import styles from './SlotList.module.scss';
 
@@ -137,8 +140,23 @@ const SlotList = () => {
           && Object.keys(brandListData)?.map((brand) => (
             <div key={brand}>
               <Image
+                lazy
                 src={getBrandImage(brand)}
                 style={{ height: '100%', width: '100%' }}
+                fallback={
+                  <Image
+                    lazy
+                    style={{ height: '100%', width: '100%' }}
+                    src={notFoundImg}
+                  />
+                }
+                placeholder={
+                  <Image
+                    lazy
+                    style={{ height: '100%', width: '100%' }}
+                    src={loadingImg}
+                  />
+                }
               />
             </div>
           ))}
@@ -159,6 +177,21 @@ const SlotList = () => {
               })}
               alt="Egm"
               style={{ height: '100%' }}
+              lazy
+              fallback={
+                <Image
+                  style={{ height: '100%', width: '100%' }}
+                  src={notFoundImg}
+                  lazy
+                />
+              }
+              placeholder={
+                <Image
+                  lazy
+                  style={{ height: '100%', width: '100%' }}
+                  src={loadingImg}
+                />
+              }
             />
           </div>
         ))}

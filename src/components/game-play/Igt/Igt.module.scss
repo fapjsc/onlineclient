@@ -1,0 +1,84 @@
+.container {
+  .menu-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-top: 1%;
+    padding-right: 1%;
+  }
+
+  .sub-btn-box {
+    position: absolute;
+    bottom: -20%;
+    width: 100%;
+    height: 29%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .video-box {
+    position: absolute;
+    top: 5%;
+    width: 100%;
+    height: 45.6%;
+
+    .button-box {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      width: 10rem;
+      height: 10rem;
+      background-color: transparent;
+      color: #fff;
+    }
+  }
+
+  .cash-in-out-box {
+    position: absolute;
+    bottom: 38%;
+    height: 7%;
+    right: 29%;
+    width: 18%;
+    cursor: pointer;
+
+    .cash-in-out-btn {
+      width: 100%;
+      height: 100%;
+      background-image: url(../../../assets/button/igt/開洗分/tc/btn.png);
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .main-btn-box {
+    position: absolute;
+    width: 100%;
+    bottom: 28%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sub-btn {
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    transition: transform 0.2s ease-in-out;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+}

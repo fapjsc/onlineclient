@@ -1,0 +1,64 @@
+.container {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .btn {
+    background-size: 56rem;
+    background-repeat: no-repeat;
+    background-position: -4.5rem -4.6rem;
+    width: 30%;
+    height: 100%;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    @media only screen and(max-width: 557px) {
+      background-size: 41rem;
+      background-position: -3rem -2.5rem;
+      width: 33%;
+    }
+  }
+
+  .auto {
+    background-image: url(../../../assets/button/igt/main/en/auto.webp);
+  }
+
+  .max {
+    background-image: url(../../../assets/button/igt/main/en/max.webp);
+  }
+
+  .spin {
+    background-image: url(../../../assets/button/igt/main/en/spin.webp);
+  }
+
+  .main-btn-animation {
+    animation: 0.15s main-btn-click steps(3) 1;
+  }
+
+  @keyframes main-btn-click {
+    0% {
+      background-position-x: -4.5rem;
+    }
+
+    100% {
+      background-position-x: -60.5rem;
+    }
+  }
+
+  @media only screen and(max-width: 557px) {
+    @keyframes main-btn-click {
+      0% {
+        background-position-x: -3rem;
+      }
+
+      100% {
+        background-position-x: -44rem;
+      }
+    }
+  }
+}
