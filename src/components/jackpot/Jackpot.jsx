@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Redux
+// eslint-disable-next-line
 import { useDispatch, useSelector } from 'react-redux';
 
 // Antd
@@ -12,6 +13,7 @@ import {
 } from 'antd-mobile';
 
 // Components
+// eslint-disable-next-line
 import Video from '../Video';
 
 // Hooks
@@ -24,7 +26,7 @@ import { setCurrentMenu } from '../../store/actions/menuActions';
 import closeImag from '../../assets/開洗分介面/btn_close_normal.webp';
 
 // eslint-disable-next-line
-// const url = 'webrtc://192.168.10.119/game/71';
+const testUrl = 'webrtc://220.135.67.240/jp/jp-1';
 
 const resultStyles = {
   position: 'absolute',
@@ -49,9 +51,10 @@ const Jackpot = ({ visible }) => {
 
   // Redux
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.selectEgm);
-  const { stream_url: url } = data || {};
+  // const { data } = useSelector((state) => state.selectEgm);
+  // const { stream_url: url } = data || {};
 
+  // eslint-disable-next-line
   const getSdkRef = (ref) => {
     sdkRef.current = ref;
   };
@@ -65,6 +68,7 @@ const Jackpot = ({ visible }) => {
       onMaskClick={false}
       style={{ position: 'relative' }}
       afterClose={() => {
+        setJpPlayStatus('loading');
         sdkRef.current.close();
       }}
       bodyStyle={{
@@ -111,7 +115,7 @@ const Jackpot = ({ visible }) => {
       </div>
 
       <Video
-        rtcUrl={url}
+        rtcUrl={testUrl}
         setPlayStatus={setJpPlayStatus}
         getSdkRef={getSdkRef}
       />
