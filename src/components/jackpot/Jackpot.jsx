@@ -72,7 +72,7 @@ const Jackpot = ({ visible }) => {
         sdkRef.current.close();
       }}
       bodyStyle={{
-        height: isMobile ? '42vh' : '40vh',
+        height: isMobile ? '35vh' : '40vh',
         width: isMobile ? '100vw' : '35vw',
       }}
     >
@@ -103,6 +103,7 @@ const Jackpot = ({ visible }) => {
         }}
       >
         <Image
+          role="presentation"
           src={closeImag}
           width="1.5rem"
           style={{

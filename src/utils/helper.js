@@ -38,6 +38,20 @@ export const getEgmBg = ({ brandName, model }) => {
   return image;
 };
 
+export const getMainBtnImg = ({ name, brand, model }) => {
+  let imgObj;
+  try {
+    //eslint-disable-next-line
+    imgObj = require(`../assets/button/${brand}/${model}/main/${name}.webp`);
+  } catch (error) {
+    console.log(error);
+    //eslint-disable-next-line
+    // imgObj = require('../assets/button/aruze/sub/en/bet-1.webp');
+  }
+
+  return imgObj;
+};
+
 export const getSubBtnImg = ({ name, brand }) => {
   let imgObj;
   try {

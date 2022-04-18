@@ -14,9 +14,10 @@ const Video = ({
   const sdkRef = useRef();
 
   const startPlay = useCallback(() => {
+    console.log('start play');
     if (!flag) return;
     flag = false;
-    if (!url) return;
+    // if (!url) return;
 
     if (sdkRef.current) {
       sdkRef.current.close();
@@ -96,7 +97,7 @@ const Video = ({
     };
 
     const error = () => {
-      setPlayStatus('error');
+      // setPlayStatus('error');
       // console.log('視訊出错了');
     };
 

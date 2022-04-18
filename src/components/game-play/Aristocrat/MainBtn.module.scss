@@ -26,13 +26,28 @@
 
   .btn-auto {
     background-image: url('../../../assets/button/aristocrat/main/btn-auto.webp');
+    image-rendering: crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: optimize-contrast;
+    image-rendering: pixelated;
+    -webkit-font-smooting: antialiased;
   }
 
   .btn-max {
     background-image: url('../../../assets/button/aristocrat/main/btn-max.webp');
+    image-rendering: crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: optimize-contrast;
+    image-rendering: pixelated;
+    -webkit-font-smooting: antialiased;
   }
 
   .btn-spin {
     background-image: url('../../../assets/button/aristocrat/main/btn-repeat.webp');
+    image-rendering: crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: optimize-contrast;
+    image-rendering: pixelated;
+    -webkit-font-smooting: antialiased;
   }
 }

@@ -11,6 +11,7 @@ let requestQueue = [];
 // request攔截調用
 const handleRequest = ({ config }) => {
   if (!config) return;
+
   // 抽取四個參數不同於其他的請求
   const {
     url, method, data = {}, params = {},

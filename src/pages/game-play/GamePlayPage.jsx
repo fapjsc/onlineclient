@@ -35,7 +35,7 @@ import { getEgmBg } from '../../utils/helper';
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
 const Igt = React.lazy(() => import('../../components/game-play/Igt/Igt'));
-const Yoshimune = React.lazy(() => import('../../components/game-play/Yoshimune/Yoshimune'));
+const Slot = React.lazy(() => import('../../components/game-play/Slot/Slot'));
 
 const GamePlay = () => {
   // Ref
@@ -55,8 +55,6 @@ const GamePlay = () => {
   const [playVideo, setPlayVideo] = useState(false);
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
-
-  console.log(playStatus, 'status');
 
   // Redux
   const dispatch = useDispatch();
@@ -80,7 +78,9 @@ const GamePlay = () => {
   const { data: selectEgmData, currentBtnPress } = useSelector(
     (state) => state.selectEgm,
   );
-  const { buttonList, ip, stream_url: url } = selectEgmData || {};
+  const {
+    buttonList, ip, stream_url: url, name,
+  } = selectEgmData || {};
 
   const { currentMenu } = useSelector((state) => state.menu);
 
@@ -317,13 +317,38 @@ const GamePlay = () => {
           />
         )}
 
-        {brandName === 'yoshimune' && (
+        {/* {brandName === 'yoshimune' && (
           <Yoshimune
             model={model}
             image={image}
             showMenu={showMenu}
             setShowMenu={setShowMenu}
             exitGameHandler={exitGameHandler}
+            url={url}
+            playVideo={playVideo}
+            setPlayVideo={setPlayVideo}
+            playStatus={playStatus}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
+            ip={ip}
+          />
+        )} */}
+
+        {brandName === 'slot' && (
+          <Slot
+            model={model}
+            image={image}
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            exitGameHandler={exitGameHandler}
+            url={url}
+            playVideo={playVideo}
+            setPlayVideo={setPlayVideo}
+            playStatus={playStatus}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
+            ip={ip}
+            name={name}
           />
         )}
       </div>
