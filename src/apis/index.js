@@ -1,6 +1,9 @@
 export const agentServer = {
-  // api: 'http://192.168.10.200:3030/online',
-  api: 'http://220.135.67.240:8000/online',
+  // api: 'http://220.135.67.240:8000/online',
+  // socketUrl: 'http://220.135.67.240:3030',
+  api: 'http://192.168.10.200:3030/online',
+  socketUrl: 'http://192.168.10.200:3030',
+  // socketUrl: 'http://localhost:8081',
 };
 
 export const authApi = {
@@ -13,6 +16,7 @@ export const egmAPi = {
   getEgmList: 'egmList',
   selectEgm: 'selectEgm',
   buttonPress: 'egmPressButton',
+  egmPressButtonDemo: 'demoPressButton', // 吉宗及拳王測試
   aftIn: 'aftIn',
   aftOut: 'aftOut',
   getBrandList: 'egmBrandList',

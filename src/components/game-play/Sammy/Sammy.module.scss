@@ -16,10 +16,11 @@
 
   .video-box {
     position: absolute;
-    top: 9.8%;
+    top: 10%;
     left: 3%;
-    right: 2.7%;
-    bottom: 45%;
+    right: 3.1%;
+    bottom: 43.5%;
+    border-radius: 5px;
   }
 
   .btn-box {
@@ -32,74 +33,61 @@
       width: 100%;
       height: 100%;
 
-      // 拳王
-      .max[type="\62F3\738B"] {
-        width: 18%;
-        height: 27%;
-        top: 3%;
-        left: 14%;
-      }
-
       .max {
-        height: 30%;
-        width: 20%;
-        position: absolute;
-        left: 15.5%;
-        background-size: 800%;
-        background-repeat: no-repeat;
-        background-position: 7.5% center;
-        cursor: pointer;
-      }
-
-      // 拳王
-      .credit[type="\62F3\738B"] {
-        height: 25%;
-        top: 5%;
-        left: 44%;
+        height: 35%;
         width: 18%;
+        position: absolute;
+        left: 14%;
+        top: -2%;
+        background-size: 700%;
+        background-repeat: no-repeat;
+        background-position: 6.5% center;
+        cursor: pointer;
+        image-rendering: crisp-edges;          /* Firefox        */
+        image-rendering: -o-crisp-edges;            /* Opera          */
+        image-rendering: optimize-contrast; /* Safari         */
+        image-rendering: optimize-contrast;         /* CSS3 Proposed  */
+
+        @media only screen and(max-width: 557px) {
+          height: 40%;
+          top: -5%;
+        }
       }
 
       .credit {
-        height: 32%;
-        width: 16%;
+        height: 30%;
+        width: 18%;
         position: absolute;
-        left: 49%;
-        top: 1%;
+        left: 44%;
+        top: -1%;
         background-size: 600%;
         background-repeat: no-repeat;
         background-position: 10% center;
         cursor: pointer;
-      }
 
-      // 拳王
-      .coin-slot[type="\62F3\738B"] {
-        height: 22%;
-        top: 6%;
-        width: 13%;
+        @media only screen and(max-width: 557px) {
+          height: 40%;
+          top: -5%;
+        }
       }
 
       .coin-slot {
-        height: 32%;
-        width: 12%;
+        height: 40%;
+        width: 13%;
         position: absolute;
         right: 11.5%;
-        top: 3%;
+        top: -12%;
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: center;
         cursor: pointer;
       }
 
-      // 拳王
-      .spin[type="\62F3\738B"] {
-        height: 45%;
-      }
-
       .spin {
         position: absolute;
         bottom: 10%;
         left: 6.8%;
-        height: 55%;
+        height: 45%;
         width: 12.5%;
         background-position: -3rem center;
         background-repeat: no-repeat;
@@ -108,8 +96,9 @@
 
         @media only screen and(max-width: 557px) {
           background-size: 21.8rem;
-          background-position: -2.2rem -2.5rem;
+          background-position: -2.2rem center;
           height: 65%;
+          bottom: 0%;
         }
       }
 
@@ -124,11 +113,16 @@
         align-items: center;
         gap: 5px;
 
+        @media only screen and(max-width: 557px) {
+          bottom: -2%;
+          height: 65%;
+        }
+
         .stop {
           height: 100%;
           width: 100%;
           border-radius: 100%;
-          background-image: url("../../../assets/game-machine/yoshimune/stop.webp");
+          background-image: url("../../../assets/button/sammy/stop.webp");
           background-size: 550%;
           background-position: 9% center;
           background-repeat: no-repeat;
@@ -185,11 +179,11 @@
 
 @keyframes max-animation {
   0% {
-    background-position-x: 7.5%;
+    background-position-x: 6.5%;
   }
 
   100% {
-    background-position-x: 121.8%;
+    background-position-x: 123.2%;
   }
 }
 

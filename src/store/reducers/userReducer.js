@@ -5,6 +5,7 @@ const initialState = {
   data: null,
   error: '',
   currentAction: 'home',
+  socketOnline: '',
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -39,7 +40,14 @@ export const userReducer = (state = initialState, action) => {
       currentAction: action.payload.currentAction,
     };
 
+  case userActionTypes.SETUP_SOCKET_STATUS:
+    return {
+      ...state,
+      socketOnline: action.payload.socketStatus,
+    };
+
   case userActionTypes.UPDATE_ONLINE:
+    console.log(action.payload);
     return {
       ...state,
       data: {

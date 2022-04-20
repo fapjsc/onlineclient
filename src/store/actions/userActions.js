@@ -72,10 +72,19 @@ export const setCurrentAction = (currentAction) => ({
   payload: { currentAction },
 });
 
-// User在game play 開洗分後更新 point
-export const updateOnline = ({ onlineData }) => ({
-  type: userActionTypes.UPDATE_ONLINE,
-  payload: { onlineData },
+export const setUserSocketStatus = (socketStatus) => ({
+  type: userActionTypes.SETUP_SOCKET_STATUS,
+  payload: { socketStatus },
 });
+
+// User在game play 開洗分後更新 point
+export const updateOnline = ({ onlineData }) => {
+  console.log(onlineData);
+
+  return {
+    type: userActionTypes.UPDATE_ONLINE,
+    payload: { onlineData },
+  };
+};
 
 export const logout = () => ({ type: rootActionTypes.RESET_STORE });

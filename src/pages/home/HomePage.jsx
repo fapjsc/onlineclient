@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+// eslint-disable-next-line
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
+// CSS Transition
 import { CSSTransition } from 'react-transition-group';
+
+// eslint-disable-next-line
+import throttle from 'lodash.throttle';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,24 +22,52 @@ import User from '../../components/user/User';
 
 // Actions
 import { clearSelectEgmData } from '../../store/actions/egmActions';
-import { setCurrentAction } from '../../store/actions/userActions';
+import {
+  setCurrentAction,
+  // eslint-disable-next-line
+  updateOnline,
+} from '../../store/actions/userActions';
 
 // Hooks
 import useAuth from '../../hooks/useAuth';
+
+// Socket
+// eslint-disable-next-line
+import { connectSocket, disconnectSocket } from '../../utils/socket';
 
 // Styles
 import styles from './HomePage.module.scss';
 
 const HomePage = () => {
+  // InitState
   const { isAuth, isSelectEgm } = useAuth();
   const [showLoginForm, setShowLoginForm] = useState(false);
 
+  // Redux
   const dispatch = useDispatch();
-  const { currentAction } = useSelector((state) => state.user);
+  // eslint-disable-next-line
+  const { currentAction, data, socketOnline } = useSelector(
+    (state) => state.user,
+  );
+  const { token } = data || {};
 
   const setCurrentActionHandler = (action) => {
     dispatch(setCurrentAction(action));
   };
+
+  const connectSocketHandler = useCallback((userToken) => {
+    connectSocket(userToken);
+  }, []);
+
+  const throttledConnectSocket = useMemo(
+    () => throttle(connectSocketHandler, 10000),
+    [connectSocketHandler],
+  );
+
+  // const throttledConnectSocket = useCallback(
+  //   () => throttle(connectSocket(token), 1000),
+  //   [token],
+  // );
 
   // 關閉login form
   useEffect(() => {
@@ -50,6 +83,12 @@ const HomePage = () => {
   const userOnEnter = () => {
     console.log('user entered');
   };
+
+  useEffect(() => {
+    if (!token) return;
+    connectSocket(token);
+    // throttledConnectSocket(token);
+  }, [token, throttledConnectSocket]);
 
   return (
     <>

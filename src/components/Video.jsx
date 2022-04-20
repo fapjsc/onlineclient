@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 
+// eslint-disable-next-line
 import { Dialog } from 'antd-mobile';
 
 import PropTypes from 'prop-types';
@@ -33,16 +34,17 @@ const Video = ({
       })
       .catch(() => {
         sdkRef.current.close();
-        Dialog.alert({
-          content: '無法獲取影像',
-          closeOnMaskClick: true,
-          confirmText: '確定',
-        });
+        setPlayStatus('error');
+        // Dialog.alert({
+        //   content: '無法獲取影像',
+        //   closeOnMaskClick: true,
+        //   confirmText: '確定',
+        // });
       })
       .finally(() => {
         flag = true;
       });
-  }, [url]);
+  }, [url, setPlayStatus]);
 
   useEffect(() => {
     startPlay();

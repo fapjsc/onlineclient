@@ -11,6 +11,9 @@ import {
 // Actions
 import { logout } from '../../store/actions/userActions';
 
+// Socket
+import { disconnectSocket } from '../../utils/socket';
+
 // Hooks
 import useRwd from '../../hooks/useRwd';
 
@@ -49,11 +52,16 @@ const User = () => {
     );
   }
 
+  const logoutHandler = () => {
+    disconnectSocket();
+    dispatch(logout());
+  };
+
   return (
     <section className={styles.container}>
       <header className={styles.header}>
         <div className={styles.avatar}>
-          <Button color="danger" onClick={() => dispatch(logout())}>
+          <Button color="danger" onClick={logoutHandler}>
             儲值
           </Button>
           <Avatar
@@ -62,13 +70,13 @@ const User = () => {
               '--size': isMobile ? '5rem' : '8rem',
             }}
           />
-          <Button onClick={() => dispatch(logout())}>登出</Button>
+          <Button onClick={logoutHandler}>登出</Button>
         </div>
       </header>
       <div className={styles.content}>
         <List header="會員資料" className={styles.list}>
           {contentArr.map((el) => (
-            <List.Item className={styles['list-item']}>
+            <List.Item key={el.text} className={styles['list-item']}>
               <Space>
                 <span>{`${el.text} :`}</span>
                 <span>{el.content}</span>

@@ -15,7 +15,7 @@ export const getBrandImage = (brand) => {
   let image;
   try {
     // eslint-disable-next-line
-    image = require(`../assets/brand/${brand}.png`);
+    image = require(`../assets/brand/${brand}.webp`);
   } catch (error) {
     // eslint-disable-next-line
     image = require(`../assets/slot-list/找不到圖片.png`);

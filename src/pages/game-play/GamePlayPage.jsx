@@ -16,6 +16,9 @@ import LoadingPage from '../LoadingPage';
 import AftForm from '../../components/aft-form/AftForm';
 import Jackpot from '../../components/jackpot/Jackpot';
 
+// eslint-disable-next-line
+import { getSocket, connectSocket, disconnectSocket } from '../../utils/socket';
+
 // Hooks
 import useRwd from '../../hooks/useRwd';
 
@@ -35,7 +38,8 @@ import { getEgmBg } from '../../utils/helper';
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
 const Igt = React.lazy(() => import('../../components/game-play/Igt/Igt'));
-const Slot = React.lazy(() => import('../../components/game-play/Slot/Slot'));
+const Daito = React.lazy(() => import('../../components/game-play/Daito/Daito'));
+const Sammy = React.lazy(() => import('../../components/game-play/Sammy/Sammy'));
 
 const GamePlay = () => {
   // Ref
@@ -69,7 +73,7 @@ const GamePlay = () => {
   } = useSelector((state) => state.cashInOut);
 
   const { data: userData } = useSelector((state) => state.user);
-  const { online } = userData || {};
+  const { online, token } = userData || {};
   const { online_id: onlineId, point } = online || {};
 
   const { data: aftFormData } = useSelector((state) => state.aftForm);
@@ -89,6 +93,13 @@ const GamePlay = () => {
   if (model && brandName) {
     image = getEgmBg({ brandName, model });
   }
+
+  useEffect(() => {
+    const socket = getSocket();
+    if (!socket) {
+      connectSocket(token);
+    }
+  }, [token]);
 
   // Aft Submit Call Api
   const aftSubmitHandler = () => {
@@ -334,8 +345,8 @@ const GamePlay = () => {
           />
         )} */}
 
-        {brandName === 'slot' && (
-          <Slot
+        {brandName === 'daito' && (
+          <Daito
             model={model}
             image={image}
             showMenu={showMenu}
@@ -349,6 +360,26 @@ const GamePlay = () => {
             getSdkRef={getSdkRef}
             ip={ip}
             name={name}
+            brand={brandName}
+          />
+        )}
+
+        {brandName === 'sammy' && (
+          <Sammy
+            model={model}
+            image={image}
+            showMenu={showMenu}
+            setShowMenu={setShowMenu}
+            exitGameHandler={exitGameHandler}
+            url={url}
+            playVideo={playVideo}
+            setPlayVideo={setPlayVideo}
+            playStatus={playStatus}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
+            ip={ip}
+            name={name}
+            brand={brandName}
           />
         )}
       </div>

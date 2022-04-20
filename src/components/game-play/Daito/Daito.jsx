@@ -14,7 +14,11 @@ import classnames from 'classnames';
 import styled from 'styled-components';
 
 // actions
-import { buttonPress } from '../../../store/actions/egmActions';
+import {
+  // eslint-disable-next-line
+  buttonPress,
+  buttonPressDemo,
+} from '../../../store/actions/egmActions';
 
 // Helpers
 import { getMainBtnImg } from '../../../utils/helper';
@@ -25,7 +29,7 @@ import Menu from '../Menu';
 import Video from '../../Video';
 
 // Styles
-import styles from './Slot.module.scss';
+import styles from './Daito.module.scss';
 
 const SpinBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
@@ -43,7 +47,7 @@ const CoinBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
 `;
 
-const Slot = ({
+const Daito = ({
   image,
   model,
   name,
@@ -57,6 +61,7 @@ const Slot = ({
   setPlayStatus,
   getSdkRef,
   ip,
+  brand,
 }) => {
   const [spin, setSpin] = useState(false);
   const [max, setMax] = useState(false);
@@ -72,7 +77,8 @@ const Slot = ({
 
   const btnPressApiHandler = useCallback(
     (code) => {
-      dispatch(buttonPress({ ip, code }));
+      // dispatch(buttonPress({ ip, code }));  // 正式，不要刪除
+      dispatch(buttonPressDemo({ ip, code })); // 測試用
     },
     [dispatch, ip],
   );
@@ -111,7 +117,8 @@ const Slot = ({
       [target.id]: { ...prev[target.id], action: true },
     }));
 
-    dispatch(buttonPress({ ip, code: stop[target.id].code }));
+    // dispatch(buttonPress({ ip, code: stop[target.id].code })); // 正式，不要刪除
+    dispatch(buttonPressDemo({ ip, code: stop[target.id].code })); // 測試用
 
     setTimeout(() => {
       setStop((prev) => ({
@@ -134,7 +141,7 @@ const Slot = ({
         </div>
       </section>
 
-      <section className={styles['video-box']}>
+      <section type={name} className={styles['video-box']}>
         <Video
           rtcUrl={url}
           play={playVideo}
@@ -171,7 +178,7 @@ const Slot = ({
             role="presentation"
             onClick={onMaxClick}
             name="max"
-            brand="slot"
+            brand={brand}
             model={model}
             className={`${styles.max} ${classnames({
               [styles['max-move']]: max,
@@ -182,7 +189,7 @@ const Slot = ({
             type={name}
             role="presentation"
             name="credit"
-            brand="slot"
+            brand={brand}
             model={model}
             className={`${styles.credit} ${classnames({
               [styles['credit-move']]: credit,
@@ -193,7 +200,7 @@ const Slot = ({
           <CoinBtn
             type={name}
             name="coin"
-            brand="slot"
+            brand={brand}
             model={model}
             className={styles['coin-slot']}
           />
@@ -203,7 +210,7 @@ const Slot = ({
             role="presentation"
             onClick={onSpinClick}
             name="spin"
-            brand="slot"
+            brand={brand}
             model={model}
             className={`${styles.spin} ${classnames({
               [styles['spin-move']]: spin,
@@ -243,7 +250,7 @@ const Slot = ({
   );
 };
 
-Slot.propTypes = {
+Daito.propTypes = {
   image: PropTypes.string.isRequired,
   model: PropTypes.string.isRequired,
   showMenu: PropTypes.bool.isRequired,
@@ -257,6 +264,7 @@ Slot.propTypes = {
   setPlayVideo: PropTypes.func.isRequired,
   ip: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  brand: PropTypes.string.isRequired,
 };
 
-export default Slot;
+export default Daito;

@@ -28,6 +28,10 @@
       rgb(#000, 0.7)
     ),
     url(./assets/big-bg.webp);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    object-fit: cover;
 }
 
 // .adm-list-item {

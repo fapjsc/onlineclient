@@ -2,6 +2,7 @@ import { authFetch, axiosFetch } from '../../config/axiosConfig';
 
 import { egmAPi, agentServer } from '../../apis';
 
+// eslint-disable-next-line
 import { egmActionTypes, userActionTypes } from '../types';
 
 // Get Egm List
@@ -12,8 +13,6 @@ export const getEgmList = () => async (dispatch) => {
     const { data } = await axiosFetch.get(
       `${agentServer.api}/${egmAPi.getEgmList}`,
     );
-
-    console.log(data.result);
 
     dispatch({
       type: egmActionTypes.SETUP_EGM_LIST_SUCCESS,
@@ -119,6 +118,37 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
   }
 };
 
+// 吉宗，拳王測試
+export const buttonPressDemo = ({ ip, code, name }) => async (dispatch) => {
+  dispatch({ type: egmActionTypes.BUTTON_PRESS_BEGIN });
+
+  try {
+    const { data } = await authFetch.post(
+        `${agentServer.api}/${egmAPi.egmPressButtonDemo}`,
+        {
+          ip,
+          code,
+          name,
+        },
+    );
+
+    dispatch({
+      type: egmActionTypes.BUTTON_PRESS_SUCCESS,
+      payload: { buttonPressData: data.message },
+    });
+  } catch (error) {
+    const { response } = error;
+    if (response?.status !== 401 && error?.message !== 429) {
+      dispatch({
+        type: egmActionTypes.BUTTON_PRESS_ERROR,
+        payload: {
+          error: response?.data?.message || 'button press fail',
+        },
+      });
+    }
+  }
+};
+
 export const cashInOut = ({
   onlineId, ip, cashAmount, type, chipType,
 }) => async (dispatch) => {
@@ -147,10 +177,10 @@ export const cashInOut = ({
       payload: { cashInOutData: data.result },
     });
 
-    dispatch({
-      type: userActionTypes.UPDATE_ONLINE,
-      payload: { onlineData: data.result },
-    });
+    // dispatch({
+    //   type: userActionTypes.UPDATE_ONLINE,
+    //   payload: { onlineData: data.result },
+    // });
   } catch (error) {
     const { response } = error || {};
 
