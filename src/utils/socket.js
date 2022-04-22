@@ -44,7 +44,7 @@ export const connectSocket = (token) => {
     console.log(error);
   });
 
-  socket.on('test', (data) => {
+  socket.on('update-point', (data) => {
     console.log(data);
     store.dispatch(updateOnline({ onlineData: data }));
   });
