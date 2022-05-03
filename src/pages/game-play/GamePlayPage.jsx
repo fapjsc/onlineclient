@@ -328,23 +328,6 @@ const GamePlay = () => {
           />
         )}
 
-        {/* {brandName === 'yoshimune' && (
-          <Yoshimune
-            model={model}
-            image={image}
-            showMenu={showMenu}
-            setShowMenu={setShowMenu}
-            exitGameHandler={exitGameHandler}
-            url={url}
-            playVideo={playVideo}
-            setPlayVideo={setPlayVideo}
-            playStatus={playStatus}
-            setPlayStatus={setPlayStatus}
-            getSdkRef={getSdkRef}
-            ip={ip}
-          />
-        )} */}
-
         {brandName === 'daito' && (
           <Daito
             model={model}

@@ -52,6 +52,20 @@ export const getMainBtnImg = ({ name, brand, model }) => {
   return imgObj;
 };
 
+export const getCoinBtnImg = ({ model, brand }) => {
+  let imgObj;
+  try {
+    //eslint-disable-next-line
+    imgObj = require(`../assets/button/${brand}/${model}/coin.webp`);
+  } catch (error) {
+    console.log(error);
+    //eslint-disable-next-line
+    // imgObj = require('../assets/button/aruze/sub/en/bet-1.webp');
+  }
+
+  return imgObj;
+};
+
 export const getSubBtnImg = ({ name, brand }) => {
   let imgObj;
   try {

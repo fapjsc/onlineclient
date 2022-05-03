@@ -25,8 +25,9 @@ import { getMainBtnImg } from '../../../utils/helper';
 
 // Components
 import Wrapper from '../Wrapper';
-import Menu from '../Menu';
+// import Menu from '../Menu';
 import Video from '../../Video';
+import GameHeader from '../game-heder/GameHeader';
 
 // Styles
 import styles from './Daito.module.scss';
@@ -51,9 +52,9 @@ const Daito = ({
   image,
   model,
   name,
-  showMenu,
-  setShowMenu,
-  exitGameHandler,
+  // showMenu,
+  // setShowMenu,
+  // exitGameHandler,
   url,
   playVideo,
   setPlayVideo,
@@ -129,133 +130,125 @@ const Daito = ({
   };
 
   return (
-    <Wrapper img={image} className={styles.container} model={model}>
-      {/* Menu */}
-      <section className={styles['menu-box']}>
-        <div className={styles['menu-bg']}>
-          <Menu
-            visible={showMenu}
-            setVisible={setShowMenu}
-            exitGameHandler={exitGameHandler}
+    <>
+      <GameHeader />
+      <Wrapper jp img={image} className={styles.container} model={model}>
+        <section type={name} className={styles['video-box']}>
+          <Video
+            rtcUrl={url}
+            play={playVideo}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
           />
-        </div>
-      </section>
+        </section>
 
-      <section type={name} className={styles['video-box']}>
-        <Video
-          rtcUrl={url}
-          play={playVideo}
-          setPlayStatus={setPlayStatus}
-          getSdkRef={getSdkRef}
-        />
-      </section>
+        {playStatus === 'canPlay' && (
+          <button
+            type="button"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              backgroundColor: 'transparent',
+              color: 'white',
+              position: 'absolute',
+              top: '20%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }}
+            onClick={() => {
+              setPlayVideo(true);
+            }}
+          >
+            點擊後開始播放
+          </button>
+        )}
 
-      {playStatus === 'canPlay' && (
-        <button
-          type="button"
-          style={{
-            width: '10rem',
-            height: '10rem',
-            backgroundColor: 'transparent',
-            color: 'white',
-            position: 'absolute',
-            top: '20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-          onClick={() => {
-            setPlayVideo(true);
-          }}
-        >
-          點擊後開始播放
-        </button>
-      )}
-
-      <section className={styles['btn-box']}>
-        <div className={styles.content}>
-          <MaxBtn
-            type={name}
-            role="presentation"
-            onClick={onMaxClick}
-            name="max"
-            brand={brand}
-            model={model}
-            className={`${styles.max} ${classnames({
-              [styles['max-move']]: max,
-            })}`}
-          />
-
-          <CashInOutBtn
-            type={name}
-            role="presentation"
-            name="credit"
-            brand={brand}
-            model={model}
-            className={`${styles.credit} ${classnames({
-              [styles['credit-move']]: credit,
-            })}`}
-            onClick={onCreditClick}
-          />
-
-          <CoinBtn
-            type={name}
-            name="coin"
-            brand={brand}
-            model={model}
-            className={styles['coin-slot']}
-          />
-
-          <SpinBtn
-            type={name}
-            role="presentation"
-            onClick={onSpinClick}
-            name="spin"
-            brand={brand}
-            model={model}
-            className={`${styles.spin} ${classnames({
-              [styles['spin-move']]: spin,
-            })}`}
-          />
-
-          {/* Stop */}
-          <div className={styles['stop-btn-box']}>
-            <div
-              onClick={onStopClick}
+        <section className={styles['btn-box']}>
+          <div className={styles.content}>
+            <MaxBtn
+              type={name}
               role="presentation"
-              id="left"
-              className={`${styles.stop} ${classnames({
-                [styles['stop-move']]: stop.left.action,
+              onClick={onMaxClick}
+              name="max"
+              brand={brand}
+              model={model}
+              className={`${styles.max} ${classnames({
+                [styles['max-move']]: max,
               })}`}
             />
-            <div
-              onClick={onStopClick}
+
+            <CashInOutBtn
+              type={name}
               role="presentation"
-              id="center"
-              className={`${styles.stop} ${classnames({
-                [styles['stop-move']]: stop.center.action,
+              name="credit"
+              brand={brand}
+              model={model}
+              className={`${styles.credit} ${classnames({
+                [styles['credit-move']]: credit,
+              })}`}
+              onClick={onCreditClick}
+            />
+
+            <CoinBtn
+              type={name}
+              name="coin"
+              brand={brand}
+              model={model}
+              className={styles['coin-slot']}
+            />
+
+            <SpinBtn
+              type={name}
+              role="presentation"
+              onClick={onSpinClick}
+              name="spin"
+              brand={brand}
+              model={model}
+              className={`${styles.spin} ${classnames({
+                [styles['spin-move']]: spin,
               })}`}
             />
-            <div
-              onClick={onStopClick}
-              role="presentation"
-              id="right"
-              className={`${styles.stop} ${classnames({
-                [styles['stop-move']]: stop.right.action,
-              })}`}
-            />
+
+            {/* Stop */}
+            <div className={styles['stop-btn-box']}>
+              <div
+                onClick={onStopClick}
+                role="presentation"
+                id="left"
+                className={`${styles.stop} ${classnames({
+                  [styles['stop-move']]: stop.left.action,
+                })}`}
+              />
+              <div
+                onClick={onStopClick}
+                role="presentation"
+                id="center"
+                className={`${styles.stop} ${classnames({
+                  [styles['stop-move']]: stop.center.action,
+                })}`}
+              />
+              <div
+                onClick={onStopClick}
+                role="presentation"
+                id="right"
+                className={`${styles.stop} ${classnames({
+                  [styles['stop-move']]: stop.right.action,
+                })}`}
+              />
+            </div>
           </div>
-        </div>
-      </section>
-    </Wrapper>
+        </section>
+      </Wrapper>
+    </>
   );
 };
 
 Daito.propTypes = {
   image: PropTypes.string.isRequired,
   model: PropTypes.string.isRequired,
-  showMenu: PropTypes.bool.isRequired,
-  setShowMenu: PropTypes.func.isRequired,
-  exitGameHandler: PropTypes.func.isRequired,
+  // showMenu: PropTypes.bool.isRequired,
+  // setShowMenu: PropTypes.func.isRequired,
+  // exitGameHandler: PropTypes.func.isRequired,
   getSdkRef: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
   playStatus: PropTypes.string.isRequired,

@@ -37,7 +37,7 @@ const menuLis = [
 ];
 
 // eslint-disable-next-line
-const Menu = ({ visible, setVisible, exitGameHandler }) => {
+const Menu = ({ visible, setVisible, exitGameHandler, size }) => {
   const { isMobile } = useRwd();
   const [height, width] = useWindowSize();
 
@@ -64,7 +64,7 @@ const Menu = ({ visible, setVisible, exitGameHandler }) => {
         }}
         style={{
           color: '#fff',
-          fontSize: '1.4rem',
+          fontSize: size,
           cursor: 'pointer',
         }}
       />
@@ -108,6 +108,11 @@ Menu.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,
   exitGameHandler: PropTypes.func.isRequired,
+  size: PropTypes.string,
+};
+
+Menu.defaultProps = {
+  size: '1.4rem',
 };
 
 export default Menu;

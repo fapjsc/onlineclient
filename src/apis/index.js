@@ -1,8 +1,8 @@
 export const agentServer = {
-  // api: 'http://220.135.67.240:8000/online',
-  // socketUrl: 'http://220.135.67.240:3030',
-  api: 'http://192.168.10.200:3030/online',
-  socketUrl: 'http://192.168.10.200:3030',
+  api: 'http://220.135.67.240:8000/online',
+  socketUrl: 'http://220.135.67.240:3030',
+  // api: 'http://192.168.10.200:3030/online',
+  // socketUrl: 'http://192.168.10.200:3030',
   // socketUrl: 'http://localhost:8081',
 };
 
