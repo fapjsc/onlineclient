@@ -90,6 +90,10 @@ const Jackpot = ({ visible }) => {
       )}
 
       <div
+        role="presentation"
+        onClick={() => {
+          dispatch(setCurrentMenu(''));
+        }}
         style={{
           position: 'absolute',
           bottom: isMobile ? '100%' : 0,
@@ -100,6 +104,7 @@ const Jackpot = ({ visible }) => {
           alignItems: 'center',
           justifyContent: isMobile ? 'flex-end' : 'center',
           padding: '5px',
+          zIndex: 9999999,
         }}
       >
         <Image
@@ -108,9 +113,6 @@ const Jackpot = ({ visible }) => {
           width="1.5rem"
           style={{
             cursor: 'pointer',
-          }}
-          onClick={() => {
-            dispatch(setCurrentMenu(''));
           }}
         />
       </div>
