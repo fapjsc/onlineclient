@@ -5,7 +5,7 @@ import HeaderWrapper from './HeaderWrapper';
 import Menu from '../Menu';
 
 // Hooks
-import useExitGame from '../../../hooks/useExitGame';
+// import useExitGame from '../../../hooks/useExitGame';
 
 // Styles
 import styles from './GameHeader.module.scss';
@@ -15,9 +15,12 @@ import headerRed from '../../../assets/game-machine/header/red.webp';
 import headerGreen from '../../../assets/game-machine/header/green.webp';
 import headerYellow from '../../../assets/game-machine/header/yellow.webp';
 
-const GameHeader = () => {
+// eslint-disable-next-line
+const GameHeader = ({ exitGameHandler }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { exitGameHandler } = useExitGame();
+  // const { exitGameHandler } = useExitGame();
+
+  // console.log(exitGameHandler);
 
   return (
     <HeaderWrapper className={styles.header}>

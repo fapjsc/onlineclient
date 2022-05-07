@@ -1,35 +1,35 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import { useCallback } from 'react';
+// import { useDispatch } from 'react-redux';
+// import { useNavigate } from 'react-router-dom';
 
-// Actions
-import {
-  clearCashInOutStatus,
-  clearButtonPressStatus,
-  clearSelectEgmData,
-} from '../store/actions/egmActions';
+// // Actions
+// import {
+//   clearCashInOutStatus,
+//   clearButtonPressStatus,
+//   clearSelectEgmData,
+// } from '../store/actions/egmActions';
 
-import { setCurrentMenu } from '../store/actions/menuActions';
+// import { setCurrentMenu } from '../store/actions/menuActions';
 
-const useExitGame = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+// const useExitGame = () => {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
 
-  const exitGameHandler = useCallback(
-    (sdkRef) => {
-      sdkRef?.current?.close();
-      navigate('/');
-      dispatch(clearButtonPressStatus());
-      dispatch(clearCashInOutStatus());
-      dispatch(clearSelectEgmData());
-      dispatch(setCurrentMenu(''));
-    },
-    [dispatch, navigate],
-  );
+//   const exitGameHandler = useCallback(
+//     (sdkRef) => {
+//       sdkRef?.current?.close();
+//       navigate('/');
+//       dispatch(clearButtonPressStatus());
+//       dispatch(clearCashInOutStatus());
+//       dispatch(clearSelectEgmData());
+//       dispatch(setCurrentMenu(''));
+//     },
+//     [dispatch, navigate],
+//   );
 
-  return {
-    exitGameHandler,
-  };
-};
+//   return {
+//     exitGameHandler,
+//   };
+// };
 
-export default useExitGame;
+// export default useExitGame;

@@ -119,6 +119,7 @@ const GamePlay = () => {
   };
 
   const exitGameHandler = () => {
+    console.log(sdkRef.current);
     sdkRef.current?.close();
     navigate('/');
     dispatch(clearButtonPressStatus());

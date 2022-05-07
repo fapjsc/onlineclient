@@ -68,7 +68,7 @@ const Sammy = ({
   name,
   // showMenu,
   // setShowMenu,
-  // exitGameHandler,
+  exitGameHandler,
   url,
   playVideo,
   setPlayVideo,
@@ -148,11 +148,9 @@ const Sammy = ({
     }, 200);
   };
 
-  console.log(playStatus, 'playstatus');
-
   return (
     <>
-      <GameHeader />
+      <GameHeader exitGameHandler={exitGameHandler} />
 
       <Wrapper jp img={image} className={styles.container} model={model}>
         <section type={name} className={styles['video-box']}>
@@ -327,7 +325,7 @@ Sammy.propTypes = {
   model: PropTypes.string.isRequired,
   // showMenu: PropTypes.bool.isRequired,
   // setShowMenu: PropTypes.func.isRequired,
-  // exitGameHandler: PropTypes.func.isRequired,
+  exitGameHandler: PropTypes.func.isRequired,
   getSdkRef: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
   playStatus: PropTypes.string.isRequired,

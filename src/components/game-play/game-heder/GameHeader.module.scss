@@ -28,10 +28,18 @@
       align-items: flex-start;
       justify-content: flex-start;
 
+      @media only screen and(max-width: 557px) {
+        font-size: 0.6rem;
+      }
+
       span:first-child {
         margin-bottom: 2%;
         height: 50%;
         font-size: 1.1rem;
+
+        @media only screen and(max-width: 557px) {
+          font-size: 0.8rem;
+        }
       }
     }
 
@@ -44,6 +52,10 @@
       justify-content: flex-start;
       font-size: 0.9rem;
       width: 60%;
+
+      @media only screen and(max-width: 557px) {
+        font-size: 0.7rem;
+      }
 
       img {
         height: 50%;
