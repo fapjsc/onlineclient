@@ -272,6 +272,7 @@ const Aristocrat = ({
         <CashInOutBtn
           isCashInOutClick={isCashInOutClick}
           setIsCashInOutClick={setIsCashInOutClick}
+          setIsAuto={setIsAuto}
         />
 
         {/* Main Button */}

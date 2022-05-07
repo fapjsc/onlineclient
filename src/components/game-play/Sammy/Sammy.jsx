@@ -71,8 +71,8 @@ const Sammy = ({
   // exitGameHandler,
   url,
   playVideo,
-  // setPlayVideo,
-  // playStatus,
+  setPlayVideo,
+  playStatus,
   setPlayStatus,
   getSdkRef,
   ip,
@@ -148,6 +148,8 @@ const Sammy = ({
     }, 200);
   };
 
+  console.log(playStatus, 'playstatus');
+
   return (
     <>
       <GameHeader />
@@ -162,26 +164,26 @@ const Sammy = ({
           />
         </section>
 
-        {/* {playStatus === 'canPlay' && (
-        <button
-          type="button"
-          style={{
-            width: '10rem',
-            height: '10rem',
-            backgroundColor: 'transparent',
-            color: 'white',
-            position: 'absolute',
-            top: '20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-          onClick={() => {
-            setPlayVideo(true);
-          }}
-        >
-          點擊後開始播放
-        </button>
-      )} */}
+        {playStatus === 'canPlay' && (
+          <button
+            type="button"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              backgroundColor: 'transparent',
+              color: 'white',
+              position: 'absolute',
+              top: '20%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }}
+            onClick={() => {
+              setPlayVideo(true);
+            }}
+          >
+            點擊後開始播放
+          </button>
+        )}
 
         <section className={styles['btn-box']}>
           <div className={styles.content}>
@@ -328,10 +330,10 @@ Sammy.propTypes = {
   // exitGameHandler: PropTypes.func.isRequired,
   getSdkRef: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
-  // playStatus: PropTypes.string.isRequired,
+  playStatus: PropTypes.string.isRequired,
   setPlayStatus: PropTypes.func.isRequired,
   playVideo: PropTypes.bool.isRequired,
-  // setPlayVideo: PropTypes.func.isRequired,
+  setPlayVideo: PropTypes.func.isRequired,
   ip: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   brand: PropTypes.string.isRequired,

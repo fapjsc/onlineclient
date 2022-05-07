@@ -32,17 +32,6 @@ import junkSelectImage from '../../assets/開洗分介面/btn_junketschips_sel.w
 // Helpers
 // import { thousandsFormat } from '../../utils/helper';
 
-const amountArr = [
-  '1000',
-  '2000',
-  '3000',
-  '4000',
-  '5000',
-  '6000',
-  '7000',
-  '8000',
-];
-
 const AftForm = ({
   isCashInOutClick,
   setIsCashInOutClick,
@@ -58,6 +47,22 @@ const AftForm = ({
   const [height] = useWindowSize();
 
   const dispatch = useDispatch();
+
+  let amountArr = [];
+
+  if (aftType === 'aft-in') {
+    amountArr = [
+      '1000',
+      '2000',
+      '3000',
+      '4000',
+      '5000',
+      '6000',
+      '7000',
+      '8000',
+    ];
+  }
+  if (aftType === 'aft-out') amountArr = ['全洗'];
 
   const backHandler = () => {
     setShowContent(false);
@@ -206,7 +211,7 @@ const AftForm = ({
             className={styles.content}
             style={{
               opacity: showContent && 1,
-              height: showContent && height / 1.6,
+              height: showContent && height / 1.8,
             }}
           >
             <div className={styles.title}>

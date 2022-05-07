@@ -93,11 +93,12 @@
 
     .amount-box {
       overflow-y: scroll;
-      height: 70%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(4, 1fr);
       gap: 5%;
       padding-top: 0.5rem;
+      height: 70%;
 
       .amount-btn {
         background-size: 100% 100%;
@@ -112,11 +113,11 @@
       }
 
       .amount-btn-normal {
-        background-image: url("../../assets/開洗分介面/btn_amount_normal.webp");
+        background-image: url('../../assets/開洗分介面/btn_amount_normal.webp');
       }
 
       .amount-btn-action {
-        background-image: url("../../assets/開洗分介面/btn_amount_press.webp");
+        background-image: url('../../assets/開洗分介面/btn_amount_press.webp');
         color: #8c8c8c;
       }
     }

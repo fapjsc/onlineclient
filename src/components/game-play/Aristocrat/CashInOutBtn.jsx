@@ -6,9 +6,10 @@ import classnames from 'classnames';
 
 import styles from './CashInOutBtn.module.scss';
 
-const CashInOutBtn = ({ isCashInOutClick, setIsCashInOutClick }) => {
+const CashInOutBtn = ({ isCashInOutClick, setIsCashInOutClick, setIsAuto }) => {
   const clickHandler = () => {
     setIsCashInOutClick(true);
+    setIsAuto(false);
   };
 
   return (
@@ -29,6 +30,7 @@ const CashInOutBtn = ({ isCashInOutClick, setIsCashInOutClick }) => {
 CashInOutBtn.propTypes = {
   isCashInOutClick: PropTypes.bool.isRequired,
   setIsCashInOutClick: PropTypes.func.isRequired,
+  setIsAuto: PropTypes.func.isRequired,
 };
 
 export default CashInOutBtn;

@@ -146,8 +146,9 @@ const GamePlay = () => {
       if (aftType === 'aft-out') {
         text = '洗分';
       }
+
       Dialog.alert({
-        content: `${text}成功`,
+        content: `${text}指令已送出，請確認機台分數是否正確。`,
         closeOnMaskClick: true,
         confirmText: '確定',
         onClose: () => {
