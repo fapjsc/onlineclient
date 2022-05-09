@@ -101,6 +101,8 @@ export const getGameDescriptionImg = ({ model, brand }) => {
     imgObj = require(`../assets/game-description/${brand}/${model}.webp`);
   } catch (error) {
     console.log(error);
+    //eslint-disable-next-line
+    imgObj = require('../assets/game-description/sammy/拳王.webp');
   }
 
   return imgObj;

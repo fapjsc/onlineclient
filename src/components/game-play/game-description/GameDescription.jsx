@@ -39,13 +39,13 @@ const GameDescription = ({ visible }) => {
   const { data } = useSelector((state) => state.selectEgm);
   const { name, model, brand_name: brand } = data || {};
 
-  const gameDescriptionImg = getGameDescriptionImg({ model, brand });
+  const gameDescriptionImg = model === '拳王' && getGameDescriptionImg({ model, brand });
 
   // Game description text
   const descriptionText = (
     <div style={{ fontSize: '1rem' }}>
       <List className={styles['description-list']} header="">
-        {gameText[model].map((el) => (
+        {gameText[model]?.map((el) => (
           <List.Item
             key={uuidv4()}
             prefix="●"
@@ -78,16 +78,20 @@ const GameDescription = ({ visible }) => {
             }}
           />
         </header>
-        <div className={styles.body}>
-          <img
-            className={styles['description-pic']}
-            src={gameDescriptionImg}
-            alt="description img"
-            data-img={model}
-            data-brand={brand}
-          />
-        </div>
-        <footer className={styles.footer}>{descriptionText}</footer>
+        {model === '拳王' && (
+          <>
+            <div className={styles.body}>
+              <img
+                className={styles['description-pic']}
+                src={gameDescriptionImg}
+                alt="description img"
+                data-img={model}
+                data-brand={brand}
+              />
+            </div>
+            <footer className={styles.footer}>{descriptionText}</footer>
+          </>
+        )}
       </section>
     </Popup>
   );
