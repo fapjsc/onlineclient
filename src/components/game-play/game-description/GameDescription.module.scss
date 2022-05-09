@@ -1,0 +1,45 @@
+.container {
+  background-color: rgb(0 0 0 / 95%);
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  color: #f2f2f2;
+  padding: 0 0.8rem;
+
+  .header {
+    border-bottom: 2px solid #f2f2f2;
+    height: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+
+    .close-btn {
+      width: 5%;
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+    }
+  }
+
+  .body {
+    background-repeat: no-repeat;
+
+    .description-pic {
+      width: 100%;
+    }
+  }
+
+  .footer {
+    .description-list {
+      background-color: transparent;
+    }
+
+    .description-item {
+      background-color: rgb(0 0 0 / 95%);
+      border-bottom: none;
+    }
+  }
+}

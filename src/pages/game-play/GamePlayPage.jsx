@@ -15,6 +15,7 @@ import { CSSTransition } from 'react-transition-group';
 import LoadingPage from '../LoadingPage';
 import AftForm from '../../components/aft-form/AftForm';
 import Jackpot from '../../components/jackpot/Jackpot';
+import GameDescription from '../../components/game-play/game-description/GameDescription';
 
 // eslint-disable-next-line
 import { getSocket, connectSocket, disconnectSocket } from '../../utils/socket';
@@ -47,7 +48,7 @@ const GamePlay = () => {
 
   // Hooks
   // eslint-disable-next-line
-  const { isMobile } = useRwd();
+  const { isMobile, isTablet } = useRwd();
 
   // Router prop
   const navigate = useNavigate();
@@ -119,7 +120,6 @@ const GamePlay = () => {
   };
 
   const exitGameHandler = () => {
-    console.log(sdkRef.current);
     sdkRef.current?.close();
     navigate('/');
     dispatch(clearButtonPressStatus());
@@ -236,6 +236,9 @@ const GamePlay = () => {
         <LoadingPage />
       </CSSTransition>
 
+      {/* 遊戲說明 */}
+      <GameDescription visible={currentMenu === 'description'} />
+
       {/* Jackpot */}
       <Jackpot visible={currentMenu === 'jp'} />
 
@@ -251,7 +254,7 @@ const GamePlay = () => {
         style={{
           height: '100%',
           width: '100%',
-          marginRight: currentMenu === 'jp' && !isMobile && '-30%',
+          marginRight: currentMenu && !isMobile && !isTablet && '-40%',
           transition: 'all 0.35s',
         }}
       >

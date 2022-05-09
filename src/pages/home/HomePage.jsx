@@ -81,7 +81,7 @@ const HomePage = () => {
   }, [isSelectEgm, dispatch]);
 
   const userOnEnter = () => {
-    console.log('user entered');
+    // console.log('user entered');
   };
 
   useEffect(() => {

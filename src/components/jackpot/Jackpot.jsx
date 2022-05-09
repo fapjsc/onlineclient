@@ -26,7 +26,7 @@ import { setCurrentMenu } from '../../store/actions/menuActions';
 import closeImag from '../../assets/開洗分介面/btn_close_normal.webp';
 
 // eslint-disable-next-line
-const testUrl = 'webrtc://220.135.67.240/jp/jp-1';
+const testUrl = 'webrtc://220.135.67.240/game/188';
 
 const resultStyles = {
   position: 'absolute',

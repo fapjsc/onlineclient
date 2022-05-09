@@ -13,8 +13,9 @@ import {
   TeamOutline,
   BankcardOutline,
   BellOutline,
-  HeartOutline,
+  VideoOutline,
   TravelOutline,
+  TextOutline,
 } from 'antd-mobile-icons';
 
 // Hooks
@@ -28,16 +29,18 @@ import { setCurrentMenu } from '../../store/actions/menuActions';
 import styles from './Menu.module.scss';
 
 const menuLis = [
-  { id: 'jp', icon: <StarOutline />, name: 'JP彩金' },
+  { id: 'description', icon: <TextOutline />, name: '遊戲說明' },
+  { id: 'jp', icon: <StarOutline />, name: '現場攝影機' },
   { id: 'cs', icon: <BellOutline />, name: '線上客服' },
   { id: 'wallet', icon: <BankcardOutline />, name: '我的錢包' },
   { id: 'friends', icon: <TeamOutline />, name: '好友' },
-  { id: 'online', icon: <HeartOutline />, name: '直播' },
+  { id: 'online', icon: <VideoOutline />, name: '直播' },
   { id: 'leave', icon: <TravelOutline />, name: '返回大廳' },
 ];
 
-// eslint-disable-next-line
-const Menu = ({ visible, setVisible, exitGameHandler, size }) => {
+const Menu = ({
+  visible, setVisible, exitGameHandler, size,
+}) => {
   const { isMobile } = useRwd();
   const [height, width] = useWindowSize();
 

@@ -4,7 +4,6 @@ import { store } from '../store';
 
 import {
   setUserSocketStatus,
-  // eslint-disable-next-line
   updateOnline,
 } from '../store/actions/userActions';
 
@@ -17,8 +16,6 @@ let allowCall = true;
 export const connectSocket = (token) => {
   if (socket?.connected) return;
   if (!allowCall) return;
-
-  console.log('call socket connect func');
 
   allowCall = false;
 

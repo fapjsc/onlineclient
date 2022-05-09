@@ -57,6 +57,8 @@ const SlotList = () => {
     dispatch(selectEgm(id));
   };
 
+  // const randomBoolean = () => Math.random() < 0.5;
+
   useEffect(() => {
     dispatch(getEgmList());
     dispatch(getBrandList());
@@ -170,6 +172,18 @@ const SlotList = () => {
             role="presentation"
             className={styles['slot-btn']}
           >
+            {/* {randomBoolean() && (
+              <div
+                role="presentation"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className={styles['is-playing-cover']}
+              >
+                遊戲中...
+              </div>
+            )} */}
+
             <Image
               src={getEgmImage({
                 model: egm.model,

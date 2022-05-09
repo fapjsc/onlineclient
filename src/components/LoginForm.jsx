@@ -3,8 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
-// Crypto
-
 // Prop types
 import PropTypes from 'prop-types';
 
@@ -21,7 +19,6 @@ import { PhonebookOutline, AppstoreOutline } from 'antd-mobile-icons';
 import { rootActionTypes } from '../store/types';
 
 // actions
-// eslint-disable-next-line
 import { setupUser, getCrypto } from '../store/actions/userActions';
 
 const LoginForm = ({ visible, setVisible }) => {
@@ -117,6 +114,8 @@ const LoginForm = ({ visible, setVisible }) => {
     dispatch(setupUser({ currentUser: formValue, endPoint: 'login' }));
   }, [cryptoKey, dispatch, activeKey]);
 
+  console.log('login form');
+
   return (
     <Modal
       visible={visible}
@@ -156,7 +155,7 @@ const LoginForm = ({ visible, setVisible }) => {
             clearable
             rules={[{ required: true, message: '此項為必填' }]}
           >
-            <Input placeholder="請輸入" />
+            <Input placeholder="請輸入" autoComplete="off" />
           </Form.Item>
 
           <Form.Item
@@ -165,7 +164,11 @@ const LoginForm = ({ visible, setVisible }) => {
             clearable
             rules={[{ required: true, message: '此項為必填' }]}
           >
-            <Input placeholder="請輸入" type="password" />
+            <Input
+              placeholder="請輸入"
+              autoComplete="current-password"
+              type="password"
+            />
           </Form.Item>
         </Form>
       }
@@ -178,4 +181,4 @@ LoginForm.propTypes = {
   visible: PropTypes.bool.isRequired,
 };
 
-export default LoginForm;
+export default React.memo(LoginForm);

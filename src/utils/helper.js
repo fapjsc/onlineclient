@@ -92,3 +92,16 @@ export const getSubBtnImgSelect = ({ name, brand }) => {
 
   return imgObj;
 };
+
+// Jp Slot
+export const getGameDescriptionImg = ({ model, brand }) => {
+  let imgObj;
+  try {
+    //eslint-disable-next-line
+    imgObj = require(`../assets/game-description/${brand}/${model}.webp`);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return imgObj;
+};
