@@ -140,6 +140,7 @@ const Sammy = ({
     // dispatch(buttonPress({ ip, code: stop[target.id].code })); // 正式，不要刪除
     // dispatch(buttonPressDemo({ ip, code: stop[target.id].code })); // 測試用
     throttledBtnPress(stop[target.id].code);
+
     setTimeout(() => {
       setStop((prev) => ({
         ...prev,

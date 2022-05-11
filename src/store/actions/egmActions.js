@@ -156,7 +156,6 @@ export const cashInOut = ({
 
   try {
     let url;
-
     if (type === 'aft-in') {
       url = `${agentServer.api}/${egmAPi.aftIn}`;
     }
@@ -164,7 +163,6 @@ export const cashInOut = ({
     if (type === 'aft-out') {
       url = `${agentServer.api}/${egmAPi.aftOut}`;
     }
-
     const { data } = await authFetch.post(url, {
       onlineId,
       ip,
@@ -182,6 +180,16 @@ export const cashInOut = ({
     //   payload: { onlineData: data.result },
     // });
   } catch (error) {
+    if (error?.message === 'fetchTimeout') {
+      dispatch({
+        type: egmActionTypes.CASH_IN_OUT_ERROR,
+        payload: {
+          error: '請求超時',
+        },
+      });
+      return;
+    }
+
     const { response } = error || {};
 
     if (response?.status !== 401 && error?.message !== 429) {

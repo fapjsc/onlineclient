@@ -1,7 +1,18 @@
-import React, { useRef } from 'react';
+import React, {
+  useRef, useState, useMemo, useCallback,
+} from 'react';
+
+// Lodash
+import throttle from 'lodash.throttle';
+
+// Redux
+import { useDispatch } from 'react-redux';
 
 // Prop-Type
 import PropTypes from 'prop-types';
+
+// Actions
+import { buttonPress } from '../../../store/actions/egmActions';
 
 // Components
 import Wrapper from '../Wrapper';
@@ -17,16 +28,16 @@ import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 import styles from './Aruze.module.scss';
 
 const buttonList = [
-  { id: 1, button_name: 'bet-1' },
-  { id: 2, button_name: 'bet-3' },
-  { id: 3, button_name: 'bet-5' },
-  { id: 4, button_name: 'bet-7' },
-  { id: 5, button_name: 'bet-9' },
-  { id: 6, button_name: 'bet-25' },
-  { id: 7, button_name: 'bet-40' },
-  { id: 8, button_name: 'bet-50' },
-  { id: 9, button_name: 'bet-75' },
-  { id: 10, button_name: 'bet-80' },
+  { id: 1, button_name: 'bet-1', code: 0 },
+  { id: 2, button_name: 'bet-3', code: 1 },
+  { id: 3, button_name: 'bet-5', code: 2 },
+  { id: 4, button_name: 'bet-7', code: 3 },
+  { id: 5, button_name: 'bet-9', code: 4 },
+  { id: 6, button_name: 'bet-25', code: 5 },
+  { id: 7, button_name: 'bet-40', code: 6 },
+  { id: 8, button_name: 'bet-50', code: 7 },
+  { id: 9, button_name: 'bet-75', code: 8 },
+  { id: 10, button_name: 'bet-80', code: 9 },
 ];
 
 const Aruze = ({
@@ -37,7 +48,7 @@ const Aruze = ({
   // isCashInOutClick,
   url,
   // buttonList,
-  // ip,
+  ip,
   // currentBtnPress,
   setShowMenu,
   showMenu,
@@ -51,15 +62,42 @@ const Aruze = ({
   currentSubBtn,
   setCurrentSubBtn,
 }) => {
-  console.log('Aruze');
+  // Init State
+  const [mainBtnClick, setMainBtnClick] = useState({
+    auto: false,
+    max: false,
+    spin: false,
+  });
+
+  // Redux
+  const dispatch = useDispatch();
 
   // Ref
   const subBtnRef = useRef();
+
+  const btnPressApiHandler = useCallback(
+    ({ code, name }) => {
+      dispatch(buttonPress({ ip, code, name }));
+    },
+    [dispatch, ip],
+  );
+
+  const throttledBtnPress = useMemo(
+    () => throttle(btnPressApiHandler, 1000),
+    [btnPressApiHandler],
+  );
+
+  const mainBtnHandler = ({ name, code }) => {
+    console.log(name, code, ip);
+    throttledBtnPress({ code, name });
+  };
 
   // eslint-disable-next-line
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
     if (currentSubBtn) return;
     setCurrentSubBtn(name);
+
+    throttledBtnPress({ code, name });
 
     setTimeout(() => {
       setCurrentSubBtn('');
@@ -150,7 +188,12 @@ const Aruze = ({
 
       {/* Main Button */}
       <section className={styles['main-btn-box']}>
-        <MainBtn />
+        <MainBtn
+          // mainBtnHandler={mainBtnHandler}
+          mainBtnClick={mainBtnClick}
+          setMainBtnClick={setMainBtnClick}
+          mainBtnHandler={mainBtnHandler}
+        />
       </section>
 
       {/*  Sub Button */}
@@ -176,7 +219,7 @@ Aruze.propTypes = {
   // isCashInOutClick: PropTypes.bool.isRequired,
   url: PropTypes.string.isRequired,
   // buttonList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // ip: PropTypes.string.isRequired,
+  ip: PropTypes.string.isRequired,
   // currentBtnPress: PropTypes.string,
   setShowMenu: PropTypes.func.isRequired,
   showMenu: PropTypes.bool.isRequired,
