@@ -6,9 +6,20 @@ import classnames from 'classnames';
 
 import styles from './MainBtn.module.scss';
 
-const MainBtn = ({ mainBtnHandler, mainBtnClick, setMainBtnClick }) => {
+const MainBtn = ({
+  mainBtnHandler,
+  mainBtnClick,
+  setMainBtnClick,
+  mainBtnList,
+  setIsAuto,
+  isAuto,
+}) => {
   // Main button 動畫邏輯判斷
   const animationHandler = (id) => {
+    if (id === 'auto') {
+      setIsAuto((prev) => !prev);
+    }
+
     // 設定點擊的按鈕為true
     setMainBtnClick((prev) => ({
       ...prev,
@@ -24,10 +35,10 @@ const MainBtn = ({ mainBtnHandler, mainBtnClick, setMainBtnClick }) => {
     }, 200);
   };
 
-  const onClickHandler = ({ target }) => {
+  const onClickHandler = ({ target, code }) => {
     const { id } = target;
     animationHandler(id);
-    mainBtnHandler({ name: id, code: id });
+    mainBtnHandler({ name: id, code });
   };
 
   return (
@@ -40,9 +51,27 @@ const MainBtn = ({ mainBtnHandler, mainBtnClick, setMainBtnClick }) => {
           [styles['main-btn-animation']]: mainBtnClick.auto,
         })}`}
       />
-      <div
+
+      {mainBtnList.map((btn) => (
+        <div
+          key={btn.id}
+          role="presentation"
+          id={btn.button_name}
+          onClick={({ target }) => onClickHandler({ target, code: btn.code })}
+          className={`${styles.btn} ${
+            styles[`${btn.button_name}`]
+          } ${classnames({
+            [styles['main-btn-animation']]: mainBtnClick[`${btn.button_name}`],
+            [styles['auto-spin-animation']]:
+              btn.button_name === 'spin' && isAuto,
+          })}`}
+        />
+      ))}
+
+      {/* <div
         role="presentation"
         id="max"
+        code="1"
         onClick={onClickHandler}
         className={`${styles.btn} ${styles.max} ${classnames({
           [styles['main-btn-animation']]: mainBtnClick.max,
@@ -51,17 +80,21 @@ const MainBtn = ({ mainBtnHandler, mainBtnClick, setMainBtnClick }) => {
       <div
         role="presentation"
         id="spin"
+        code="0"
         onClick={onClickHandler}
         className={`${styles.btn} ${styles.spin} ${classnames({
           [styles['main-btn-animation']]: mainBtnClick.spin,
         })}`}
-      />
+      /> */}
     </div>
   );
 };
 MainBtn.propTypes = {
   mainBtnHandler: PropTypes.func.isRequired,
   setMainBtnClick: PropTypes.func.isRequired,
+  setIsAuto: PropTypes.func.isRequired,
+  isAuto: PropTypes.bool.isRequired,
+  mainBtnList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   mainBtnClick: PropTypes.shape({
     auto: PropTypes.bool,
     max: PropTypes.bool,

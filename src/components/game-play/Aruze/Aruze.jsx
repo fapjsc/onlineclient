@@ -1,12 +1,16 @@
 import React, {
-  useRef, useState, useMemo, useCallback,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
 } from 'react';
 
 // Lodash
 import throttle from 'lodash.throttle';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Prop-Type
 import PropTypes from 'prop-types';
@@ -26,19 +30,6 @@ import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 
 // Styles
 import styles from './Aruze.module.scss';
-
-const buttonList = [
-  { id: 1, button_name: 'bet-1', code: '0' },
-  { id: 2, button_name: 'bet-3', code: '1' },
-  { id: 3, button_name: 'bet-5', code: '2' },
-  { id: 4, button_name: 'bet-7', code: '3' },
-  { id: 5, button_name: 'bet-9', code: '4' },
-  { id: 6, button_name: 'bet-25', code: '5' },
-  { id: 7, button_name: 'bet-40', code: '6' },
-  { id: 8, button_name: 'bet-50', code: '7' },
-  { id: 9, button_name: 'bet-75', code: '8' },
-  { id: 10, button_name: 'bet-80', code: '9' },
-];
 
 const Aruze = ({
   // model,
@@ -69,11 +60,21 @@ const Aruze = ({
     spin: false,
   });
 
+  const [isAuto, setIsAuto] = useState(false);
+
   // Redux
   const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.selectEgm);
+
+  const { buttonList } = data || {};
 
   // Ref
   const subBtnRef = useRef();
+  const intervalID = useRef();
+
+  const mainBtnList = buttonList.filter(
+    (btn) => btn.button_name === 'max' || btn.button_name === 'spin',
+  );
 
   const btnPressApiHandler = useCallback(
     ({ code, name }) => {
@@ -89,6 +90,7 @@ const Aruze = ({
 
   const mainBtnHandler = ({ name, code }) => {
     console.log(name, code, ip);
+    if (name === 'auto') return;
     throttledBtnPress({ code, name });
   };
 
@@ -104,7 +106,19 @@ const Aruze = ({
     }, 800);
   };
 
+  const autoClick = () => {
+    intervalID.current = setInterval(() => {
+      // 這裡需注意 spin 的 code 是不是 0
+      throttledBtnPress({ name: 'spin', code: '0' });
+    }, 1700);
+  };
+
+  const stopAuto = () => {
+    clearInterval(intervalID.current);
+  };
+
   const subBtnEl = buttonList
+    .filter((btn) => btn.button_name !== 'spin' && btn.button_name !== 'max')
     .sort((a, b) => a.sequence - b.sequence)
     .map((btn) => {
       const { button_name: name, code, spin_effect: spinEffect } = btn || {};
@@ -125,6 +139,17 @@ const Aruze = ({
         />
       );
     });
+
+  useEffect(() => {
+    if (isAuto) {
+      throttledBtnPress({ name: 'spin', code: '0' });
+      autoClick();
+    } else {
+      stopAuto();
+    }
+
+    // eslint-disable-next-line
+  }, [isAuto]);
 
   return (
     <Wrapper img={image} className={styles.container}>
@@ -193,6 +218,9 @@ const Aruze = ({
           mainBtnClick={mainBtnClick}
           setMainBtnClick={setMainBtnClick}
           mainBtnHandler={mainBtnHandler}
+          mainBtnList={mainBtnList}
+          setIsAuto={setIsAuto}
+          isAuto={isAuto}
         />
       </section>
 
@@ -205,6 +233,7 @@ const Aruze = ({
           currentSubBtn={currentSubBtn}
           subBtnClickHandler={subBtnClickHandler}
           subBtnEl={subBtnEl}
+          height="-60%"
         />
       </section>
     </Wrapper>

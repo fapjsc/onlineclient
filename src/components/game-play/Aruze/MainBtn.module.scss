@@ -32,8 +32,12 @@
     background-image: url(../../../assets/button/aruze/main/en/spin.webp);
   }
 
+  .auto-spin-animation {
+    animation: 400ms main-btn-click steps(3) infinite;
+  }
+
   .main-btn-animation {
-    animation: 0.15s main-btn-click steps(3) 1;
+    animation: 400ms main-btn-click steps(3) 1;
   }
 
   @keyframes main-btn-click {
