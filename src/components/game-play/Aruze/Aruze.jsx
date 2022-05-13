@@ -28,16 +28,16 @@ import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 import styles from './Aruze.module.scss';
 
 const buttonList = [
-  { id: 1, button_name: 'bet-1', code: 0 },
-  { id: 2, button_name: 'bet-3', code: 1 },
-  { id: 3, button_name: 'bet-5', code: 2 },
-  { id: 4, button_name: 'bet-7', code: 3 },
-  { id: 5, button_name: 'bet-9', code: 4 },
-  { id: 6, button_name: 'bet-25', code: 5 },
-  { id: 7, button_name: 'bet-40', code: 6 },
-  { id: 8, button_name: 'bet-50', code: 7 },
-  { id: 9, button_name: 'bet-75', code: 8 },
-  { id: 10, button_name: 'bet-80', code: 9 },
+  { id: 1, button_name: 'bet-1', code: '0' },
+  { id: 2, button_name: 'bet-3', code: '1' },
+  { id: 3, button_name: 'bet-5', code: '2' },
+  { id: 4, button_name: 'bet-7', code: '3' },
+  { id: 5, button_name: 'bet-9', code: '4' },
+  { id: 6, button_name: 'bet-25', code: '5' },
+  { id: 7, button_name: 'bet-40', code: '6' },
+  { id: 8, button_name: 'bet-50', code: '7' },
+  { id: 9, button_name: 'bet-75', code: '8' },
+  { id: 10, button_name: 'bet-80', code: '9' },
 ];
 
 const Aruze = ({
