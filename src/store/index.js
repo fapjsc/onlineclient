@@ -16,17 +16,20 @@ import {
   cashInOutReducer,
   brandReducer,
   aftFormReducer,
+  egmStatusReducer,
+  leaveEgmReducer,
 } from './reducers/egmReducer';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', 'selectEgm'], // only member will be persisted
+  whitelist: ['user', 'selectEgm', 'egmStatus'], // only member will be persisted
 };
 
 const reducer = combineReducers({
   user: userReducer,
   egmList: egmListReducer,
+  egmStatus: egmStatusReducer,
   selectEgm: selectEgmReducer,
   egmButtonPress: egmButtonPressReducer,
   cashInOut: cashInOutReducer,
@@ -34,6 +37,7 @@ const reducer = combineReducers({
   crypto: cryptoReducer,
   aftForm: aftFormReducer,
   menu: menuReducer,
+  leaveEgm: leaveEgmReducer,
 });
 
 const rootReducer = (state, action) => {

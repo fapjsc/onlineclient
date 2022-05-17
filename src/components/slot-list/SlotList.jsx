@@ -19,7 +19,6 @@ import {
 import { egmActionTypes } from '../../store/types';
 
 // Helper
-// eslint-disable-next-line
 import { getEgmImage, getBrandImage } from '../../utils/helper';
 
 import loadingImg from '../../assets/slot-list/loading.png';
@@ -39,7 +38,6 @@ const SlotList = () => {
   } = useSelector((state) => state.egmList);
 
   const {
-    // eslint-disable-next-line
     data: brandListData,
     error: brandListError,
     isLoading: brandListLoading,
@@ -53,10 +51,13 @@ const SlotList = () => {
 
   const { id: egmID } = selectEgmDta || {};
 
+  // const { isPlaying } = useSelector((state) => state.egmStatus);
+
   const selectEgmHandler = (id) => {
     dispatch(selectEgm(id));
   };
 
+  // console.log(egmListData, 'slot list');
   // const randomBoolean = () => Math.random() < 0.5;
 
   useEffect(() => {
@@ -67,7 +68,11 @@ const SlotList = () => {
   // 有egmID 代表select egm 成功
   useEffect(() => {
     if (egmID) {
-      navigate('/game-play');
+      navigate('/game-play', { replace: true });
+      window.history.pushState(null, null, null);
+
+      // window.open('/game-play');
+      // window.history.pushState(null, null, null);
     }
   }, [egmID, navigate]);
 
@@ -172,7 +177,7 @@ const SlotList = () => {
             role="presentation"
             className={styles['slot-btn']}
           >
-            {/* {randomBoolean() && (
+            {Object.keys(egm.member).length > 0 && (
               <div
                 role="presentation"
                 onClick={(e) => {
@@ -182,7 +187,7 @@ const SlotList = () => {
               >
                 遊戲中...
               </div>
-            )} */}
+            )}
 
             <Image
               src={getEgmImage({

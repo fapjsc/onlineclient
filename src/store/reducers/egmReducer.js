@@ -68,6 +68,13 @@ export const egmListReducer = (state = emgListState, action) => {
       error: action.payload.error,
     };
 
+  case egmActionTypes.UPDATE_EGM:
+    return {
+      isLoading: false,
+      data: action.payload.egmList,
+      error: '',
+    };
+
   case egmActionTypes.CLEAR_EGM_LIST_STATUS:
     return emgListState;
 
@@ -119,6 +126,17 @@ export const selectEgmReducer = (state = selectEgmState, action) => {
   case egmActionTypes.CLEAR_SELECT_EGM_DATA:
     return selectEgmState;
 
+  default:
+    return state;
+  }
+};
+
+export const egmStatusReducer = (state = {}, action) => {
+  switch (action.type) {
+  case egmActionTypes.IS_PLAYING:
+    return {
+      isPlaying: action.payload.egmStatus,
+    };
   default:
     return state;
   }
@@ -212,6 +230,48 @@ export const aftFormReducer = (state = aftFormData, action) => {
 
   case egmActionTypes.CLEAR_AFT_FORM:
     return aftFormData;
+  default:
+    return state;
+  }
+};
+
+// Leave Egm
+const leaveEgmState = {
+  isLoading: false,
+  data: null,
+  error: '',
+};
+
+export const leaveEgmReducer = (state = leaveEgmState, action) => {
+  switch (action.type) {
+  case egmActionTypes.LEAVE_EGM_BEGIN:
+    return {
+      isLoading: true,
+      data: null,
+      error: '',
+    };
+
+  case egmActionTypes.LEAVE_EGM_SUCCESS:
+    return {
+      isLoading: false,
+      data: action.payload.leaveEgm,
+      error: '',
+    };
+
+  case egmActionTypes.LEAVE_EGM_ERROR:
+    return {
+      isLoading: false,
+      data: null,
+      error: action.payload.error,
+    };
+
+  case egmActionTypes.LEAVE_EGM_CLEAR:
+    return {
+      isLoading: false,
+      data: null,
+      error: '',
+    };
+
   default:
     return state;
   }

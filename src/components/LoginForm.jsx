@@ -114,8 +114,6 @@ const LoginForm = ({ visible, setVisible }) => {
     dispatch(setupUser({ currentUser: formValue, endPoint: 'login' }));
   }, [cryptoKey, dispatch, activeKey]);
 
-  console.log('login form');
-
   return (
     <Modal
       visible={visible}

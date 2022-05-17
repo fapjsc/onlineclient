@@ -14,6 +14,8 @@ import ProtectRouter from './routes/ProtectRouter';
 import LoadingPage from './pages/LoadingPage';
 import LandingPage from './pages/LandingPage';
 
+import './wdyr';
+
 import './App.scss';
 
 const GamePlayPage = React.lazy(() => import('./pages/game-play/GamePlayPage'));

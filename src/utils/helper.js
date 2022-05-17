@@ -4,6 +4,7 @@ export const getEgmImage = ({ model, brandName }) => {
     // eslint-disable-next-line
     image = require(`../assets/slot-list/${brandName}/${model}.webp`);
   } catch (error) {
+    console.log(error);
     // eslint-disable-next-line
     image = require(`../assets/slot-list/找不到圖片.png`);
   }

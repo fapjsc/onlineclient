@@ -21,7 +21,7 @@ import { setAftFormData, clearAftForm } from '../../store/actions/egmActions';
 import styles from './AftForm.module.scss';
 
 // Components
-import aftInImage from '../../assets/開洗分介面/btn_creditin_normal.webp';
+// import aftInImage from '../../assets/開洗分介面/btn_creditin_normal.webp';
 import aftOutImage from '../../assets/開洗分介面/btn_creditout_normal.webp';
 import closeImage from '../../assets/開洗分介面/btn_close_normal.webp';
 import cashChipsImage from '../../assets/開洗分介面/btn_cashchips_normal.webp';
@@ -50,18 +50,19 @@ const AftForm = ({
 
   let amountArr = [];
 
-  if (aftType === 'aft-in') {
-    amountArr = [
-      '1000',
-      '2000',
-      '3000',
-      '4000',
-      '5000',
-      '6000',
-      '7000',
-      '8000',
-    ];
-  }
+  // if (aftType === 'aft-in') {
+  //   amountArr = [
+  //     '1000',
+  //     '2000',
+  //     '3000',
+  //     '4000',
+  //     '5000',
+  //     '6000',
+  //     '7000',
+  //     '8000',
+  //   ];
+  // }
+
   if (aftType === 'aft-out') amountArr = ['全洗'];
 
   const backHandler = () => {
@@ -166,13 +167,13 @@ const AftForm = ({
               // onClick={() => setToggleNav(true)}
               role="presentation"
             >
-              <img
+              {/* <img
                 src={aftInImage}
                 id="aft-in"
                 alt="aft in"
                 onClick={aftTypeSelectHandler}
                 role="presentation"
-              />
+              /> */}
               <img
                 src={aftOutImage}
                 alt="aft out"

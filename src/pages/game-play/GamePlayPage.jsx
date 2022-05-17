@@ -29,6 +29,7 @@ import {
   clearCashInOutStatus,
   clearButtonPressStatus,
   clearSelectEgmData,
+  clearLeaveEgm,
 } from '../../store/actions/egmActions';
 
 import { setCurrentMenu } from '../../store/actions/menuActions';
@@ -45,7 +46,6 @@ const Sammy = React.lazy(() => import('../../components/game-play/Sammy/Sammy'))
 const GamePlay = () => {
   // Ref
   const sdkRef = useRef();
-
   // Hooks
   // eslint-disable-next-line
   const { isMobile, isTablet } = useRwd();
@@ -60,6 +60,7 @@ const GamePlay = () => {
   const [playVideo, setPlayVideo] = useState(false);
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
+  const [isAuto, setIsAuto] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
@@ -121,11 +122,15 @@ const GamePlay = () => {
 
   const exitGameHandler = () => {
     sdkRef.current?.close();
-    navigate('/');
     dispatch(clearButtonPressStatus());
     dispatch(clearCashInOutStatus());
     dispatch(clearSelectEgmData());
     dispatch(setCurrentMenu(''));
+    dispatch(clearLeaveEgm());
+
+    setTimeout(() => {
+      navigate('/');
+    }, 0);
   };
 
   // 如果有aft form data , 就call開洗分api
@@ -140,6 +145,7 @@ const GamePlay = () => {
   useEffect(() => {
     if (aftData) {
       let text;
+
       if (aftType === 'aft-in') {
         text = '開分';
       }
@@ -175,6 +181,26 @@ const GamePlay = () => {
       });
     }
   }, [aftError, dispatch]);
+
+  useEffect(() => {
+    // window.history.pushState(null, null, null);
+
+    const eventHandler = () => {
+      window.history.pushState(null, null, null);
+      // console.log('test');
+      sdkRef.current?.close();
+      window.location.reload();
+    };
+
+    window.addEventListener('popstate', eventHandler); // 按上一頁
+
+    return () => {
+      window.removeEventListener('popstate', eventHandler);
+      // window.removeEventListener('beforeunload', eventHandler);
+    };
+
+    // eslint-disable-next-line
+  }, []);
 
   // 視訊播放狀態
   useEffect(() => {
@@ -305,6 +331,8 @@ const GamePlay = () => {
             setShowSubBtn={setShowSubBtn}
             currentSubBtn={currentSubBtn}
             setCurrentSubBtn={setCurrentSubBtn}
+            setIsAuto={setIsAuto}
+            isAuto={isAuto}
           />
         )}
 

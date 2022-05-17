@@ -34,6 +34,17 @@ export const getEgmList = () => async (dispatch) => {
   }
 };
 
+export const upDateEgmData = (egmList) => ({
+  type: egmActionTypes.UPDATE_EGM,
+  payload: { egmList },
+});
+
+// Setup Egm Status
+export const setIsPlaying = (egmStatus) => ({
+  type: egmActionTypes.IS_PLAYING,
+  payload: { egmStatus },
+});
+
 // Get Brand List
 export const getBrandList = () => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_BRAND_LIST_BEGIN });
@@ -79,6 +90,32 @@ export const selectEgm = (id) => async (dispatch) => {
     if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.SETUP_SELECT_EGM_ERROR,
+        payload: {
+          error: response?.data?.message || 'select egm fail',
+        },
+      });
+    }
+  }
+};
+
+export const leaveEgm = ({ userToken }) => async (dispatch) => {
+  dispatch({ type: egmActionTypes.LEAVE_EGM_BEGIN });
+
+  try {
+    const { data } = await authFetch.post(
+        `${agentServer.api}/${egmAPi.leaveEgm}`,
+        { token: userToken },
+    );
+
+    dispatch({
+      type: egmActionTypes.LEAVE_EGM_SUCCESS,
+      payload: { leaveEgm: data },
+    });
+  } catch (error) {
+    const { response } = error;
+    if (response?.status !== 401 && error?.message !== 429) {
+      dispatch({
+        type: egmActionTypes.LEAVE_EGM_ERROR,
         payload: {
           error: response?.data?.message || 'select egm fail',
         },
@@ -223,4 +260,8 @@ export const clearCashInOutStatus = () => ({
 
 export const clearAftForm = () => ({
   type: egmActionTypes.CLEAR_AFT_FORM,
+});
+
+export const clearLeaveEgm = () => ({
+  type: egmActionTypes.LEAVE_EGM_CLEAR,
 });

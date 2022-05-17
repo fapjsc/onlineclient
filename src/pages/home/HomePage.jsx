@@ -40,6 +40,7 @@ import styles from './HomePage.module.scss';
 
 const HomePage = () => {
   // InitState
+  // eslint-disable-next-line
   const { isAuth, isSelectEgm } = useAuth();
   const [showLoginForm, setShowLoginForm] = useState(false);
 
@@ -92,7 +93,9 @@ const HomePage = () => {
 
   return (
     <>
-      <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />
+      {showLoginForm && (
+        <LoginForm visible={showLoginForm} setVisible={setShowLoginForm} />
+      )}
       <div className={styles.container}>
         <CSSTransition
           in={currentAction === 'home'}

@@ -52,6 +52,8 @@ const Aruze = ({
   setShowSubBtn,
   currentSubBtn,
   setCurrentSubBtn,
+  setIsAuto,
+  isAuto,
 }) => {
   // Init State
   const [mainBtnClick, setMainBtnClick] = useState({
@@ -60,7 +62,7 @@ const Aruze = ({
     spin: false,
   });
 
-  const [isAuto, setIsAuto] = useState(false);
+  // const [isAuto, setIsAuto] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
@@ -84,12 +86,11 @@ const Aruze = ({
   );
 
   const throttledBtnPress = useMemo(
-    () => throttle(btnPressApiHandler, 1000),
+    () => throttle(btnPressApiHandler, 2000),
     [btnPressApiHandler],
   );
 
   const mainBtnHandler = ({ name, code }) => {
-    console.log(name, code, ip);
     if (name === 'auto') return;
     throttledBtnPress({ code, name });
   };
@@ -110,11 +111,16 @@ const Aruze = ({
     intervalID.current = setInterval(() => {
       // 這裡需注意 spin 的 code 是不是 0
       throttledBtnPress({ name: 'spin', code: '0' });
-    }, 1700);
+    }, 3000);
   };
 
   const stopAuto = () => {
     clearInterval(intervalID.current);
+  };
+
+  const aftClick = () => {
+    setIsAuto(false);
+    setIsCashInOutClick(true);
   };
 
   const subBtnEl = buttonList
@@ -159,6 +165,7 @@ const Aruze = ({
           visible={showMenu}
           setVisible={setShowMenu}
           exitGameHandler={exitGameHandler}
+          setIsAuto={setIsAuto}
         />
       </section>
 
@@ -200,7 +207,7 @@ const Aruze = ({
         <div
           className={styles['cash-in-out-btn']}
           role="presentation"
-          onClick={() => setIsCashInOutClick(true)}
+          onClick={aftClick}
         />
       </section>
 
@@ -261,6 +268,8 @@ Aruze.propTypes = {
   setShowSubBtn: PropTypes.func.isRequired,
   currentSubBtn: PropTypes.string.isRequired,
   setCurrentSubBtn: PropTypes.func.isRequired,
+  setIsAuto: PropTypes.func.isRequired,
+  isAuto: PropTypes.bool.isRequired,
 };
 
 Aruze.defaultProps = {

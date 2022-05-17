@@ -1,9 +1,9 @@
 export const agentServer = {
   api: process.env.REACT_APP_AGENT_API || 'http://220.135.67.240:8000/online',
   socketUrl: process.env.REACT_APP_AGENT_SOCKET || 'http://192.168.10.119:3030',
-  // api: 'http://192.168.10.105:3030/online',
+  // api: 'http://192.168.10.113:3030/online',
+  // socketUrl: 'http://192.168.10.113:3030',
   // api: 'http://192.168.10.200:3030/online',
-  // socketUrl: 'http://192.168.10.200:3030',
   // socketUrl: 'http://localhost:8081',
 };
 
@@ -21,6 +21,7 @@ export const egmAPi = {
   aftIn: 'aftIn',
   aftOut: 'aftOut',
   getBrandList: 'egmBrandList',
+  leaveEgm: 'leaveEgm',
 };
 
 export const apiConfig = {

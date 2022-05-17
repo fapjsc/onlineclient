@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const SrsRtcPlayerAsync = () => {
   let self = {};
+ 
 
   self.play = async (url) => {
     let conf = self.__internal.prepareUrl(url);
