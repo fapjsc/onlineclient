@@ -70,9 +70,6 @@ const SlotList = () => {
     if (egmID) {
       navigate('/game-play', { replace: true });
       window.history.pushState(null, null, null);
-
-      // window.open('/game-play');
-      // window.history.pushState(null, null, null);
     }
   }, [egmID, navigate]);
 
@@ -177,7 +174,7 @@ const SlotList = () => {
             role="presentation"
             className={styles['slot-btn']}
           >
-            {Object.keys(egm.member).length > 0 && (
+            {(Object.keys(egm?.member)?.length > 0 || egm?.hasCredit) && (
               <div
                 role="presentation"
                 onClick={(e) => {

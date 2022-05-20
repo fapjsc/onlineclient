@@ -9,7 +9,6 @@ import {
 
 import { agentServer } from '../apis';
 
-// eslint-disable-next-line
 import { upDateEgmData } from '../store/actions/egmActions';
 
 let socket;
@@ -47,9 +46,9 @@ export const connectSocket = (token) => {
   socket.on('onlineEgmList', (egmStatus) => {
     const { data } = store.getState().egmList;
     const existsIP = data?.map((el) => el.ip);
-    const filterArr = Object.values(egmStatus).filter((egm) => existsIP.includes(egm.ip));
+    const filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
     console.log(filterArr);
-    if (!filterArr || !filterArr.length) return;
+    if (!filterArr?.length) return;
     store.dispatch(upDateEgmData(filterArr));
   });
 
