@@ -19,6 +19,7 @@ import {
 import { egmActionTypes } from '../../store/types';
 
 // Helper
+// eslint-disable-next-line
 import { getEgmImage, getBrandImage } from '../../utils/helper';
 
 import loadingImg from '../../assets/slot-list/loading.png';
@@ -32,6 +33,7 @@ const SlotList = () => {
   const navigate = useNavigate();
 
   const {
+    // eslint-disable-next-line
     data: egmListData,
     error: egmListError,
     isLoading: egmListLoading,
@@ -52,7 +54,7 @@ const SlotList = () => {
   const { id: egmID } = selectEgmDta || {};
 
   // const { isPlaying } = useSelector((state) => state.egmStatus);
-
+  // eslint-disable-next-line
   const selectEgmHandler = (id) => {
     dispatch(selectEgm(id));
   };
@@ -165,7 +167,6 @@ const SlotList = () => {
             </div>
           ))}
       </div>
-
       <div className={styles['slot-box']}>
         {egmListData?.map((egm) => (
           <div
@@ -174,7 +175,8 @@ const SlotList = () => {
             role="presentation"
             className={styles['slot-btn']}
           >
-            {(Object.keys(egm?.member)?.length > 0 || egm?.hasCredit) && (
+            {((egm?.member && Object.keys(egm.member)?.length > 0)
+              || egm?.hasCredit) && (
               <div
                 role="presentation"
                 onClick={(e) => {

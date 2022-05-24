@@ -9,7 +9,7 @@ main btn => 557px(5.8inches)
 ## .env
 ```
 REACT_APP_AGENT_API='http://220.135.67.240:8000/online'
-REACT_APP_AGENT_SOCKET='http://192.168.10.119:3030'
+REACT_APP_AGENT_SOCKET='http://220.135.67.240:8000'
 <!-- NODE_ENV='development' -->
 ```
 
