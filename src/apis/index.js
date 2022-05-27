@@ -11,7 +11,7 @@ export const authApi = {
   getKey: 'getKey',
   login: 'login',
   landing: '88894168/autoLogin',
-  landing15Wheel: '15slot',
+  landing15Wheel: '15slot/autoLogin',
 };
 
 export const egmAPi = {

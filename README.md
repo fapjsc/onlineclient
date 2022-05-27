@@ -10,11 +10,12 @@ main btn => 557px(5.8inches)
 ```
 REACT_APP_AGENT_API='http://220.135.67.240:8000/online'
 REACT_APP_AGENT_SOCKET='http://220.135.67.240:8000'
-<!-- NODE_ENV='development' -->
+REACT_APP_HOST_NAME=WHEEL 
 ```
 
 
-
+### 
+REACT_APP_HOST_NAME 自動跳轉 url 判斷
 
 
 
