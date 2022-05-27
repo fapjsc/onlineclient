@@ -35,7 +35,7 @@ const menuLis = [
   { id: 'cs', icon: <BellOutline />, name: '線上客服' },
   { id: 'wallet', icon: <BankcardOutline />, name: '我的錢包' },
   { id: 'friends', icon: <TeamOutline />, name: '好友' },
-  { id: 'online', icon: <VideoOutline />, name: '直播' },
+  { id: 'show-live', icon: <VideoOutline />, name: '直播' },
   { id: 'leave', icon: <TravelOutline />, name: '返回大廳' },
 ];
 

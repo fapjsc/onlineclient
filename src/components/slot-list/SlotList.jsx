@@ -118,14 +118,6 @@ const SlotList = () => {
   }, [selectEgmError, dispatch]);
 
   useEffect(() => {
-    if (selectEgmLoading) {
-      Toast.show({
-        icon: 'loading',
-        content: '加载中…',
-        position: 'center',
-      });
-    }
-
     if (egmListLoading || brandListLoading) {
       Toast.show({
         icon: 'loading',
@@ -137,7 +129,21 @@ const SlotList = () => {
     return () => {
       Toast.clear();
     };
-  }, [selectEgmLoading, egmListLoading, brandListLoading]);
+  }, [egmListLoading, brandListLoading]);
+
+  useEffect(() => {
+    if (selectEgmLoading) {
+      Toast.show({
+        icon: 'loading',
+        content: '請稍等…',
+        position: 'center',
+      });
+    }
+
+    return () => {
+      Toast.clear();
+    };
+  }, [selectEgmLoading]);
 
   return (
     <section className={styles.container}>

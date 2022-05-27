@@ -20,6 +20,8 @@ import {
   leaveEgmReducer,
 } from './reducers/egmReducer';
 
+import chatReducer from './reducers/chatReducer';
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -38,6 +40,7 @@ const reducer = combineReducers({
   aftForm: aftFormReducer,
   menu: menuReducer,
   leaveEgm: leaveEgmReducer,
+  chat: chatReducer,
 });
 
 const rootReducer = (state, action) => {

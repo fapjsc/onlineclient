@@ -67,3 +67,7 @@ export const menuActionTypes = {
 export const rootActionTypes = {
   RESET_STORE: 'RESET_STORE',
 };
+
+export const chatActionTypes = {
+  SET_MESSAGE_LIST: 'SET_MESSAGE_LIST',
+};

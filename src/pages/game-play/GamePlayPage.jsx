@@ -16,6 +16,7 @@ import LoadingPage from '../LoadingPage';
 import AftForm from '../../components/aft-form/AftForm';
 import Jackpot from '../../components/jackpot/Jackpot';
 import GameDescription from '../../components/game-play/game-description/GameDescription';
+import ShowLive from '../../components/show-live/ShowLive';
 
 // eslint-disable-next-line
 import { getSocket, connectSocket, disconnectSocket } from '../../utils/socket';
@@ -264,6 +265,9 @@ const GamePlay = () => {
 
       {/* 遊戲說明 */}
       <GameDescription visible={currentMenu === 'description'} />
+
+      {/* 直撥 */}
+      <ShowLive visible={currentMenu === 'show-live'} />
 
       {/* Jackpot */}
       <Jackpot visible={currentMenu === 'jp'} />

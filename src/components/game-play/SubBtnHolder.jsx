@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { gsap } from 'gsap';
 
+// Redux
+import { useSelector } from 'react-redux';
+
 // Hooks
 import useDidUpdateEffect from '../../hooks/useDidUpdatedEffect';
 
@@ -10,6 +13,9 @@ import useDidUpdateEffect from '../../hooks/useDidUpdatedEffect';
 import styles from './SubBtnHolder.module.scss';
 import subBtnHeaderImage from '../../assets/button/sub-btn-header.webp';
 import '../../sass/animation.scss';
+
+// Config
+import styleConfig from '../../config/styleConfig';
 
 const SubBtnHolder = ({
   subBtnRef,
@@ -20,6 +26,8 @@ const SubBtnHolder = ({
   lowest,
   subBtnEl,
 }) => {
+  const { currentMenu } = useSelector((state) => state.menu);
+
   // 跳過第一次render，只有showSubBtn改變才執行動畫邏輯
   useDidUpdateEffect(() => {
     const tl = gsap.timeline();
@@ -57,8 +65,13 @@ const SubBtnHolder = ({
         })}`}
         onClick={() => setShowSubBtn((prev) => !prev)}
         role="presentation"
+        style={{ zIndex: styleConfig.zIndex.max }}
       >
-        <img src={subBtnHeaderImage} alt="sub-btn-header" />
+        <img
+          style={{ opacity: currentMenu && 0.5 }}
+          src={subBtnHeaderImage}
+          alt="sub-btn-header"
+        />
       </div>
 
       <div className={styles['sub-btn-holder']}>{subBtnEl}</div>

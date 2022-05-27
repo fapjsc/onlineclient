@@ -22,7 +22,17 @@ import { autoLogin } from '../store/actions/userActions';
 import { agentServer, authApi } from '../apis';
 
 const landing = async ({ playerAccount, hash }) => {
-  const url = `${agentServer.api}/${authApi.landing}`;
+  const host = process.env.REACT_APP_HOST_NAME;
+
+  let endPoint;
+
+  if (host === 'WHEEL-15') {
+    endPoint = authApi.landing15Wheel;
+  } else {
+    endPoint = authApi.landing;
+  }
+
+  const url = `${agentServer.api}/${endPoint}`;
   const response = await axiosFetch.post(url, {
     playerAccount,
     hash,

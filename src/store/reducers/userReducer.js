@@ -47,7 +47,7 @@ export const userReducer = (state = initialState, action) => {
     };
 
   case userActionTypes.UPDATE_ONLINE:
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       data: {

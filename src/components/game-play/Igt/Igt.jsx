@@ -13,6 +13,9 @@ import Video from '../../Video';
 // Styles
 import styles from './Igt.module.scss';
 
+// Config
+import styleConfig from '../../../config/styleConfig';
+
 // eslint-disable-next-line
 const Igt = ({
   model,
@@ -94,7 +97,11 @@ const Igt = ({
         <MainBtn />
       </section>
 
-      <section ref={subBtnRef} className={styles['sub-btn-box']}>
+      <section
+        style={{ zIndex: styleConfig.zIndex.max }}
+        ref={subBtnRef}
+        className={styles['sub-btn-box']}
+      >
         <SubHolder
           subBtnRef={subBtnRef.current}
           showSubBtn={showSubBtn}

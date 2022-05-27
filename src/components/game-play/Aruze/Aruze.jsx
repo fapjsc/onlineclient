@@ -18,6 +18,9 @@ import PropTypes from 'prop-types';
 // Actions
 import { buttonPress } from '../../../store/actions/egmActions';
 
+// Config
+import styleConfig from '../../../config/styleConfig';
+
 // Components
 import Wrapper from '../Wrapper';
 import MainBtn from './MainBtn';
@@ -232,7 +235,11 @@ const Aruze = ({
       </section>
 
       {/*  Sub Button */}
-      <section ref={subBtnRef} className={styles['sub-btn-box']}>
+      <section
+        style={{ zIndex: styleConfig.zIndex.max }}
+        ref={subBtnRef}
+        className={styles['sub-btn-box']}
+      >
         <SubBtnHolder
           subBtnRef={subBtnRef.current}
           showSubBtn={showSubBtn}

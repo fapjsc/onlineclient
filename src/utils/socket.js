@@ -7,9 +7,14 @@ import {
   updateOnline,
 } from '../store/actions/userActions';
 
+import { setMessages } from '../store/actions/chatActions';
+
 import { agentServer } from '../apis';
 
+// eslint-disable-next-line
 import { upDateEgmData } from '../store/actions/egmActions';
+
+import { scrollToBottomAnimated } from './scrollToBottom';
 
 let socket;
 
@@ -36,6 +41,7 @@ export const connectSocket = (token) => {
   });
 
   socket.on('disconnect', () => {
+    console.log('disconnect');
     store.dispatch(setUserSocketStatus('disconnect'));
   });
 
@@ -47,13 +53,19 @@ export const connectSocket = (token) => {
     const { data } = store.getState().egmList;
     const existsIP = data?.map((el) => el.ip);
     const filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
-    console.log(filterArr);
+    // console.log(filterArr);
     if (!filterArr?.length) return;
     store.dispatch(upDateEgmData(filterArr));
   });
 
   socket.on('update-point', (data) => {
     store.dispatch(updateOnline({ onlineData: data }));
+  });
+
+  socket.on('chatRoomDemo', (message) => {
+    // console.log(message, 'from server');
+    store.dispatch(setMessages(message));
+    scrollToBottomAnimated('message-container');
   });
 
   allowCall = true;
@@ -65,3 +77,9 @@ export const disconnectSocket = () => {
 };
 
 export const getSocket = () => socket;
+
+export const sendMessage = (message) => {
+  if (!socket) return;
+
+  socket.emit('chatRoomDemo', message);
+};

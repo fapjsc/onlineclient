@@ -38,6 +38,9 @@ import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 import styles from './Aristocrat.module.scss';
 import '../../../sass/animation.scss';
 
+// Config
+import styleConfig from '../../../config/styleConfig';
+
 const Aristocrat = ({
   model,
   image,
@@ -287,7 +290,11 @@ const Aristocrat = ({
         </section>
 
         {/* Sub Button */}
-        <section ref={subBtnRef} className={styles['sub-btn-box']}>
+        <section
+          style={{ zIndex: styleConfig.zIndex.max }}
+          ref={subBtnRef}
+          className={styles['sub-btn-box']}
+        >
           <SubHolder
             subBtnRef={subBtnRef.current}
             showSubBtn={showSubBtn}
