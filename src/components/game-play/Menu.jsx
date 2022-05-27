@@ -106,6 +106,10 @@ const Menu = ({
     if (leaveEgmData?.status === 200) {
       exitGameHandler();
     }
+
+    if (leaveEgmError) {
+      exitGameHandler();
+    }
     // eslint-disable-next-line
   }, [leaveEgmLoading, leaveEgmData, leaveEgmError]);
 
