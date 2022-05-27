@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // Antd
 import { Image, Dialog, Toast } from 'antd-mobile';
@@ -42,6 +42,7 @@ const SlotList = () => {
   const {
     data: brandListData,
     error: brandListError,
+    // eslint-disable-next-line
     isLoading: brandListLoading,
   } = useSelector((state) => state.brand);
 
@@ -61,6 +62,9 @@ const SlotList = () => {
 
   // console.log(egmListData, 'slot list');
   // const randomBoolean = () => Math.random() < 0.5;
+
+  const egmListLoadingRef = useRef();
+  const selectEgmLoadingRef = useRef();
 
   useEffect(() => {
     dispatch(getEgmList());
@@ -118,30 +122,31 @@ const SlotList = () => {
   }, [selectEgmError, dispatch]);
 
   useEffect(() => {
-    if (egmListLoading || brandListLoading) {
-      Toast.show({
+    if (egmListLoading) {
+      egmListLoadingRef.current = Toast.show({
         icon: 'loading',
-        content: '遊戲加载中…',
+        content: '遊戲加载中!',
         position: 'center',
       });
     }
 
     return () => {
-      Toast.clear();
+      egmListLoadingRef.current?.close();
     };
-  }, [egmListLoading, brandListLoading]);
+  }, [egmListLoading]);
 
   useEffect(() => {
     if (selectEgmLoading) {
-      Toast.show({
+      selectEgmLoadingRef.current = Toast.show({
         icon: 'loading',
         content: '請稍等…',
         position: 'center',
+        duration: 0,
       });
     }
 
     return () => {
-      Toast.clear();
+      selectEgmLoadingRef.current?.close();
     };
   }, [selectEgmLoading]);
 
