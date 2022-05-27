@@ -22,11 +22,9 @@ import { autoLogin } from '../store/actions/userActions';
 import { agentServer, authApi } from '../apis';
 
 const landing = async ({ playerAccount, hash }) => {
-  const host = process.env.REACT_APP_HOST_NAME;
-
   let endPoint;
 
-  if (host === 'WHEEL-15') {
+  if (process.env.REACT_APP_HOST_NAME === 'WHEEL') {
     endPoint = authApi.landing15Wheel;
   } else {
     endPoint = authApi.landing;
