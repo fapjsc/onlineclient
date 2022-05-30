@@ -35,11 +35,6 @@ const Video = ({
       .catch(() => {
         sdkRef.current.close();
         setPlayStatus('error');
-        // Dialog.alert({
-        //   content: '無法獲取影像',
-        //   closeOnMaskClick: true,
-        //   confirmText: '確定',
-        // });
       })
       .finally(() => {
         flag = true;

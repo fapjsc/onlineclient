@@ -24,6 +24,7 @@ import useWindowSize from '../../hooks/useWindowSize';
 import { setCurrentMenu } from '../../store/actions/menuActions';
 
 // Components
+// eslint-disable-next-line
 import Video from '../Video';
 
 // Styles
@@ -51,11 +52,13 @@ const resultStyles = {
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
+  zIndex: 2,
 };
 
 const ShowLive = ({ visible }) => {
   // Init State
-  const [jpPlayStatus, setJpPlayStatus] = useState('loading');
+  // eslint-disable-next-line
+  const [showLiveStatus, setShowLiveStatus] = useState('loading');
   const [showChat, setShowChat] = useState(true);
 
   // Ref
@@ -71,6 +74,7 @@ const ShowLive = ({ visible }) => {
   // eslint-disable-next-line
   const { messages } = useSelector((state) => state.chat);
 
+  // eslint-disable-next-line
   const getSdkRef = (ref) => {
     sdkRef.current = ref;
   };
@@ -86,9 +90,16 @@ const ShowLive = ({ visible }) => {
   };
 
   useEffect(() => {
+    console.log(showLiveStatus);
     if (visible) {
       scrollToBottom('message-container');
     }
+
+    if (!visible) {
+      sdkRef.current?.close();
+    }
+
+    // eslint-disable-next-line
   }, [visible]);
 
   return (
@@ -145,7 +156,7 @@ const ShowLive = ({ visible }) => {
           width: isMobile ? '100vw' : '35vw',
         }}
       >
-        {jpPlayStatus === 'loading' && (
+        {showLiveStatus === 'loading' && (
           <Result
             status="waiting"
             title="視訊加載中"
@@ -154,7 +165,7 @@ const ShowLive = ({ visible }) => {
           />
         )}
 
-        {jpPlayStatus === 'error' && (
+        {showLiveStatus === 'error' && (
           <Result status="error" title="無法獲取視訊" style={resultStyles} />
         )}
 
@@ -172,7 +183,7 @@ const ShowLive = ({ visible }) => {
 
           <Video
             rtcUrl={testUrl}
-            setPlayStatus={setJpPlayStatus}
+            setPlayStatus={setShowLiveStatus}
             getSdkRef={getSdkRef}
           />
         </div>
