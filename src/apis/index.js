@@ -1,5 +1,5 @@
 export const agentServer = {
-  api: process.env.REACT_APP_AGENT_API || 'http://220.135.67.240:8000/online',
+  api: process.env.REACT_APP_AGENT_API,
   socketUrl: process.env.REACT_APP_AGENT_SOCKET,
   // api: 'http://192.168.10.113:3030/online',
   // socketUrl: 'http://192.168.10.113:3030',
