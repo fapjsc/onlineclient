@@ -71,3 +71,8 @@ export const rootActionTypes = {
 export const chatActionTypes = {
   SET_MESSAGE_LIST: 'SET_MESSAGE_LIST',
 };
+
+export const japanSlotActionsTypes = {
+  SET_POINT: 'SET_POINT',
+  CLEAN_STATUS: 'CLEAN_STATUS',
+};

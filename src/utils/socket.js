@@ -2,29 +2,30 @@ import io from 'socket.io-client';
 
 import { store } from '../store';
 
+// Actions
 import {
   setUserSocketStatus,
   updateOnline,
 } from '../store/actions/userActions';
-
 import { setMessages } from '../store/actions/chatActions';
+import { upDateEgmData } from '../store/actions/egmActions';
+import { setJapanSlotPoint } from '../store/actions/japanSlotActins';
 
+// APIs
 import { agentServer } from '../apis';
 
-// eslint-disable-next-line
-import { upDateEgmData } from '../store/actions/egmActions';
-
+// Helpers
 import { scrollToBottomAnimated } from './scrollToBottom';
 
 let socket;
 
-let allowCall = true;
+// let allowCall = true;
 
 export const connectSocket = (token) => {
   if (socket?.connected) return;
-  if (!allowCall) return;
+  // if (!allowCall) return;
 
-  allowCall = false;
+  // allowCall = false;
 
   socket = io.connect(agentServer.socketUrl, {
     transports: ['websocket'],
@@ -68,7 +69,12 @@ export const connectSocket = (token) => {
     scrollToBottomAnimated('message-container');
   });
 
-  allowCall = true;
+  socket.on('demoSlot', (data) => {
+    console.log(data);
+    store.dispatch(setJapanSlotPoint(data));
+  });
+
+  // allowCall = true;
 };
 
 export const disconnectSocket = () => {

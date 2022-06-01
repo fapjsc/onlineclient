@@ -90,7 +90,6 @@ const ShowLive = ({ visible }) => {
   };
 
   useEffect(() => {
-    console.log(showLiveStatus);
     if (visible) {
       scrollToBottom('message-container');
     }

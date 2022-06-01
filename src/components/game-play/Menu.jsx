@@ -98,8 +98,11 @@ const Menu = ({
         icon: 'fail',
         content: leaveEgmError,
         duration: 2000,
+        afterClose: () => {
+          exitGameHandler();
+        },
       });
-      // exitGameHandler();
+
       return;
     }
 
@@ -107,9 +110,6 @@ const Menu = ({
       exitGameHandler();
     }
 
-    if (leaveEgmError) {
-      exitGameHandler();
-    }
     // eslint-disable-next-line
   }, [leaveEgmLoading, leaveEgmData, leaveEgmError]);
 

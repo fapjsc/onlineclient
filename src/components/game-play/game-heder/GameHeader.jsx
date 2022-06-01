@@ -12,11 +12,12 @@ import styles from './GameHeader.module.scss';
 
 // Image
 import headerRed from '../../../assets/game-machine/header/red.webp';
-import headerGreen from '../../../assets/game-machine/header/green.webp';
+// import headerGreen from '../../../assets/game-machine/header/green.webp';
 import headerYellow from '../../../assets/game-machine/header/yellow.webp';
 
 // eslint-disable-next-line
-const GameHeader = ({ exitGameHandler }) => {
+const GameHeader = ({ exitGameHandler, point }) => {
+  const { coin, win } = point || {};
   const [showMenu, setShowMenu] = useState(false);
   // const { exitGameHandler } = useExitGame();
 
@@ -35,25 +36,25 @@ const GameHeader = ({ exitGameHandler }) => {
           className={`${styles['header-left-item']} ${styles['header-red']}`}
         >
           <img src={headerRed} alt="red" />
-          <span>121434</span>
+          <span>{coin}</span>
         </div>
         <div
           className={`${styles['header-left-item']} ${styles['header-yellow']}`}
         >
           <img src={headerYellow} alt="yellow" />
-          <span>121434</span>
+          <span>{win}</span>
         </div>
-        <div
+        {/* <div
           className={`${styles['header-left-item']} ${styles['header-green']}`}
         >
           <img src={headerGreen} alt="green" />
           <span>121234</span>
-        </div>
+        </div> */}
       </section>
       <section className={styles['header-right-box']}>
         <div className={styles['header-total']}>
           <span>TOTAL</span>
-          <span>987987</span>
+          {/* <span>987987</span> */}
         </div>
         <div className={styles['header-menu']}>
           <Menu

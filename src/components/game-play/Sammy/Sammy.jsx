@@ -4,7 +4,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import throttle from 'lodash.throttle';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Prop-Type
 import PropTypes from 'prop-types';
@@ -80,21 +80,23 @@ const Sammy = ({
 }) => {
   const [spin, setSpin] = useState(false);
   const [topBtn, setTopBtn] = useState({
-    bet: false,
-    auto: false,
-    cashIn: false,
-    cashOut: false,
-    cashMove: false,
+    bet: { action: false, code: '5' },
+    auto: { action: false, code: 'auto' },
+    cashIn: { action: false, code: 'cashIn' },
+    cashOut: { action: false, code: 'cashOut' },
+    cashMove: { action: false, code: 'cashMove' },
   });
 
   const [stop, setStop] = useState({
-    left: { action: false, code: 'stop1' },
-    center: { action: false, code: 'stop2' },
-    right: { action: false, code: 'stop3' },
+    left: { action: false, code: '3' },
+    center: { action: false, code: '2' },
+    right: { action: false, code: '1' },
   });
 
   // Redux
   const dispatch = useDispatch();
+
+  const { point } = useSelector((state) => state.japanSlot);
 
   const btnPressApiHandler = useCallback(
     (code) => {
@@ -111,7 +113,7 @@ const Sammy = ({
 
   const onSpinClick = () => {
     setSpin(true);
-    throttledBtnPress('spin');
+    throttledBtnPress('4');
     setTimeout(() => {
       setSpin(false);
     }, 400);
@@ -120,8 +122,12 @@ const Sammy = ({
   const onTopBtnClick = ({ target }) => {
     setTopBtn((prev) => ({
       ...prev,
-      [target.id]: true,
+      [target.id]: { action: true, ...prev[target.id] },
     }));
+
+    if (target.id === 'bet') {
+      throttledBtnPress(topBtn[target.id].code);
+    }
 
     setTimeout(() => {
       setTopBtn((prev) => ({
@@ -137,8 +143,6 @@ const Sammy = ({
       [target.id]: { ...prev[target.id], action: true },
     }));
 
-    // dispatch(buttonPress({ ip, code: stop[target.id].code })); // 正式，不要刪除
-    // dispatch(buttonPressDemo({ ip, code: stop[target.id].code })); // 測試用
     throttledBtnPress(stop[target.id].code);
 
     setTimeout(() => {
@@ -151,7 +155,7 @@ const Sammy = ({
 
   return (
     <>
-      <GameHeader exitGameHandler={exitGameHandler} />
+      <GameHeader exitGameHandler={exitGameHandler} point={point} />
 
       <Wrapper jp img={image} className={styles.container} model={model}>
         <section type={name} className={styles['video-box']}>

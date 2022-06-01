@@ -35,6 +35,8 @@ import {
 
 import { setCurrentMenu } from '../../store/actions/menuActions';
 
+import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
+
 // Helpers
 import { getEgmBg } from '../../utils/helper';
 
@@ -123,6 +125,7 @@ const GamePlay = () => {
 
   const exitGameHandler = () => {
     sdkRef.current?.close();
+    dispatch(cleanJapanSlotState());
     dispatch(clearButtonPressStatus());
     dispatch(clearCashInOutStatus());
     dispatch(clearSelectEgmData());

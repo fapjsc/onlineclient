@@ -20,12 +20,14 @@ import {
   leaveEgmReducer,
 } from './reducers/egmReducer';
 
+import { japanSlotReducer } from './reducers/japanSlotReducer';
+
 import chatReducer from './reducers/chatReducer';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', 'selectEgm', 'egmStatus'], // only member will be persisted
+  whitelist: ['user', 'selectEgm', 'egmStatus', 'japanSlot'], // only member will be persisted
 };
 
 const reducer = combineReducers({
@@ -41,6 +43,7 @@ const reducer = combineReducers({
   menu: menuReducer,
   leaveEgm: leaveEgmReducer,
   chat: chatReducer,
+  japanSlot: japanSlotReducer,
 });
 
 const rootReducer = (state, action) => {
