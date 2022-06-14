@@ -183,6 +183,8 @@ export const buttonPressDemo = ({ ip, code, name }) => async (dispatch) => {
         },
       });
     }
+
+    alert(error);
   }
 };
 
@@ -288,5 +290,7 @@ export const buttonPressToEGMCashInOut = () => async (dispatch) => {
         },
       });
     }
+
+    alert(error);
   }
 };
