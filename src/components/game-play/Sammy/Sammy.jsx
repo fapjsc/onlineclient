@@ -50,10 +50,6 @@ const CashOutBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
 `;
 
-const CashMoveBtn = styled.div`
-  background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
-`;
-
 const CoinBtn = styled.div`
   background-image: ${({ brand, model }) => `url(${getCoinBtnImg({ brand, model })})`};
 `;
@@ -247,22 +243,6 @@ const Sammy = ({
                 ${styles['top-btn']} 
                 ${classnames({
                   [styles['top-square-btn-move']]: topBtn.cashOut,
-                })}
-
-                `}
-              />
-
-              <CashMoveBtn
-                id="cashMove"
-                name="cash-move"
-                brand={brand}
-                model={model}
-                onClick={onTopBtnClick}
-                className={`
-                ${styles['cash-move']} 
-                ${styles['top-btn']} 
-                ${classnames({
-                  [styles['top-square-btn-move']]: topBtn.cashMove,
                 })}
 
                 `}
