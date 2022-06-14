@@ -266,7 +266,7 @@ export const clearLeaveEgm = () => ({
   type: egmActionTypes.LEAVE_EGM_CLEAR,
 });
 
-// 直接 call 拳王 egm (暫時)
+// 直接 call 拳王 egm 開分 (暫時)
 export const buttonPressToEGMCashInOut = () => async (dispatch) => {
   const url = 'http://220.135.67.240:1880/slot/coin/enter';
   dispatch({ type: cashInActionTypes.CASH_IN_BEGIN });
