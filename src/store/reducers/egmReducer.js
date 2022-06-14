@@ -1,4 +1,4 @@
-import { egmActionTypes } from '../types';
+import { egmActionTypes, cashInActionTypes } from '../types';
 
 // Brand
 const brandState = {
@@ -272,6 +272,40 @@ export const leaveEgmReducer = (state = leaveEgmState, action) => {
       error: '',
     };
 
+  default:
+    return state;
+  }
+};
+
+// Cash in
+const cashInState = {
+  isLoading: false,
+  data: null,
+  error: '',
+};
+
+export const cashInReducer = (state = cashInState, action) => {
+  switch (action.type) {
+  case cashInActionTypes.CASH_IN_BEGIN:
+    return {
+      isLoading: true,
+      data: null,
+      error: '',
+    };
+
+  case cashInActionTypes.CASH_IN_SUCCESS:
+    return {
+      isLoading: false,
+      data: action.payload,
+      error: '',
+    };
+
+  case cashInActionTypes.CASH_IN_ERROR:
+    return {
+      isLoading: false,
+      data: null,
+      error: action.payload,
+    };
   default:
     return state;
   }

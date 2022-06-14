@@ -3,7 +3,7 @@ import { authFetch, axiosFetch } from '../../config/axiosConfig';
 import { egmAPi, agentServer } from '../../apis';
 
 // eslint-disable-next-line
-import { egmActionTypes, userActionTypes } from '../types';
+import { egmActionTypes, userActionTypes , cashInActionTypes} from '../types';
 
 // Get Egm List
 export const getEgmList = () => async (dispatch) => {
@@ -265,3 +265,28 @@ export const clearAftForm = () => ({
 export const clearLeaveEgm = () => ({
   type: egmActionTypes.LEAVE_EGM_CLEAR,
 });
+
+// 直接 call 拳王 egm (暫時)
+export const buttonPressToEGMCashInOut = () => async (dispatch) => {
+  const url = 'http://220.135.67.240:1880/slot/coin/enter';
+  dispatch({ type: cashInActionTypes.CASH_IN_BEGIN });
+
+  try {
+    const { data } = await authFetch.get(url);
+
+    dispatch({
+      type: cashInActionTypes.CASH_IN_SUCCESS,
+      payload: { buttonPressData: data.message },
+    });
+  } catch (error) {
+    const { response } = error;
+    if (response?.status !== 401 && error?.message !== 429) {
+      dispatch({
+        type: cashInActionTypes.CASH_IN_ERROR,
+        payload: {
+          error: response?.data?.message || 'button press fail',
+        },
+      });
+    }
+  }
+};

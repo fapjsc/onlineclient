@@ -20,6 +20,7 @@ import {
   // eslint-disable-next-line
   buttonPress,
   buttonPressDemo,
+  buttonPressToEGMCashInOut,
 } from '../../../store/actions/egmActions';
 
 // Helpers
@@ -75,6 +76,7 @@ const Sammy = ({
   brand,
 }) => {
   const [spin, setSpin] = useState(false);
+
   const [topBtn, setTopBtn] = useState({
     bet: { action: false, code: '5' },
     auto: { action: false, code: 'auto' },
@@ -118,17 +120,21 @@ const Sammy = ({
   const onTopBtnClick = ({ target }) => {
     setTopBtn((prev) => ({
       ...prev,
-      [target.id]: { action: true, ...prev[target.id] },
+      [target.id]: { ...prev[target.id], action: true },
     }));
 
     if (target.id === 'bet') {
       throttledBtnPress(topBtn[target.id].code);
     }
 
+    if (target.id === 'cashIn') {
+      dispatch(buttonPressToEGMCashInOut());
+    }
+
     setTimeout(() => {
       setTopBtn((prev) => ({
         ...prev,
-        [target.id]: false,
+        [target.id]: { ...prev[target.id], action: false },
       }));
     }, 300);
   };
@@ -198,7 +204,7 @@ const Sammy = ({
                 className={`
                 ${styles.bet} 
                 ${styles['top-btn']} 
-                ${classnames({ [styles['top-circe-btn-move']]: topBtn.bet })}
+                ${classnames({ [styles['top-circe-btn-move']]: topBtn.bet.action })}
                 `}
               />
 
@@ -212,7 +218,7 @@ const Sammy = ({
                 className={`
                 ${styles.auto} 
                 ${styles['top-btn']} 
-                ${classnames({ [styles['top-circe-btn-move']]: topBtn.auto })}
+                ${classnames({ [styles['top-circe-btn-move']]: topBtn.auto.action })}
                 `}
               />
 
@@ -227,7 +233,7 @@ const Sammy = ({
                 ${styles['cash-in']} 
                 ${styles['top-btn']}
                 ${classnames({
-                  [styles['top-square-btn-move']]: topBtn.cashIn,
+                  [styles['top-square-btn-move']]: topBtn.cashIn.action,
                 })}
                 `}
               />
@@ -242,7 +248,7 @@ const Sammy = ({
                 ${styles['cash-out']} 
                 ${styles['top-btn']} 
                 ${classnames({
-                  [styles['top-square-btn-move']]: topBtn.cashOut,
+                  [styles['top-square-btn-move']]: topBtn.cashOut.action,
                 })}
 
                 `}

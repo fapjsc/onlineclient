@@ -76,3 +76,9 @@ export const japanSlotActionsTypes = {
   SET_POINT: 'SET_POINT',
   CLEAN_STATUS: 'CLEAN_STATUS',
 };
+
+export const cashInActionTypes = {
+  CASH_IN_BEGIN: '[Cash In]: Cash_IN_BEGIN',
+  CASH_IN_SUCCESS: '[Cash In]: CASH_IN_SUCCESS ',
+  CASH_IN_ERROR: '[Cash In]: CASH_IN_ERROR ',
+};
