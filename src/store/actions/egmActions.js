@@ -2,8 +2,10 @@ import { authFetch, axiosFetch } from '../../config/axiosConfig';
 
 import { egmAPi, agentServer } from '../../apis';
 
+import { waitTime, asyncForEach } from '../../utils/helper';
+
 // eslint-disable-next-line
-import { egmActionTypes, userActionTypes , cashInActionTypes} from '../types';
+import { egmActionTypes, userActionTypes, cashInActionTypes } from '../types';
 
 // Get Egm List
 export const getEgmList = () => async (dispatch) => {
@@ -175,6 +177,67 @@ export const buttonPressDemo = ({ ip, code, name }) => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
+
+    if (response?.status !== 401 && error?.message !== 429) {
+      dispatch({
+        type: egmActionTypes.BUTTON_PRESS_ERROR,
+        payload: {
+          error: response?.data?.message || 'button press fail',
+        },
+      });
+    }
+    alert(
+      response
+        ? `${response?.data.status}: ${response?.data.message}`
+        : error,
+    );
+  }
+};
+
+export const sammyAutoPlay = ({ ip, codeList }) => async (dispatch) => {
+  if (!ip || !codeList) return;
+
+  dispatch({ type: egmActionTypes.BUTTON_PRESS_BEGIN });
+  try {
+    const url = `${agentServer.api}/${egmAPi.egmPressButtonDemo}`;
+
+    asyncForEach(codeList, async (el, index) => {
+      console.log(el);
+      try {
+        const { data } = await authFetch.post(url, { ip, code: el });
+
+        if (index === codeList.length - 1) {
+          dispatch({
+            type: egmActionTypes.BUTTON_PRESS_SUCCESS,
+            payload: { buttonPressData: data.message },
+          });
+          return;
+        }
+
+        await waitTime(1200);
+      } catch (error) {
+        const { response } = error;
+
+        if (response?.status !== 401 && error?.message !== 429) {
+          dispatch({
+            type: egmActionTypes.BUTTON_PRESS_ERROR,
+            payload: {
+              error: response?.data?.message || 'button press fail',
+            },
+          });
+        }
+
+        alert(
+          response
+            ? `${response?.data.status}: ${response?.data.message}`
+            : error,
+        );
+        throw new Error(response?.data?.message);
+      }
+    });
+  } catch (error) {
+    const { response } = error;
+
     if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.BUTTON_PRESS_ERROR,
@@ -184,7 +247,11 @@ export const buttonPressDemo = ({ ip, code, name }) => async (dispatch) => {
       });
     }
 
-    alert(error);
+    alert(
+      response
+        ? `${response?.data.status}: ${response?.data.message}`
+        : error,
+    );
   }
 };
 
@@ -213,11 +280,6 @@ export const cashInOut = ({
       type: egmActionTypes.CASH_IN_OUT_SUCCESS,
       payload: { cashInOutData: data.result },
     });
-
-    // dispatch({
-    //   type: userActionTypes.UPDATE_ONLINE,
-    //   payload: { onlineData: data.result },
-    // });
   } catch (error) {
     if (error?.message === 'fetchTimeout') {
       dispatch({
@@ -282,6 +344,7 @@ export const buttonPressToEGMCashInOut = () => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
+
     if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: cashInActionTypes.CASH_IN_ERROR,
@@ -291,6 +354,8 @@ export const buttonPressToEGMCashInOut = () => async (dispatch) => {
       });
     }
 
-    alert(error);
+    alert(
+      response ? `${response?.data.status}: ${response?.data.message}` : error,
+    );
   }
 };

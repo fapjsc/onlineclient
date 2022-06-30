@@ -174,6 +174,7 @@ const GamePlay = () => {
   useEffect(() => {
     if (aftError) {
       setIsCashInOutClick(false);
+
       Dialog.alert({
         content: aftError,
         closeOnMaskClick: true,

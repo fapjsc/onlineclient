@@ -107,3 +107,17 @@ export const getGameDescriptionImg = ({ model, brand }) => {
 
   return imgObj;
 };
+
+export const waitTime = (time = 100) => new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(true);
+  }, time);
+});
+
+export const asyncForEach = async (array, callback) => {
+  // eslint-disable-next-line
+  for (let index = 0; index < array.length; index++) {
+  // eslint-disable-next-line
+    await callback(array[index], index, array);
+  }
+};

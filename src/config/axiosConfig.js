@@ -28,7 +28,7 @@ const handleRequest = ({ config }) => {
   );
 
   if (pending.length) {
-    // 這裡是重點，實例化CancelToken時，對參數c立即進行調用，立即取消當前請求
+    // 這裡是重點，實例化CancelToken時，對參數c立即進行調用，取消當前請求
     config.cancelToken = new CancelToken((c) => c(429)); // 429 => 重複請求的錯誤碼
     // config.cancelToken = new CancelToken(c => c(`重複的請求被主動攔截: ${url} + ${jData} + ${jParams}`))
   } else {

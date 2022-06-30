@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, {
+  useState, useCallback, useMemo, useEffect,
+} from 'react';
 
 // Lodash
 import throttle from 'lodash.throttle';
@@ -21,6 +23,7 @@ import {
   buttonPress,
   buttonPressDemo,
   buttonPressToEGMCashInOut,
+  sammyAutoPlay,
 } from '../../../store/actions/egmActions';
 
 // Helpers
@@ -75,15 +78,14 @@ const Sammy = ({
   ip,
   brand,
 }) => {
-  const [spin, setSpin] = useState(false);
-
   const [topBtn, setTopBtn] = useState({
     bet: { action: false, code: '5' },
-    auto: { action: false, code: 'auto' },
     cashIn: { action: false, code: 'cashIn' },
     cashOut: { action: false, code: 'cashOut' },
     cashMove: { action: false, code: 'cashMove' },
   });
+
+  const [spin, setSpin] = useState({ action: false, code: '4' });
 
   const [stop, setStop] = useState({
     left: { action: false, code: '3' },
@@ -91,10 +93,13 @@ const Sammy = ({
     right: { action: false, code: '1' },
   });
 
+  const [auto, setAuto] = useState(false);
+
   // Redux
   const dispatch = useDispatch();
 
   const { point } = useSelector((state) => state.japanSlot);
+  const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
 
   const btnPressApiHandler = useCallback(
     (code) => {
@@ -110,14 +115,19 @@ const Sammy = ({
   );
 
   const onSpinClick = () => {
-    setSpin(true);
-    throttledBtnPress('4');
+    if (auto) return;
+
+    setSpin((prev) => ({ ...prev, actin: true }));
+    throttledBtnPress(spin.code);
+
     setTimeout(() => {
-      setSpin(false);
+      setSpin((prev) => ({ ...prev, actin: false }));
     }, 400);
   };
 
   const onTopBtnClick = ({ target }) => {
+    if (auto) return;
+
     setTopBtn((prev) => ({
       ...prev,
       [target.id]: { ...prev[target.id], action: true },
@@ -140,6 +150,8 @@ const Sammy = ({
   };
 
   const onStopClick = ({ target }) => {
+    if (auto) return;
+
     setStop((prev) => ({
       ...prev,
       [target.id]: { ...prev[target.id], action: true },
@@ -154,6 +166,34 @@ const Sammy = ({
       }));
     }, 200);
   };
+
+  useEffect(() => {
+    if (!ip) return;
+    let loops;
+    if (auto) {
+      const codeList = [
+        topBtn.bet.code,
+        spin.code,
+        stop.left.code,
+        stop.center.code,
+        stop.right.code,
+      ];
+      dispatch(sammyAutoPlay({ ip, codeList }));
+
+      loops = setInterval(() => {
+        dispatch(sammyAutoPlay({ ip, codeList }));
+      }, 6500);
+    }
+
+    return () => clearInterval(loops);
+    // eslint-disable-next-line
+  }, [auto, dispatch, ip]);
+
+  useEffect(() => {
+    if (btnPressError) {
+      setAuto(false);
+    }
+  }, [btnPressError]);
 
   return (
     <>
@@ -214,11 +254,11 @@ const Sammy = ({
                 name="auto"
                 brand={brand}
                 model={model}
-                onClick={onTopBtnClick}
+                onClick={() => setAuto((prev) => !prev)}
                 className={`
                 ${styles.auto} 
                 ${styles['top-btn']} 
-                ${classnames({ [styles['top-circe-btn-move']]: topBtn.auto.action })}
+                ${classnames({ [styles['auto-btn-move']]: auto })}
                 `}
               />
 
@@ -272,7 +312,7 @@ const Sammy = ({
                 brand={brand}
                 model={model}
                 className={`${styles.spin} ${classnames({
-                  [styles['spin-move']]: spin,
+                  [styles['spin-move']]: spin.action,
                 })}`}
               />
 

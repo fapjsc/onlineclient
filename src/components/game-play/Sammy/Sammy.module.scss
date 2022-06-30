@@ -170,6 +170,10 @@
   animation: 300ms top-circe-btn-animation steps(4) 1;
 }
 
+.auto-btn-move {
+  animation: 500ms auto-btn-animation steps(4) infinite;
+}
+
 .top-square-btn-move {
   animation: 300ms top-square-btn-animation steps(3) 1;
 }
@@ -191,5 +195,15 @@
 
   100% {
     background-position-x: 135.7%;
+  }
+}
+
+@keyframes auto-btn-animation {
+  0% {
+    background-position-x: 3.9%;
+  }
+
+  100% {
+    background-position-x: 126.3%;
   }
 }
