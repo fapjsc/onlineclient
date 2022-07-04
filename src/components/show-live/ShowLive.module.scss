@@ -3,10 +3,19 @@
   transform: translateX(-150%);
   transition: all 0.3s ease-in;
   padding: 8px 5px;
-  z-index: 2;
+  z-index: 10000000000;
+  background-color: rgba(169,169,169,0.1);
+  &:hover{
+    .chat-item{
+      opacity: 1!important;
+    }
+
+    background-color: rgba(169,169,169,0.5);
+  }
+  
 
   &[type='mobile'] {
-    top: 20px;
+    bottom: 0px;
     left: 0;
     width: 50vw;
     bottom: 0;
@@ -26,6 +35,10 @@
     left: 0;
     right: 0;
     overflow-y: scroll;
+    @media only screen and(max-width: 557px) {
+      padding-top: calc(100vh - (8px + 7rem));
+    }
+    padding-top: calc(100% - (8px + 7rem));
 
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -34,6 +47,7 @@
     }
 
     .chat-item {
+      opacity: 0.3;
       padding: 8px 5px;
       border-radius: 5px;
       border: 1px solid #d48806;
