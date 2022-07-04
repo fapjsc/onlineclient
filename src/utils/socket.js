@@ -19,13 +19,8 @@ import { scrollToBottomAnimated } from './scrollToBottom';
 
 let socket;
 
-// let allowCall = true;
-
 export const connectSocket = (token) => {
   if (socket?.connected) return;
-  // if (!allowCall) return;
-
-  // allowCall = false;
 
   socket = io.connect(agentServer.socketUrl, {
     transports: ['websocket'],
@@ -54,7 +49,6 @@ export const connectSocket = (token) => {
     const { data } = store.getState().egmList;
     const existsIP = data?.map((el) => el.ip);
     const filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
-    // console.log(filterArr);
     if (!filterArr?.length) return;
     store.dispatch(upDateEgmData(filterArr));
   });
@@ -70,11 +64,12 @@ export const connectSocket = (token) => {
   });
 
   socket.on('demoSlot', (data) => {
-    console.log(data);
     store.dispatch(setJapanSlotPoint(data));
   });
 
-  // allowCall = true;
+  socket.on('stayingPage', (data) => {
+    console.log(data);
+  });
 };
 
 export const disconnectSocket = () => {

@@ -16,7 +16,8 @@ import useHttp from '../hooks/useHttp';
 import { axiosFetch } from '../config/axiosConfig';
 
 // Actions
-import { autoLogin } from '../store/actions/userActions';
+import { autoLogin, setCurrentAction } from '../store/actions/userActions';
+import { clearSelectEgmData } from '../store/actions/egmActions';
 
 // APis
 import { agentServer, authApi } from '../apis';
@@ -31,10 +32,12 @@ const landing = async ({ playerAccount, hash }) => {
   }
 
   const url = `${agentServer.api}/${endPoint}`;
+
   const response = await axiosFetch.post(url, {
     playerAccount,
     hash,
   });
+
   const { data } = response || {};
   return data;
 };
@@ -92,7 +95,14 @@ const LandingPage = () => {
     if (!landingData) return;
 
     const { result } = landingData || {};
+
     dispatch(autoLogin(result));
+
+    if (result?.location?.stayingPage === 'home') {
+      dispatch(clearSelectEgmData());
+      dispatch(setCurrentAction('home'));
+    }
+
     navigate('/');
   }, [landingData, dispatch, navigate]);
 

@@ -290,7 +290,6 @@ const Sammy = ({
                 ${classnames({
                   [styles['top-square-btn-move']]: topBtn.cashOut.action,
                 })}
-
                 `}
               />
 

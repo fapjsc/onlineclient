@@ -1,5 +1,5 @@
 const styleConfig = {
-  zIndex: { max: 9999 },
+  zIndex: { max: 99 },
 };
 
 export default styleConfig;
