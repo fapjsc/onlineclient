@@ -55,21 +55,10 @@ const HomePage = () => {
     [connectSocketHandler],
   );
 
-  // const throttledConnectSocket = useCallback(
-  //   () => throttle(connectSocket(token), 1000),
-  //   [token],
-  // );
-
   // 關閉login form
   useEffect(() => {
     if (isAuth && showLoginForm) setShowLoginForm(false);
   }, [isAuth, showLoginForm]);
-
-  // 清除select egm status
-  // useEffect(() => {
-  //   if (!isSelectEgm) return;
-  //   dispatch(clearSelectEgmData());
-  // }, [isSelectEgm, dispatch]);
 
   const userOnEnter = () => {
     // console.log('user entered');

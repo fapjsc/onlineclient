@@ -87,6 +87,7 @@ const GamePlay = () => {
   const { data: selectEgmData, currentBtnPress } = useSelector(
     (state) => state.selectEgm,
   );
+
   const {
     buttonList, ip, stream_url: url, name,
   } = selectEgmData || {};

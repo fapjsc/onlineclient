@@ -63,10 +63,6 @@ const Aristocrat = ({
   currentSubBtn,
   setCurrentSubBtn,
 }) => {
-  // Init State
-  // const [playVideo, setPlayVideo] = useState(false);
-  // const [showSubBtn, setShowSubBtn] = useState(false);
-  // const [currentSubBtn, setCurrentSubBtn] = useState('');
   const [isAuto, setIsAuto] = useState(false);
   const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
   const [mainBtnClick, setMainBtnClick] = useState({
@@ -104,6 +100,7 @@ const Aristocrat = ({
 
     switch (name) {
     case 'spin':
+      setIsAuto(false);
       dispatch(buttonPress({ code: currentBtnPress, ip }));
       break;
 
@@ -112,6 +109,7 @@ const Aristocrat = ({
       break;
 
     case 'max':
+      setIsAuto(false);
       dispatch(buttonPress({ code, ip }));
       dispatch({
         type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
@@ -148,6 +146,7 @@ const Aristocrat = ({
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
     if (currentSubBtn || !allowSendBtnPressReq) return;
 
+    setIsAuto(false);
     setAllowSendBtnPressReq(false);
 
     setCurrentSubBtn(name);

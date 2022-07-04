@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Antd
-import { Popup, Toast } from 'antd-mobile';
+import { Popup, Toast, Modal } from 'antd-mobile';
 import {
   AppstoreOutline,
   CloseOutline,
@@ -42,7 +42,6 @@ const menuLis = [
 const Menu = ({
   visible,
   setVisible,
-  // eslint-disable-next-line
   exitGameHandler,
   size,
   setIsAuto,
@@ -74,11 +73,6 @@ const Menu = ({
       return;
     }
 
-    // if (model === '拳王') {
-    //   exitGameHandler();
-    //   return;
-    // }
-
     dispatch(leaveEgm({ userToken: token }));
     setVisible(false);
   };
@@ -93,13 +87,17 @@ const Menu = ({
       return;
     }
 
+    Toast?.clear();
+
     if (leaveEgmError) {
-      Toast.show({
-        icon: 'fail',
-        content: leaveEgmError,
-        duration: 2000,
-        afterClose: () => {
-          exitGameHandler();
+      Modal.alert({
+        title: leaveEgmError,
+        content: '點擊確定重新嘗試',
+        showCloseButton: true,
+        confirmText: '確定',
+
+        onConfirm: () => {
+          dispatch(leaveEgm({ userToken: token }));
         },
       });
 
