@@ -50,19 +50,6 @@ const AftForm = ({
 
   let amountArr = [];
 
-  // if (aftType === 'aft-in') {
-  //   amountArr = [
-  //     '1000',
-  //     '2000',
-  //     '3000',
-  //     '4000',
-  //     '5000',
-  //     '6000',
-  //     '7000',
-  //     '8000',
-  //   ];
-  // }
-
   if (aftType === 'aft-out') amountArr = ['全洗'];
 
   const backHandler = () => {

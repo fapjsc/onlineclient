@@ -9,7 +9,7 @@ import styles from './CashInOutBtn.module.scss';
 const CashInOutBtn = ({ isCashInOutClick, setIsCashInOutClick, setIsAuto }) => {
   const clickHandler = () => {
     setIsCashInOutClick(true);
-    setIsAuto(false);
+    setIsAuto({ action: false, limit: null });
   };
 
   return (
