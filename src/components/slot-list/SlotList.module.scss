@@ -81,19 +81,18 @@
         0px 0px 20px rgb(125, 124, 124);
         cursor: pointer;
     }
-	button{
+	.load, button,.notLoad{
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 10px;
-	
 	}
-	.originBtn:hover{
+	button:hover{
 		cursor: pointer;
 		box-shadow:1px 1px 10px rgb(129, 128, 128);
 		
 	}
-	.loadBtn::before{
+	.load::before{
 		content: "";
 		margin-right: 5px;
 		transform: translateY(4px);
