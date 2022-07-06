@@ -107,7 +107,7 @@ const ShowLive = ({ visible }) => {
         type={isMobile ? 'mobile' : 'desktop'}
         className={styles['chat-container']}
         style={{
-          height: isMobile ? height / 1.7 : '30rem',
+          height: isMobile ? height / 3.25 : '30rem',
           transform: visible && showChat && 'translateX(0%)',
         }}
       >

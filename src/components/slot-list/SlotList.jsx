@@ -27,6 +27,7 @@ import notFoundImg from '../../assets/slot-list/找不到圖片.png';
 
 // Styles
 import styles from './SlotList.module.scss';
+import Cover from './cover';
 
 const SlotList = () => {
   const dispatch = useDispatch();
@@ -180,24 +181,33 @@ const SlotList = () => {
       </div>
       <div className={styles['slot-box']}>
         {egmListData?.map((egm) => (
+			
           <div
             key={egm.id}
-            onClick={() => selectEgmHandler(egm.id)}
+            //onClick={() => selectEgmHandler(egm.id)}
             role="presentation"
             className={styles['slot-btn']}
           >
             {((egm?.member && Object.keys(egm.member)?.length > 0)
-              || egm?.hasCredit) && (
-              <div
-                role="presentation"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                className={styles['is-playing-cover']}
-              >
-                遊戲中...
-              </div>
-            )}
+              || egm?.hasCredit) &&(	
+				<div
+					role="presentation"
+					onClick={(e) => {
+					e.stopPropagation();
+					}}
+					className={styles['is-playing-cover']}
+				>
+					遊戲中...
+              </div>)}
+			
+
+			<Cover
+				status={'start'}
+				gameName={'鑽石'}
+				bonusImg={false}
+				btnAction={selectEgmHandler}
+				btnActionParams={egm.id}
+			/>
 
             <Image
               src={getEgmImage({
