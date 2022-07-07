@@ -53,7 +53,6 @@ const GamePlay = () => {
   // Ref
   const sdkRef = useRef();
   // Hooks
-  // eslint-disable-next-line
   const { isMobile, isTablet } = useRwd();
 
   // Router prop
