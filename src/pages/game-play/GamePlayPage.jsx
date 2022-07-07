@@ -19,6 +19,9 @@ import GameDescription from '../../components/game-play/game-description/GameDes
 import ShowLive from '../../components/show-live/ShowLive';
 
 // eslint-disable-next-line
+import AutoForm from '../../components/auto-form/AutoForm';
+
+// eslint-disable-next-line
 import { getSocket, connectSocket, disconnectSocket } from '../../utils/socket';
 
 // Hooks
@@ -63,7 +66,8 @@ const GamePlay = () => {
   const [playVideo, setPlayVideo] = useState(false);
   const [showSubBtn, setShowSubBtn] = useState(false);
   const [currentSubBtn, setCurrentSubBtn] = useState('');
-  const [isAuto, setIsAuto] = useState(false);
+  const [isAuto, setIsAuto] = useState({ action: false, limit: null });
+  const [showAutoForm, setShowAutoForm] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
@@ -256,6 +260,10 @@ const GamePlay = () => {
     };
   }, [playStatus]);
 
+  useEffect(() => {
+    console.log(isAuto);
+  }, [isAuto]);
+
   return (
     <>
       <CSSTransition
@@ -284,6 +292,8 @@ const GamePlay = () => {
         aftLoading={aftLoading}
         point={point}
       />
+
+      <AutoForm visible={showAutoForm} setVisible={setShowAutoForm} setIsAuto={setIsAuto} />
 
       <div
         style={{
@@ -315,6 +325,10 @@ const GamePlay = () => {
             setShowSubBtn={setShowSubBtn}
             currentSubBtn={currentSubBtn}
             setCurrentSubBtn={setCurrentSubBtn}
+            isAuto={isAuto}
+            setIsAuto={setIsAuto}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 

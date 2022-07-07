@@ -62,9 +62,12 @@ const Aristocrat = ({
   setShowSubBtn,
   currentSubBtn,
   setCurrentSubBtn,
+  isAuto,
+  setIsAuto,
+  // showAutoForm,
+  setShowAutoForm,
+
 }) => {
-  const [isAuto, setIsAuto] = useState(false);
-  const [allowSendBtnPressReq, setAllowSendBtnPressReq] = useState(true);
   const [mainBtnClick, setMainBtnClick] = useState({
     auto: false,
     max: false,
@@ -89,27 +92,24 @@ const Aristocrat = ({
         confirmText: '確定',
       });
 
-      setIsAuto(false);
+      setIsAuto({ action: false, limit: null });
 
       return;
     }
 
-    if (!allowSendBtnPressReq) return;
-
-    setAllowSendBtnPressReq(false);
-
     switch (name) {
     case 'spin':
-      setIsAuto(false);
+      setIsAuto({ action: false, limit: null });
       dispatch(buttonPress({ code: currentBtnPress, ip }));
       break;
 
     case 'auto':
-      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      setShowAutoForm(true);
+      setIsAuto({ action: false, limit: null });
       break;
 
     case 'max':
-      setIsAuto(false);
+      setIsAuto({ action: false, limit: null });
       dispatch(buttonPress({ code, ip }));
       dispatch({
         type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
@@ -124,10 +124,6 @@ const Aristocrat = ({
         confirmText: '確定',
       });
     }
-
-    setTimeout(() => {
-      setAllowSendBtnPressReq(true);
-    }, apiConfig.mainBtnApiTimeSpace);
   };
 
   // Auto Spin Cal Api
@@ -144,10 +140,9 @@ const Aristocrat = ({
 
   // Sub Button Press call api
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
-    if (currentSubBtn || !allowSendBtnPressReq) return;
+    if (currentSubBtn) return;
 
-    setIsAuto(false);
-    setAllowSendBtnPressReq(false);
+    setIsAuto({ action: false, limit: null });
 
     setCurrentSubBtn(name);
     dispatch(buttonPress({ name, code, ip }));
@@ -169,27 +164,27 @@ const Aristocrat = ({
 
     setTimeout(() => {
       setCurrentSubBtn('');
-      setAllowSendBtnPressReq(true);
     }, timer);
   };
 
-  // Auto Spin handle
   useEffect(() => {
-    if (isAuto) {
+    if (isAuto.action) {
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
       autoSpinHandler();
     }
 
-    if (!isAuto) {
+    if (!isAuto.action) {
       stopAutoSpinHandler();
     }
-  }, [isAuto, autoSpinHandler, stopAutoSpinHandler]);
+
+    // eslint-disable-next-line
+  }, [isAuto]);
 
   // 按鈕錯誤
   useEffect(() => {
     if (btnPressError) {
-      setAllowSendBtnPressReq(true);
       setMainBtnClick({ auto: false, max: false, spin: false });
-      setIsAuto(false);
+      setIsAuto({ action: false, limit: null });
       Dialog.alert({
         content: btnPressError,
         closeOnMaskClick: true,
@@ -199,7 +194,7 @@ const Aristocrat = ({
         },
       });
     }
-  }, [btnPressError, dispatch]);
+  }, [btnPressError, dispatch, setIsAuto]);
 
   const subBtnEl = buttonList
     && buttonList
@@ -330,6 +325,13 @@ Aristocrat.propTypes = {
   setShowSubBtn: PropTypes.func.isRequired,
   currentSubBtn: PropTypes.string.isRequired,
   setCurrentSubBtn: PropTypes.func.isRequired,
+  isAuto: PropTypes.shape({
+    action: PropTypes.bool.isRequired,
+    limit: PropTypes.number,
+  }).isRequired,
+  setIsAuto: PropTypes.func.isRequired,
+  // showAutoForm: PropTypes.bool.isRequired,
+  setShowAutoForm: PropTypes.func.isRequired,
 };
 
 Aristocrat.defaultProps = {

@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 
 import classnames from 'classnames';
 
+import TheCountdown from '../../Countdown';
+
 import styles from './MainBtn.module.scss';
 
 const MainBtn = ({
@@ -26,10 +28,6 @@ const MainBtn = ({
 
   // Main button 動畫邏輯判斷
   const animationHandler = (id) => {
-    if (id === 'auto') {
-      setIsAuto((prev) => !prev);
-    }
-
     // 啟動main button 動畫邏輯
     // 如果點擊的按鈕已經是true就return
     if (mainBtnClick[id]) return;
@@ -69,6 +67,15 @@ const MainBtn = ({
         })}
           `}
       />
+
+      {
+        isAuto.action && (
+          <div className={styles['countdown-box']}>
+            <TheCountdown setIsAuto={setIsAuto} isAuto={isAuto} />
+          </div>
+        )
+      }
+
       {btnList
         && btnList.map((btn) => (
           <div
@@ -82,10 +89,11 @@ const MainBtn = ({
             ${styles[`btn-${btn.button_name}`]}
             ${classnames({
               'main-btn-animation': mainBtnClick[btn.button_name],
-              'main-btn-animation-auto': btn.button_name === 'spin' && isAuto,
+              'main-btn-animation-auto': btn.button_name === 'spin' && isAuto.action,
             })}
           `}
           />
+
         ))}
 
       <div
@@ -97,11 +105,11 @@ const MainBtn = ({
             ${styles['btn-spin']}
             ${classnames({
           'main-btn-animation': mainBtnClick.spin,
-          'main-btn-animation-auto': isAuto,
-        })}
-          `}
+          'main-btn-animation-auto': isAuto.action,
+        })}`}
       />
     </div>
+
   );
 };
 
@@ -114,7 +122,10 @@ MainBtn.propTypes = {
   setMainBtnClick: PropTypes.func.isRequired,
   mainBtnHandler: PropTypes.func.isRequired,
   setIsAuto: PropTypes.func.isRequired,
-  isAuto: PropTypes.bool.isRequired,
+  isAuto: PropTypes.shape({
+    action: PropTypes.bool.isRequired,
+    limit: PropTypes.number,
+  }).isRequired,
 };
 
 export default MainBtn;

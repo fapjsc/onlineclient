@@ -115,6 +115,7 @@ export const leaveEgm = ({ userToken }) => async (dispatch) => {
     });
   } catch (error) {
     const { response } = error;
+
     if (response?.status !== 401 && error?.message !== 429) {
       dispatch({
         type: egmActionTypes.LEAVE_EGM_ERROR,

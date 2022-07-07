@@ -83,11 +83,15 @@ const Menu = ({
         icon: 'loading',
         content: '請稍候',
       });
-
       return;
     }
 
     Toast?.clear();
+
+    if (leaveEgmData?.code === 1) {
+      exitGameHandler();
+      return;
+    }
 
     if (leaveEgmError) {
       Modal.alert({
@@ -100,12 +104,6 @@ const Menu = ({
           dispatch(leaveEgm({ userToken: token }));
         },
       });
-
-      return;
-    }
-
-    if (leaveEgmData?.status === 200) {
-      exitGameHandler();
     }
 
     // eslint-disable-next-line
