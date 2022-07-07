@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './SlotList.module.scss';
 
 const statusText = {
@@ -26,7 +27,7 @@ const statusText = {
 const statusStyle = {
   connect: {
     coverBorderColor: '6px solid #fff',
-    btnstyles: {
+    btnStyles: {
       border: '0px solid #fff',
       backgroundColor: 'rgba(0,0,0,0)',
       color: '#FFD700',
@@ -35,7 +36,7 @@ const statusStyle = {
   },
   someonePlaying: {
     coverBorderColor: '6px solid #f00',
-    btnstyles: {
+    btnStyles: {
       border: '1px solid white',
       backgroundColor: 'rgba(255,255,255,0.1)',
       color: 'white',
@@ -44,7 +45,7 @@ const statusStyle = {
   },
   start: {
     coverBorderColor: '6px solid #90EE90',
-    btnstyles: {
+    btnStyles: {
       border: '1px solid #90EE90',
       backgroundColor: 'rgba(255,255,255,0.1)',
       color: 'white',
@@ -53,7 +54,7 @@ const statusStyle = {
   },
   booking: {
     coverBorderColor: '6px solid #B5B5B5',
-    btnstyles: {
+    btnStyles: {
       border: '0px solid #B5B5B5',
       backgroundColor: 'rgba(255,255,255,0.1)',
       color: 'white',
@@ -62,7 +63,7 @@ const statusStyle = {
   },
   origin: {
     coverBorderColor: '6px solid #fff',
-    btnstyles: {
+    btnStyles: {
       border: '0px solid white',
       backgroundColor: 'rgba(0,0,0,0)',
       color: 'white',
@@ -77,81 +78,88 @@ export default class Cover extends Component {
   }
 
   btnOnclick() {
-    !this.props.btnAction
-      ? null
-      : this.props.btnAction(this.props.btnActionParams);
+    const { btnAction, btnActionParams } = this.props;
+    if (!btnAction) return;
+    btnAction(btnActionParams);
   }
 
   render() {
-    console.log(this.props);
+    const {
+      status, totalBooking, bonusImg, gameName, synPosition,
+    } = this.props;
 
     return (
       <div
         className={styles.cover}
         style={{
-          border: statusStyle[this.props.status].coverBorderColor,
+          border: statusStyle[status].coverBorderColor,
         }}
       >
-
         <div className={styles.exclamationMark} />
 
-        <div style={{
-          flex: 1, display: 'flex', width: '40%', alignItems: 'center', color: statusStyle[this.props.status].textColor,
-        }}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            width: '40%',
+            alignItems: 'center',
+            color: statusStyle[status].textColor,
+          }}
         >
-          {
-            statusText[this.props.status].windowText + (!this.props.totalBooking ? '' : ` : ${ this.props.totalBooking}`)
-          }
+          {totalBooking
+            ? `${statusText[status].windowText}${totalBooking}`
+            : `${statusText[status].windowText}`}
         </div>
-        {
-          this.props.bonusImg
-            ? <div className={styles.bonusImg} />
-            : <></>
+        {bonusImg && <div className={styles.bonusImg} />}
 
-        }
-
-        <div style={{
-          display: 'flex',
-          width: '100%',
-          alignItems: 'center',
-        }}
+        <div
+          style={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
+          }}
         >
-
-          <div style={{ width: '50%', color: 'white' }}>
-            {this.props.gameName}
-          </div>
-          {
-            this.props.status == 'start' || this.props.status == 'someonePlaying'
-              ? <button
-                onClick={this.btnOnclick}
-                style={{
-                  ...statusStyle[this.props.status].btnstyles,
-                  width: '50%',
-                  height: '50px',
-                }}
-              >
-
-                {
-                  statusText[this.props.status].btnText
-                                    + (!this.props.synPosition ? '' : ` : ${ this.props.synPosition}`)
-                }
-              </button>
-              : <div
-                className={this.props.status == 'connect' ? styles.load : styles.notLoad}
-                style={{
-                  ...statusStyle[this.props.status].btnstyles,
-                  width: '50%',
-                  height: '50px',
-                }}
-              >
-                {
-                  statusText[this.props.status].btnText
-                                    + (!this.props.synPosition ? '' : ` : ${ this.props.synPosition}`)
-                }
-              </div>
-          }
+          <div style={{ width: '50%', color: 'white' }}>{gameName}</div>
+          {status === 'start' || status === 'someonePlaying' ? (
+            <button
+              onClick={this.btnOnclick}
+              type="button"
+              style={{
+                ...statusStyle[status].btnStyles,
+                width: '50%',
+                height: '50px',
+              }}
+            >
+              {synPosition
+                ? `${statusText[status].btnText}${synPosition}`
+                : `${statusText[status].btnText}`}
+            </button>
+          ) : (
+            <div
+              className={status === 'connect' ? styles.load : styles.notLoad}
+              style={{
+                ...statusStyle[status].btnStyles,
+                width: '50%',
+                height: '50px',
+              }}
+            >
+              {synPosition
+                ? `${statusText[status].btnText}${synPosition}`
+                : `${statusText[status].btnText}`}
+            </div>
+          )}
         </div>
       </div>
     );
   }
 }
+
+Cover.propTypes = {
+  btnAction: PropTypes.func.isRequired,
+  btnActionParams: PropTypes.string.isRequired,
+  bonusImg: PropTypes.bool.isRequired,
+  gameName: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  synPosition: PropTypes.string.isRequired,
+  totalBooking: PropTypes.number.isRequired,
+};
