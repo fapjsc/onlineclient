@@ -58,3 +58,26 @@
     }
   }
 }
+.footer{
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 16px;
+  margin-bottom: 10px;
+
+  span{
+    display: inline-flex;
+    align-items: center;
+  }
+  span:after{
+    background-image: url('../../assets/close-btn.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    content: '';
+    display: inline-block;
+    margin-left: 5px;
+
+  }
+}

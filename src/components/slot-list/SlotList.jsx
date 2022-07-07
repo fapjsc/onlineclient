@@ -181,7 +181,7 @@ const SlotList = () => {
       </div>
       <div className={styles['slot-box']}>
         {egmListData?.map((egm) => (
-			
+
           <div
             key={egm.id}
             //onClick={() => selectEgmHandler(egm.id)}
@@ -189,25 +189,24 @@ const SlotList = () => {
             className={styles['slot-btn']}
           >
             {((egm?.member && Object.keys(egm.member)?.length > 0)
-              || egm?.hasCredit) &&(	
-				<div
-					role="presentation"
-					onClick={(e) => {
-					e.stopPropagation();
-					}}
-					className={styles['is-playing-cover']}
-				>
-					遊戲中...
+              || egm?.hasCredit) && (
+              <div
+                role="presentation"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className={styles['is-playing-cover']}
+              >
+                遊戲中...
               </div>)}
-			
 
-			<Cover
-				status={'start'}
-				gameName={'鑽石'}
-				bonusImg={false}
-				btnAction={selectEgmHandler}
-				btnActionParams={egm.id}
-			/>
+            <Cover
+              status="start"
+              gameName="鑽石"
+              bonusImg={false}
+              btnAction={selectEgmHandler}
+              btnActionParams={egm.id}
+            />
 
             <Image
               src={getEgmImage({

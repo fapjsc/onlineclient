@@ -42,6 +42,7 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
+import { WarningWindow } from '../../components/warningWindow/warningWindow';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
@@ -73,6 +74,12 @@ const GamePlay = () => {
   const dispatch = useDispatch();
 
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
+  const {
+    // eslint-disable-next-line
+    data: egmListData,
+    error: egmListError,
+    isLoading: egmListLoading,
+  } = useSelector((state) => state.egmList);
   const { model, brand_name: brandName } = SelectEgmData || {};
 
   const {
@@ -294,7 +301,7 @@ const GamePlay = () => {
       />
 
       <AutoForm visible={showAutoForm} setVisible={setShowAutoForm} setIsAuto={setIsAuto} />
-
+      <WarningWindow status="timeInterval" btnAction={exitGameHandler} time={egmListData}  />
       <div
         style={{
           height: '100%',
