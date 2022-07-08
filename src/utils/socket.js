@@ -16,6 +16,7 @@ import { agentServer } from '../apis';
 
 // Helpers
 import { scrollToBottomAnimated } from './scrollToBottom';
+import { egmActionTypes } from '../store/types';
 
 let socket;
 
@@ -43,6 +44,13 @@ export const connectSocket = (token) => {
 
   socket.on('error', (error) => {
     console.log(error);
+  });
+  socket.on('playerPressTime', () => {
+    console.log('playerPressTime');
+    store.dispatch({
+      type: egmActionTypes.PLAYER_PRESS_TIME_ON,
+      payLoad: '',
+    });
   });
 
   socket.on('onlineEgmList', (egmStatus) => {

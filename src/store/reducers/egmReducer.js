@@ -178,6 +178,14 @@ export const egmButtonPressReducer = (state = buttonPressState, action) => {
     return state;
   }
 };
+export const playerPressTimeReducer = (state = '', action) => {
+  switch (action.type) {
+  case egmActionTypes.PLAYER_PRESS_TIME_ON:
+    return { state: state };
+  default:
+    return { state: '' };
+  }
+};
 
 // Egm Cash in out
 const cashInOutState = {

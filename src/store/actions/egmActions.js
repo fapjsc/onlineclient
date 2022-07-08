@@ -72,6 +72,15 @@ export const getBrandList = () => async (dispatch) => {
     }
   }
 };
+//playerPressTime
+export const playerPressTime = () => async (dispatch) => {
+  try {
+    //api send
+
+  } catch (error) {
+    dispatch({ state: '' });
+  }
+};
 
 // Select Egm
 export const selectEgm = (id) => async (dispatch) => {

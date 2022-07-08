@@ -74,12 +74,7 @@ const GamePlay = () => {
   const dispatch = useDispatch();
 
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
-  const {
-    // eslint-disable-next-line
-    data: egmListData,
-    error: egmListError,
-    isLoading: egmListLoading,
-  } = useSelector((state) => state.egmList);
+
   const { model, brand_name: brandName } = SelectEgmData || {};
 
   const {
@@ -198,6 +193,9 @@ const GamePlay = () => {
       });
     }
   }, [aftError, dispatch]);
+  const { state: playerPressTimeState } = useSelector((state) => state.playerPressTime);
+  useEffect(() => {
+  }, []);
 
   useEffect(() => {
     // window.history.pushState(null, null, null);
@@ -301,7 +299,7 @@ const GamePlay = () => {
       />
 
       <AutoForm visible={showAutoForm} setVisible={setShowAutoForm} setIsAuto={setIsAuto} />
-      <WarningWindow status="timeInterval" btnAction={exitGameHandler} time={egmListData} />
+      <WarningWindow status="timeInterval" btnAction={exitGameHandler} time={playerPressTimeState} />
       <div
         style={{
           height: '100%',

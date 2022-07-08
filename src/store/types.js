@@ -58,6 +58,8 @@ export const egmActionTypes = {
   // Set Cash in out Form
   SET_AFT_FORM: 'SET_AFT_FORM',
   CLEAR_AFT_FORM: 'CLEAR_AFT_FORM',
+  //playerPressTime
+  PLAYER_PRESS_TIME_ON: 'PLAYER_PRESS_TIME',
 };
 
 export const menuActionTypes = {

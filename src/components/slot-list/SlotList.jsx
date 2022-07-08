@@ -188,22 +188,11 @@ const SlotList = () => {
             role="presentation"
             className={styles['slot-btn']}
           >
-            {((egm?.member && Object.keys(egm.member)?.length > 0)
-              || egm?.hasCredit) && (
-              <div
-                role="presentation"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                className={styles['is-playing-cover']}
-              >
-                遊戲中...
-              </div>)}
 
             <Cover
-              status="start"
+              egm={egm}
               gameName="鑽石"
-              bonusImg={false}
+              bonusImg
               btnAction={selectEgmHandler}
               btnActionParams={egm.id}
             />
