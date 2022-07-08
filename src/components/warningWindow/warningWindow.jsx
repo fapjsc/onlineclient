@@ -14,7 +14,7 @@ const statusText = {
       <span style={{ textAlign: 'center' }}>
         請重新選擇遊戲機
       </span>
-                </>,
+    </>,
     btnText: '返回大廳',
     titleText: '系統訊息',
   },
@@ -40,7 +40,7 @@ const statusText = {
       如有未洗分,五分鐘後平台將會自動洗分
       <br />
       如有不便之處,敬請見諒
-                </>,
+    </>,
     btnText: '確定',
     titleText: '重要公告',
   },
@@ -49,37 +49,50 @@ const statusText = {
 export default class WarningWindow extends Component {
   constructor(props) {
     super(props);
+    this.timeOutTimer = 0;
+    this.timeIntervalTimer = 0;
     this.state = {
-      sec: !this.props.sec ? 0 : this.props.sec,
-      min: !this.props.min ? 0 : this.props.min,
+      sec: 30,
+      min: 0,
       show: true,
       status: this.props.status,
-
     };
     this.btnAction = this.btnAction.bind(this);
+    this.Timer = this.Timer.bind(this);
   }
 
   componentWillMount() {
-    console.log(this.props);
-    if (this.state.status == 'timeInterval') {
-      const a = setInterval(() => {
-        if (this.state.sec <= 0 && this.state.min <= 0) {
-          clearInterval(a);
-        } else if (this.state.sec <= 0) {
-          this.setState({ min: this.state.min - 1 });
-          this.setState({ sec: 59 });
-        } else {
-          this.setState({ sec: this.state.sec - 1 });
-          console.log(this.state.sec - 1);
-        }
-      }, 1000);
-    }
+    this.Timer();
   }
 
   componentDidUpdate(prevProps, prevState) {
     console.log(prevState);
-    if (this.state.sec == 0 && this.state.min == 0 && prevProps.status == this.state.status) {
+    if (prevProps.time !== this.props.time) {
+      //如果是新的props.time
+      
+    }
+    if (this.state.sec === 0 && this.state.min === 0 && prevProps.status === this.state.status) {
       this.setState({ status: 'timeOut' });
+    }
+  }
+
+  Timer() {
+    if (this.timeIntervalTimer !== 0) clearInterval(this.timeIntervalTimer);
+    if (this.timeOutTimer !== 0) clearInterval(this.timeOutTimer);
+    if (this.state.status === 'timeInterval') {
+      this.timeOutTimer = setTimeout(() => {
+        this.timeIntervalTimer = setInterval(() => {
+          if (this.state.sec <= 0 && this.state.min <= 0) {
+            clearInterval(this.a);
+          } else if (this.state.sec <= 0) {
+            this.setState({ min: this.state.min - 1 });
+            this.setState({ sec: 59 });
+          } else {
+            this.setState({ sec: this.state.sec - 1 });
+            console.log(this.state.sec - 1);
+          }
+        }, 1000);
+      }, this.props.time)
     }
   }
 
@@ -111,7 +124,7 @@ export default class WarningWindow extends Component {
                         `${this.state.min < 10 ? `0${ this.state.min}` : this.state.min} : ${
 											this.state.sec < 10 ? `0${ this.state.sec}` : this.state.sec}`
                     }
-                  </span>
+                    </span>
                   : <></>
               }
             </div>
@@ -121,7 +134,7 @@ export default class WarningWindow extends Component {
             >
               <div>{statusText[this.state.status].btnText}</div>
             </div>
-          </div>
+                                                                                   </div>
             :						<div className={styles.positionCenter}>
               <div className={styles.warningwindow1}>
                 <div onClick={() => this.setState({ show: false })}><div /></div>
@@ -132,18 +145,18 @@ export default class WarningWindow extends Component {
                   this.status == 'systemMaintenance'
                     ? <></>
                     : <button
-                        style={{
+                      style={{
                         height: '20%',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                        onClick={this.btnAction}
+                      onClick={this.btnAction}
                     >
                       {statusText[this.state.status].btnText}
-                    </button>
+                      </button>
                 }
               </div>
-            </div>
+                   </div>
         }
       </div>
 

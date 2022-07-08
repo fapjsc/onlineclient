@@ -301,7 +301,7 @@ const GamePlay = () => {
       />
 
       <AutoForm visible={showAutoForm} setVisible={setShowAutoForm} setIsAuto={setIsAuto} />
-      <WarningWindow status="timeInterval" btnAction={exitGameHandler} time={egmListData}  />
+      <WarningWindow status="timeInterval" btnAction={exitGameHandler} time={egmListData} />
       <div
         style={{
           height: '100%',
