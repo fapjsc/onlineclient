@@ -129,6 +129,7 @@ const GamePlay = () => {
 
   const exitGameHandler = () => {
     sdkRef.current?.close();
+    setIsAuto({ action: false, limit: null });
     dispatch(cleanJapanSlotState());
     dispatch(clearButtonPressStatus());
     dispatch(clearCashInOutStatus());

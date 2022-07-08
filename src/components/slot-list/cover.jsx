@@ -110,6 +110,7 @@ export default class Cover extends Component {
             ? `${statusText[status].windowText}${totalBooking}`
             : `${statusText[status].windowText}`}
         </div>
+
         {bonusImg && <div className={styles.bonusImg} />}
 
         <div
