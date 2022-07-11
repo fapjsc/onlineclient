@@ -23,6 +23,7 @@ export const egmAPi = {
   aftOut: 'aftOut',
   getBrandList: 'egmBrandList',
   leaveEgm: 'leaveEgm',
+  bookingList: 'reserve_egm',
 };
 
 export const apiConfig = {

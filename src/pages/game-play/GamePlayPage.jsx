@@ -42,7 +42,7 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
-//import WarningWindow from '../../components/warningWindow/warningWindow';
+import WarningWindow from '../../components/warningWindow/warningWindow';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
@@ -297,6 +297,7 @@ const GamePlay = () => {
       />
 
       <AutoForm visible={showAutoForm} setVisible={setShowAutoForm} setIsAuto={setIsAuto} />
+      <WarningWindow propStatus="timeInterval" btnAction={exitGameHandler} />
       <div
         style={{
           height: '100%',

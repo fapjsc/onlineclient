@@ -191,8 +191,7 @@ const SlotList = () => {
 
             <Cover
               egm={egm}
-              gameName="鑽石"
-              bonusImg
+              bonusImg={false}
               btnAction={selectEgmHandler}
               btnActionParams={egm.id}
             />

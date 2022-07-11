@@ -178,12 +178,22 @@ export const egmButtonPressReducer = (state = buttonPressState, action) => {
     return state;
   }
 };
-export const playerPressTimeReducer = (state = '', action) => {
+
+const bookingListState = {
+  data: 'none',
+};
+export const bookingListReducer = (state = bookingListState, action) => {
   switch (action.type) {
-  case egmActionTypes.PLAYER_PRESS_TIME_ON:
-    return { state: state };
+  case egmActionTypes.BOOKING_LIST_SUCCESS:
+    return {
+      data: action.payload,
+    };
+  case egmActionTypes.BOOKING_LIST_ERROR:
+    return {
+      data: action.payload,
+    };
   default:
-    return { state: '' };
+    return state;
   }
 };
 

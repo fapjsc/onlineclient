@@ -2,6 +2,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './warningWindow.module.scss';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import useTimer from '../../hooks/useTimer';
+import _ from 'lodash';
 
 const statusText = {
   timeInterval: {
@@ -52,158 +57,104 @@ const statusText = {
     titleText: '',
   },
 };
-class WarningWindow extends Component {
-  constructor(props) {
-    super(props);
-    this.timeOutTimer = 0;
-    this.timeIntervalTimer = 0;
-    this.state = {
-      sec: 30,
-      min: 0,
-      show: false,
-      status: 'origin',
-    };
-    this.btnAction = this.btnAction.bind(this);
-    this.Timer = this.Timer.bind(this);
-    this.Clear = this.Clear.bind(this);
-    this.changeStatus = this.changeStatus.bind(this);
-  }
+const WarningWindow = ({propStatus, btnAction}) => {
+  const [timeState, timefunc ] = useTimer(30, 0, 270)
+  const [status, setStatus] = useState(propStatus);
+  const {second:sec, minute:min, showWindow: show} = timeState
+  const {setShowWindow: setShow, countDownTimer: Timer} = timefunc
+  const {
+    data: selectEgmData,
+  } = useSelector((state) => state.selectEgm);
+  const { id: egmID } = !selectEgmData ? { id: 0 } : selectEgmData;
+  const {
+    // eslint-disable-next-line
+    data: egmListData,
+  } = useSelector((state) => state.egmList);
 
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      time, status,
-    } = this.props;
+  let count = 0
+  const [{ playerPressTime }] = !egmListData ? [{ playerPressTime: -1 }] : egmListData.map((item,index) => {
+    if(!egmID) return {playerPressTime: -1}
+    if (item.id === egmID) {
+      console.log(item.id, egmID ,'equal')
+      return _.get(item,'playerPressTime',-1);
+    }
+  });
 
-    console.log('Props更新=>', this.props);
-    if (prevProps.time !== time) {
-      //如果是新的props.time
-      this.Timer();
-    }
-    if (prevState.status !== status) {
-      this.Timer();
-      this.changeStatus(status);
-    }
-    if (prevState.sec === 0 && prevState.min === 0 && prevProps.status === status) {
-      this.changeStatus('timeOut');
-    }
-  }
-
-  changeStatus(status) {
-    this.setState({ status: status });
-  }
-
-  Clear() {
-    console.log('reset Timer');
-    if (this.timeIntervalTimer !== 0) {
-      clearInterval(this.timeIntervalTimer);
-      this.setState({ sec: 30, min: 0 });
-    }
-    if (this.timeOutTimer !== 0) {
-      clearTimeout(this.timeOutTimer);
-      this.setState({ sec: 30, min: 0 });
-    }
-  }
-
-  Timer() {
-    const {
-      min, sec, status,
-    } = this.state;
-    console.log(`timer Start${min}分${sec}秒`);
-    this.Clear();
-    if (status === 'timeInterval') {
-      console.log('reset success 等待五秒 重新計時');
-      this.timeOutTimer = setTimeout(() => {
-        this.setState({ show: true });
-        this.timeIntervalTimer = setInterval(() => {
-          if (sec <= 0 && min <= 0) {
-            clearInterval(this.timeIntervalTimer);
-          } else if (sec <= 0) {
-            this.setState({ min: min - 1 });
-            this.setState({ sec: 59 });
-          } else {
-            this.setState({ sec: sec - 1 });
-          }
-        }, 1000);
-      }, 5000);
-    }
-  }
-
-  btnAction() {
-    const {
-      status, btnAction,
-    } = this.props;
+  const btnOnClick = () => {
+    setShow(false)
+    console.log('onclick')
     if (statusText[status].btnText === '返回大廳' || statusText[status].windowText === '請登入會員') {
-      btnAction();
-      this.setState({ show: false });
-    } else {
-      this.setState({ show: false });
+      console.log('回到主頁')
+      btnAction()
     }
   }
 
-  render() {
-    const {
-      show, status, min, sec,
-    } = this.state;
+  // eslint-disable-next-line
+  useEffect(() => {
+    //重egm List 更新playerPressTime
 
-    return (
-      <div className={styles.mask} style={{ display: show ? 'flex' : 'none' }}>
-        {
-          status === 'timeInterval' || status === 'timeOut'
-            ? <div className={styles.warningwindow2}>
+    console.log('更新 playerPressTime => ', playerPressTime);
+    console.log(`selectEgmData: ${selectEgmData}`);
+    // eslint-disable-next-line
+    Timer()
+  }, [playerPressTime]);
+
+  useEffect(() => {
+    if (sec === 0 && min === 0){
+      setStatus('timeOut')
+    }
+  }, [min, sec])
+
+  return(
+    <div className={styles.mask} style={{ display: show ? 'flex' : 'none' }}>
+      {
+        status === 'timeInterval' || status === 'timeOut'
+          ? <div className={styles.warningwindow2}>
               <div style={{ height: '20%' }}>{statusText[status].titleText}</div>
               <div style={{ height: '60%' }}>
                 {statusText[status].windowText}
                 <br />
                 {
                   status === 'timeInterval'
-                    ? <span>
-                      {
-                        `${min < 10 ? `0${ min}` : min} : ${sec < 10 ? `0${ sec}` : sec}`
-                      }
-                    </span>
-                    : <></>
+                    && (
+                     (min >= 10 ? `${min}` : `0${min}`)
+                     +' : '+
+                     (sec >= 10 ? `${sec}` : `0${sec}`)
+                    )
                 }
               </div>
-              <div role="button" style={{ height: '20%' }} onClick={this.btnAction}>
+              <div role="button" style={{ height: '20%' }} onClick={btnOnClick}>
                 <div>{statusText[status].btnText}</div>
               </div>
             </div>
-            : <div className={styles.positionCenter}>
-              <div className={styles.warningwindow1}>
-                <div role="button" onClick={() => this.setState({ show: false })}></div>
-                {/*this is corssX*/}
-                <div style={{ height: '20%', alignItems: 'center' }}>{statusText[status].titleText}</div>
-                <div style={{ height: '60%', lineHeight: '40px' }}>{statusText[status].windowText}</div>
-                {
-                  this.status === 'systemMaintenance'
-                    ? <></>
-                    : <button 
-                      style={{height: '20%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onClick={this.btnAction}
-                    >
-                      {statusText[this.state.status].btnText}
-                      </button>
-                }
-              </div>
+          : <div className={styles.positionCenter}>
+            <div className={styles.warningwindow1}>
+              <div role="button" onClick={() => setShow(false)}></div>
+              {/*this is corssX*/}
+              <div style={{ height: '20%', alignItems: 'center' }}>{statusText[status].titleText}</div>
+              <div style={{ height: '60%', lineHeight: '40px' }}>{statusText[status].windowText}</div>
+              {
+                status !== 'systemMaintenance' &&(
+                  <button 
+                    style={{height: '20%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    onClick={btnOnClick}
+                  >
+                    {statusText[status].btnText}
+                    </button>
+                )
+              }
             </div>
-        }
-      </div>
-
-    );
-  }
+          </div>
+      }
+    </div>
+  )
 }
 
-WarningWindow.defaultProps = {
-  btnAction: () => {},
-  time: '',
-};
-
 WarningWindow.propTypes = {
-  status: PropTypes.string.isRequired,
-  btuAction: PropTypes.func,
-  time: PropTypes.string,
+  propStatus: PropTypes.string.isRequired,
+  btuAction: PropTypes.func.isRequired,
 };
 export default WarningWindow;
