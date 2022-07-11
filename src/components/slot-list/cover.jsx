@@ -145,6 +145,10 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
       //do switch booking and check booking list
       await changeBookingList()
       setStatus('booking')
+      setTimeout(() => {
+        setStatus('start')
+      }, 2000);
+      
     }
     else if(status == 'start') {
       btnAction(btnActionParams)
@@ -156,10 +160,6 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
     //get booking List when egm update every time
   }, [egm]);
 
-  useEffect(() => {
-    if(status === 'booking'){
-    }
-  }, [egm?.waitingList])
 
   return (
     <div
