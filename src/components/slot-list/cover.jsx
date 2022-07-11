@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getBookingList } from '../../store/actions/egmActions';
 import { useRef } from 'react';
-import Countdown from 'react-countdown';
+import useTimer from '../../hooks/useTimer';
 
 const statusText = {
   connect: {
@@ -95,9 +95,13 @@ const renderer = ({
 };
 const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
   const [status, setStatus] = useState('origin')
-  const [synPosition, setSynPosition] = useState('')
-  const [totalBooking, SetTotalBooking] = useState('')
+  const [synPosition, setSynPosition] = useState(-1);
+  const [totalBooking, setTotalBooking] = useState(-1);
 
+
+  const [timeState, timefunc ] = useTimer(59, 1, 0);
+  const {second:sec, minute:min, showWindow: show} = timeState;
+  const {setShowWindow: setShow, countDownTimer: Timer} = timefunc;
 
   const dispatch = useDispatch();
   const timeOutRef = useRef();
@@ -119,12 +123,12 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
 
 
   const isSomeOnePlaying = () => {
-    if ((egm?.member && Object.keys(egm.member)?.length > 0) 
+    if ((egm?.member && (Object.keys(egm?.member)?.length || 0) > 0)
       || egm?.hasCredit 
       ||egm?.waitingList.length > 0) 
       {
       //判斷是否有人在遊戲中
-      if (status !== 'someonePlaying'){
+      if (status !== 'someonePlaying' && status !== 'booking'){
         setStatus('someonePlaying');
       }
       return true;
@@ -137,29 +141,64 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
 
   const btnOnClick = async() => {
     console.log('egmId OnlineId',egmId,onlineId)
-    setStatus('connect')
     if(status == 'origin') {
-      btnAction(btnActionParams)
+      setStatus('connect')
+      await btnAction(btnActionParams)
+      isSomeOnePlaying()
     }
     else if(status === 'someonePlaying') {
       //do switch booking and check booking list
       await changeBookingList()
       setStatus('booking')
-      setTimeout(() => {
-        setStatus('start')
-      }, 2000);
-      
     }
     else if(status == 'start') {
-      btnAction(btnActionParams)
+      setStatus('connect')
+      await btnAction(btnActionParams)
+      isSomeOnePlaying()
     }
   }
 
   useEffect(()=> {
     isSomeOnePlaying()
     //get booking List when egm update every time
-  }, [egm]);
+  }, []);
 
+  useEffect(() => {
+    let waitingList, syn;
+    if(status === 'booking') {
+      console.log('start booking ')
+      waitingList = egm?.waitingList || [];
+
+      setTotalBooking(waitingList?.length || 0);
+      for(let item=0; item<waitingList.length; item++) {
+        if (waitingList[item].onlineId == onlineId){
+          syn = item;
+        }
+      }
+      setSynPosition(syn);
+    }
+    else if(status === 'someonePlaying'){
+      setSynPosition('')
+      setTotalBooking('000')
+    }
+  }, [egm?.waitingList, status]);
+
+  useEffect(() => {
+    if(synPosition === 0){
+      Timer()
+      setStatus('start')
+    }
+    console.log('預約人數',synPosition,totalBooking)
+  }, [synPosition, totalBooking])
+
+  useEffect(() => {
+    if(sec === 0 && min ===0) {
+      //把人踢掉
+      setTimeout(() => {
+        isSomeOnePlaying()
+      }, 2000);
+    }
+  }, [sec, min])
 
   return (
     <div
@@ -186,13 +225,10 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
           ? `${totalBooking}`
           : status === 'start'
             &&(
-              <Countdown
-                date={Date.now() + 120000}
-                intervalDelay={0}
-                renderer={renderer}
-                onComplete={() => setStatus('someonePlaying')}
-              />
-                )
+              (min >= 10 ? `${min}` : `0${min}`)
+              +' : '+
+              (sec >= 10 ? `${sec}` : `0${sec}`)
+             )
         }
       </div>
       {bonusImg && <div className={styles.bonusImg} />}
@@ -214,7 +250,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
               height: '30px',
             }}
           >
-            {synPosition
+            {status === 'booking'
               ? `${statusText[status].btnText}${synPosition}`
               : `${statusText[status].btnText}`}
           </button>
@@ -227,7 +263,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
               height: '30px',
             }}
           >
-            {synPosition
+            {status === 'booking'
               ? `${statusText[status].btnText}${synPosition}`
               : `${statusText[status].btnText}`}
           </div>

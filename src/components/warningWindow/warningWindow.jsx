@@ -57,6 +57,7 @@ const statusText = {
     titleText: '',
   },
 };
+const playerPressTimeDefault = {playerPressTime: -1}
 const WarningWindow = ({propStatus, btnAction}) => {
   const [timeState, timefunc ] = useTimer(30, 0, 270);
   const [status, setStatus] = useState(propStatus);
@@ -67,17 +68,17 @@ const WarningWindow = ({propStatus, btnAction}) => {
     data: selectEgmData,
   } = useSelector((state) => state.selectEgm);
   const { id: egmID } = !selectEgmData ? { id: 0 } : selectEgmData;
-  const {
+  let {
     // eslint-disable-next-line
     data: egmListData,
   } = useSelector((state) => state.egmList);
 
-  let [{ playerPressTime }] = !egmListData ? [{ playerPressTime: -1 }] : egmListData.map((item,index) => {
-    if(!egmID || !item || !item.id) return {playerPressTime: -1};
-    if (item.id === egmID) {
-      console.log(item.id, egmID ,'equal')
-      let a = item?.playerPressTime || {playerPressTime: -1};
-      return a == {playerPressTime: -1} ? a :item;
+  let [{ playerPressTime }] = (!egmListData) ? [playerPressTimeDefault] : egmListData?.map((item,index) => {
+    if(!egmID || !item || !item.id) return playerPressTimeDefault;
+    if (item?.id === egmID) {
+      console.log(item?.id, egmID ,'equal')
+      let a = item?.playerPressTime || playerPressTimeDefault;
+      return a == playerPressTimeDefault ? a :item;
     }
   });
 
@@ -98,7 +99,7 @@ const WarningWindow = ({propStatus, btnAction}) => {
     console.log(`selectEgmData: ${selectEgmData}`);
     // eslint-disable-next-line
     Timer()
-  }, [egmListData]);
+  }, [playerPressTime]);
 
   useEffect(() => {
     if (sec === 0 && min === 0){

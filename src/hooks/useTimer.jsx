@@ -2,15 +2,16 @@
 import { useEffect, useState, useRef } from 'react';
 
 function useTimer(propSec, propMin, propTimeOutCount) {
-  const [sec, setSec] = useState(30);
   const [show, setShow] = useState(false);
-  const [min, setMin] = useState(0);
+  const [countDown, setCountDown] = useState({
+    sec: 30,
+    min: 0,
+  });
   const timeIntervalTimer = useRef(0);
   const timeOutTimer = useRef(0);
 
   const changeTime = (secs, mins) => {
-    setSec(secs);
-    setMin(mins);
+    setCountDown({sec: secs, min: mins});
   };
 
   const Clear = async () => {
@@ -34,13 +35,26 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     console.log(`reset success 等待${propTimeOutCount}秒 重新計時`);
     timeOutTimer.current = setTimeout(() => {
       timeIntervalTimer.current = setInterval(() => {
-        if (sec <= 0 && min <= 0) {
-          clearInterval(timeIntervalTimer);
-        } else if (sec <= 0 && min > 0) {
-          changeTime(59, min - 1);
-        } else {
-          setSec((prev) => (prev - 1));
-        }
+        setCountDown((prev) => {
+          if (prev.sec <= 0 && prev.min <= 0) {
+            clearInterval(timeIntervalTimer);
+            return{
+              sec: 0,
+              min: 0,
+            }
+          } else if (prev.sec <= 0) {
+            return {
+              sec: 59,
+              min: prev.min - 1,
+            };
+          } else {
+            return {
+              sec: prev.sec - 1,
+              min: prev.min,
+            };
+          }
+        })
+
       }, 1000);
       setShow(true);
     }, propTimeOutCount * 1000);
@@ -54,16 +68,16 @@ function useTimer(propSec, propMin, propTimeOutCount) {
 
   // eslint-disable-next-line
   useEffect(() => {
-    console.log(`${min}分${sec}秒`);
-    if (sec === 0 && min === 0) {
+    //console.log(`${min}分${sec}秒`);
+    if (countDown.sec === 0 && countDown.min === 0) {
       Clear();
       console.log('計時器停止');
     }
     // eslint-disable-next-line
-  }, [ sec, min]);
+  }, [ countDown.sec, countDown.min]);
 
   return [{
-    second: sec, minute: min, showWindow: show,
+    second: countDown.sec, minute: countDown.min, showWindow: show,
   }, { countDownTimer: Timer, setShowWindow: setShow, ClearTimer: Clear }];
 }
 export default useTimer;
