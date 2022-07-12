@@ -93,7 +93,7 @@ const renderer = ({
 
   return <>{`${minutes}:${seconds}`}</>;
 };
-const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
+const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) => {
   const [status, setStatus] = useState('origin')
   const [synPosition, setSynPosition] = useState(-1);
   const [totalBooking, setTotalBooking] = useState(-1);
@@ -123,9 +123,9 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
 
 
   const isSomeOnePlaying = () => {
-    if ((egm?.member && (Object.keys(egm?.member)?.length || 0) > 0)
+    if ((Object.keys(egm?.member).length > 0)
       || egm?.hasCredit 
-      ||egm?.waitingList.length > 0) 
+      ||egm?.waitingList?.length > 0)
       {
       //判斷是否有人在遊戲中
       if (status !== 'someonePlaying' && status !== 'booking'){
@@ -164,18 +164,26 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
   }, []);
 
   useEffect(() => {
+    if (selectEgmLoading){
+      setStatus('connect')
+    }else{
+      isSomeOnePlaying()
+    }
+  }, [selectEgmLoading])
+
+  useEffect(() => {
     let waitingList, syn;
     if(status === 'booking') {
       console.log('start booking ')
       waitingList = egm?.waitingList || [];
 
       setTotalBooking(waitingList?.length || 0);
-      for(let item=0; item<waitingList.length; item++) {
+      for(let item=0; item < waitingList.length; item++) {
         if (waitingList[item].onlineId == onlineId){
           syn = item;
         }
       }
-      setSynPosition(syn);
+      setSynPosition(!syn ? 0 : syn);
     }
     else if(status === 'someonePlaying'){
       setSynPosition('')
@@ -274,6 +282,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm}) => {
 }
 
 Cover.propTypes = {
+  selectEgmLoading: PropTypes.bool.isRequired,
   egm: PropTypes.object.isRequired,
   btnAction: PropTypes.func.isRequired,
   btnActionParams: PropTypes.any.isRequired,

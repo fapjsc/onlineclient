@@ -73,6 +73,8 @@ const WarningWindow = ({propStatus, btnAction}) => {
     data: egmListData,
   } = useSelector((state) => state.egmList);
 
+
+
   let [{ playerPressTime }] = (!egmListData) ? [playerPressTimeDefault] : egmListData?.map((item,index) => {
     if(!egmID || !item || !item.id) return playerPressTimeDefault;
     if (item?.id === egmID) {
@@ -80,7 +82,7 @@ const WarningWindow = ({propStatus, btnAction}) => {
       let a = item?.playerPressTime || playerPressTimeDefault;
       return a == playerPressTimeDefault ? a :item;
     }
-  });
+  }) || [playerPressTimeDefault];
 
   const btnOnClick = () => {
     setShow(false)

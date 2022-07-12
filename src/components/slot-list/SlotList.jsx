@@ -190,6 +190,7 @@ const SlotList = () => {
           >
 
             <Cover
+              selectEgmLoading={selectEgmLoading}
               egm={egm}
               bonusImg={false}
               btnAction={selectEgmHandler}
