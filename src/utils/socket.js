@@ -16,7 +16,6 @@ import { agentServer } from '../apis';
 
 // Helpers
 import { scrollToBottomAnimated } from './scrollToBottom';
-import sortEgmList from './sortEgmList';
 
 let socket;
 
@@ -49,7 +48,7 @@ export const connectSocket = (token) => {
   socket.on('onlineEgmList', (egmStatus) => {
     const { data } = store.getState().egmList;
     const existsIP = data?.map((el) => el.ip);
-    let filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
+    const filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
     if (!filterArr?.length) return;
     // eslint-disable-next-line
     store.dispatch(upDateEgmData(filterArr));
