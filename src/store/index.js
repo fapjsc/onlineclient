@@ -18,6 +18,7 @@ import {
   aftFormReducer,
   egmStatusReducer,
   leaveEgmReducer,
+  bookingListReducer,
 } from './reducers/egmReducer';
 
 import { japanSlotReducer } from './reducers/japanSlotReducer';
@@ -44,6 +45,7 @@ const reducer = combineReducers({
   leaveEgm: leaveEgmReducer,
   chat: chatReducer,
   japanSlot: japanSlotReducer,
+  bookingList: bookingListReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -5,7 +5,7 @@ import { egmAPi, agentServer } from '../../apis';
 import { waitTime, asyncForEach } from '../../utils/helper';
 
 // eslint-disable-next-line
-import { egmActionTypes, userActionTypes, cashInActionTypes } from '../types';
+import { egmActionTypes, cashInActionTypes } from '../types';
 
 // Get Egm List
 export const getEgmList = () => async (dispatch) => {
@@ -15,7 +15,6 @@ export const getEgmList = () => async (dispatch) => {
     const { data } = await axiosFetch.get(
       `${agentServer.api}/${egmAPi.getEgmList}`,
     );
-
     dispatch({
       type: egmActionTypes.SETUP_EGM_LIST_SUCCESS,
       payload: { egmList: data.result },
@@ -73,6 +72,28 @@ export const getBrandList = () => async (dispatch) => {
   }
 };
 
+//booking
+export const getBookingList = (egmId, onlineId) => async (dispatch) => {
+  try {
+    const { data } = await authFetch.post(
+      `${agentServer.api}/${egmAPi.bookingList}`,
+      {
+        egmId: egmId,
+        onlineId: onlineId,
+      },
+    );
+    dispatch({
+      type: egmActionTypes.BOOKING_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: egmActionTypes.BOOKING_LIST_ERROR,
+      payload: 'error',
+    });
+  }
+};
+
 // Select Egm
 export const selectEgm = (id) => async (dispatch) => {
   dispatch({ type: egmActionTypes.SETUP_SELECT_EGM_BEGIN });
@@ -82,7 +103,7 @@ export const selectEgm = (id) => async (dispatch) => {
       `${agentServer.api}/${egmAPi.selectEgm}`,
       { id },
     );
-
+    console.log('selectEgm', data);
     dispatch({
       type: egmActionTypes.SETUP_SELECT_EGM_SUCCESS,
       payload: { selectEgm: data.result },
@@ -140,7 +161,7 @@ export const buttonPress = ({ ip, code, name }) => async (dispatch) => {
           name,
         },
     );
-
+    console.log('egmButtonPress', data);
     dispatch({
       type: egmActionTypes.BUTTON_PRESS_SUCCESS,
       payload: { buttonPressData: data.message },

@@ -40,6 +40,10 @@ const AutoForm = ({ visible, setVisible, setIsAuto }) => {
             <div role="presentation" onClick={() => onAutoClick(1000 * 60 * 10)}>10分鐘</div>
             <div role="presentation" onClick={() => onAutoClick(-1)} className={styles.infin}>&infin;</div>
           </div>
+          <div className={styles.footer}>
+            <span>※ 點擊</span>
+            點擊可取消自動遊戲
+          </div>
         </div>
       </div>
     </Mask>

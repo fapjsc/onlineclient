@@ -1,6 +1,13 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './SlotList.module.scss';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getBookingList } from '../../store/actions/egmActions';
+import { useRef } from 'react';
+import useTimer from '../../hooks/useTimer';
 
 const statusText = {
   connect: {
@@ -13,11 +20,17 @@ const statusText = {
   },
   start: {
     btnText: '開始遊戲',
-    windowText: '可以開始遊戲 請在時間內完成開分',
+    windowText: <>
+      可以開始遊戲<br/> 
+      請在時間內完成開分<br/>
+    </>,
   },
   booking: {
     btnText: '我的順位',
-    windowText: '已預約機台 預約人數',
+    windowText: <>
+      已預約機台<br/> 
+      預約人數<br/>
+    </>,
   },
   origin: {
     btnText: '',
@@ -71,96 +84,208 @@ const statusStyle = {
     textColor: '#f00',
   },
 };
-export default class Cover extends Component {
-  constructor(props) {
-    super(props);
-    this.btnOnclick = this.btnOnclick.bind(this);
+const renderer = ({
+  formatted: { minutes, seconds }, completed,
+}) => {
+  if (completed) {
+    return <></>;
   }
 
-  btnOnclick() {
-    const { btnAction, btnActionParams } = this.props;
-    if (!btnAction) return;
-    btnAction(btnActionParams);
+  return <>{`${minutes}:${seconds}`}</>;
+};
+const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) => {
+  const [status, setStatus] = useState('origin')
+  const [synPosition, setSynPosition] = useState(-1);
+  const [totalBooking, setTotalBooking] = useState(-1);
+
+
+  const [timeState, timefunc ] = useTimer(59, 1, 0);
+  const {second:sec, minute:min, showWindow: show} = timeState;
+  const {setShowWindow: setShow, countDownTimer: Timer} = timefunc;
+
+  const dispatch = useDispatch();
+  const timeOutRef = useRef();
+
+  const {
+    data: bookingList
+  } = useSelector((state) => state.bookingList)
+
+  const {
+    data: userData
+  } = useSelector((state) => state.user)
+
+  const { online_id: onlineId } = userData || {};
+  const { id: egmId } = egm || {};
+
+  const changeBookingList = async () => {
+    dispatch(getBookingList(egmId, onlineId))
   }
 
-  render() {
-    const {
-      status, totalBooking, bonusImg, gameName, synPosition,
-    } = this.props;
 
-    return (
+  const isSomeOnePlaying = () => {
+    if ((Object.keys(egm?.member).length > 0)
+      || egm?.hasCredit 
+      ||egm?.waitingList?.length > 0)
+      {
+      //判斷是否有人在遊戲中
+      if (status !== 'someonePlaying' && status !== 'booking'){
+        setStatus('someonePlaying');
+      }
+      return true;
+    }
+    else{
+      setStatus('origin')
+      return false;
+    }
+  };
+
+  const btnOnClick = async() => {
+    console.log('egmId OnlineId',egmId,onlineId)
+    if(status == 'origin') {
+      setStatus('connect')
+      await btnAction(btnActionParams)
+      isSomeOnePlaying()
+    }
+    else if(status === 'someonePlaying') {
+      //do switch booking and check booking list
+      await changeBookingList()
+      setStatus('booking')
+    }
+    else if(status == 'start') {
+      setStatus('connect')
+      await btnAction(btnActionParams)
+      isSomeOnePlaying()
+    }
+  }
+
+  useEffect(()=> {
+    isSomeOnePlaying()
+    //get booking List when egm update every time
+  }, []);
+
+  useEffect(() => {
+    if (selectEgmLoading){
+      setStatus('connect')
+    }else{
+      isSomeOnePlaying()
+    }
+  }, [selectEgmLoading])
+
+  useEffect(() => {
+    let waitingList, syn;
+    if(status === 'booking') {
+      console.log('start booking ')
+      waitingList = egm?.waitingList || [];
+
+      setTotalBooking(waitingList?.length || 0);
+      for(let item=0; item < waitingList.length; item++) {
+        if (waitingList[item].onlineId == onlineId){
+          syn = item;
+        }
+      }
+      setSynPosition(!syn ? 0 : syn);
+    }
+    else if(status === 'someonePlaying'){
+      setSynPosition('')
+      setTotalBooking('000')
+    }
+  }, [egm?.waitingList, status]);
+
+  useEffect(() => {
+    if(synPosition === 0){
+      Timer()
+      setStatus('start')
+    }
+    console.log('預約人數',synPosition,totalBooking)
+  }, [synPosition, totalBooking])
+
+  useEffect(() => {
+    if(sec === 0 && min ===0) {
+      //把人踢掉
+      setTimeout(() => {
+        isSomeOnePlaying()
+      }, 2000);
+    }
+  }, [sec, min])
+
+  return (
+    <div
+      onClick={() => status === 'origin'&&(btnOnClick())}
+      className={styles.cover}
+      style={{
+        border: statusStyle[status].coverBorderColor,
+      }}
+    >
+      <div className={styles.exclamationMark} />
       <div
-        className={styles.cover}
-        style={{
-          border: statusStyle[status].coverBorderColor,
+      style={{
+          flex: 1,
+          display: 'flex',
+          width: '90%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          color: statusStyle[status].textColor,
         }}
       >
-        <div className={styles.exclamationMark} />
-
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            width: '40%',
-            alignItems: 'center',
-            color: statusStyle[status].textColor,
-          }}
-        >
-          {totalBooking
-            ? `${statusText[status].windowText}${totalBooking}`
-            : `${statusText[status].windowText}`}
-        </div>
-
-        {bonusImg && <div className={styles.bonusImg} />}
-
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-          }}
-        >
-          <div style={{ width: '50%', color: 'white' }}>{gameName}</div>
-          {status === 'start' || status === 'someonePlaying' ? (
-            <button
-              onClick={this.btnOnclick}
-              type="button"
-              style={{
-                ...statusStyle[status].btnStyles,
-                width: '50%',
-                height: '50px',
-              }}
-            >
-              {synPosition
-                ? `${statusText[status].btnText}${synPosition}`
-                : `${statusText[status].btnText}`}
-            </button>
-          ) : (
-            <div
-              className={status === 'connect' ? styles.load : styles.notLoad}
-              style={{
-                ...statusStyle[status].btnStyles,
-                width: '50%',
-                height: '50px',
-              }}
-            >
-              {synPosition
-                ? `${statusText[status].btnText}${synPosition}`
-                : `${statusText[status].btnText}`}
-            </div>
-          )}
-        </div>
+        {statusText[status].windowText}
+        {status === 'booking'
+          ? `${totalBooking}`
+          : status === 'start'
+            &&(
+              (min >= 10 ? `${min}` : `0${min}`)
+              +' : '+
+              (sec >= 10 ? `${sec}` : `0${sec}`)
+             )
+        }
       </div>
-    );
-  }
+      {bonusImg && <div className={styles.bonusImg} />}
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          alignItems: 'flex-end',
+        }}
+      >
+        <div style={{ width: '50%', color: 'white' }}>{egm.name === egm.model ? egm.name :egm.name + egm.model}</div>
+        {status === 'start' || status === 'someonePlaying' ? (
+          <button
+            onClick={btnOnClick}
+            type="button"
+            style={{
+              ...statusStyle[status].btnStyles,
+              width: '50%',
+              height: '30px',
+            }}
+          >
+            {status === 'booking'
+              ? `${statusText[status].btnText}${synPosition}`
+              : `${statusText[status].btnText}`}
+          </button>
+        ) : (
+          <div
+            className={status === 'connect' ? styles.load : styles.notLoad}
+            style={{
+              ...statusStyle[status].btnStyles,
+              width: '50%',
+              height: '30px',
+            }}
+          >
+            {status === 'booking'
+              ? `${statusText[status].btnText}${synPosition}`
+              : `${statusText[status].btnText}`}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 Cover.propTypes = {
+  selectEgmLoading: PropTypes.bool.isRequired,
+  egm: PropTypes.object.isRequired,
   btnAction: PropTypes.func.isRequired,
-  btnActionParams: PropTypes.string.isRequired,
+  btnActionParams: PropTypes.any.isRequired,
   bonusImg: PropTypes.bool.isRequired,
-  gameName: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  synPosition: PropTypes.string.isRequired,
-  totalBooking: PropTypes.number.isRequired,
 };
+export default Cover;

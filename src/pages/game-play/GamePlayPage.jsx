@@ -43,6 +43,7 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
+import WarningWindow from '../../components/warningWindow/warningWindow';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
@@ -54,6 +55,7 @@ const GamePlay = () => {
   // Ref
   const sdkRef = useRef();
   // Hooks
+  // eslint-disable-next-line
   const { isMobile, isTablet } = useRwd();
 
   // Router prop
@@ -73,6 +75,7 @@ const GamePlay = () => {
   const dispatch = useDispatch();
 
   const { data: SelectEgmData } = useSelector((state) => state.selectEgm);
+
   const { model, brand_name: brandName } = SelectEgmData || {};
 
   const {
@@ -196,6 +199,7 @@ const GamePlay = () => {
       });
     }
   }, [aftError, dispatch]);
+  //const { state: playerPressTimeState } = useSelector((state) => state.playerPressTime);
 
   useEffect(() => {
     // window.history.pushState(null, null, null);
@@ -265,6 +269,10 @@ const GamePlay = () => {
     };
   }, [playStatus]);
 
+  useEffect(() => {
+    console.log('isAuto status => ', isAuto);
+  }, [isAuto]);
+
   return (
     <>
       <CSSTransition
@@ -295,7 +303,7 @@ const GamePlay = () => {
       />
 
       <AutoForm visible={showAutoForm} setVisible={setShowAutoForm} setIsAuto={setIsAuto} />
-
+      <WarningWindow propStatus="timeInterval" btnAction={exitGameHandler} />
       <div
         style={{
           height: '100%',
@@ -357,6 +365,8 @@ const GamePlay = () => {
             setCurrentSubBtn={setCurrentSubBtn}
             setIsAuto={setIsAuto}
             isAuto={isAuto}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 
@@ -382,6 +392,8 @@ const GamePlay = () => {
             setShowSubBtn={setShowSubBtn}
             currentSubBtn={currentSubBtn}
             setCurrentSubBtn={setCurrentSubBtn}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 
@@ -401,6 +413,8 @@ const GamePlay = () => {
             ip={ip}
             name={name}
             brand={brandName}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 
@@ -420,6 +434,8 @@ const GamePlay = () => {
             ip={ip}
             name={name}
             brand={brandName}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
       </div>

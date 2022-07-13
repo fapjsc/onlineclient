@@ -6,6 +6,9 @@ import React, {
   useEffect,
 } from 'react';
 
+// Antd
+import { Dialog } from 'antd-mobile';
+
 // Lodash
 import throttle from 'lodash.throttle';
 
@@ -17,6 +20,10 @@ import PropTypes from 'prop-types';
 
 // Actions
 import { buttonPress } from '../../../store/actions/egmActions';
+import { egmActionTypes } from '../../../store/types';
+
+// Config
+import { apiConfig } from '../../../apis';
 
 // Config
 import styleConfig from '../../../config/styleConfig';
@@ -43,7 +50,7 @@ const Aruze = ({
   url,
   // buttonList,
   ip,
-  // currentBtnPress,
+  currentBtnPress,
   setShowMenu,
   showMenu,
   exitGameHandler,
@@ -57,6 +64,7 @@ const Aruze = ({
   setCurrentSubBtn,
   setIsAuto,
   isAuto,
+  setShowAutoForm,
 }) => {
   // Init State
   const [mainBtnClick, setMainBtnClick] = useState({
@@ -93,21 +101,73 @@ const Aruze = ({
     [btnPressApiHandler],
   );
 
+  // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
-    if (name === 'auto') return;
-    throttledBtnPress({ code, name });
+    if (!currentBtnPress) {
+      Dialog.alert({
+        content: '請先選擇倍率按鈕',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
+
+      setIsAuto({ action: false, limit: null });
+
+      return;
+    }
+
+    switch (name) {
+    case 'spin':
+      setIsAuto({ action: false, limit: null });
+
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      break;
+
+    case 'auto':
+      setShowAutoForm(true);
+      setIsAuto({ action: false, limit: null });
+      break;
+
+    case 'max':
+      setIsAuto({ action: false, limit: null });
+      dispatch(buttonPress({ code, ip }));
+      dispatch({
+        type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+        payload: { currentBtnCode: code },
+      });
+      break;
+
+    default:
+      Dialog.alert({
+        content: '按鈕錯誤',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
+    }
   };
 
-  // eslint-disable-next-line
+  // Sub Button Press call api
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
     if (currentSubBtn) return;
+    setIsAuto({ action: false, limit: null });
+
     setCurrentSubBtn(name);
+    dispatch(buttonPress({ name, code, ip }));
 
-    throttledBtnPress({ code, name });
-
+    let timer;
+    // 如果是line按鈕才紀錄
+    if (spinEffect === 1) {
+      timer = apiConfig.lineBtnTimeSpace;
+      dispatch({
+        type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+        payload: { currentBtnCode: code },
+      });
+    }
+    if (spinEffect !== 1) {
+      timer = apiConfig.betBtnTimeSpace;
+    }
     setTimeout(() => {
       setCurrentSubBtn('');
-    }, 800);
+    }, timer);
   };
 
   const autoClick = () => {
@@ -125,6 +185,18 @@ const Aruze = ({
     setIsAuto(false);
     setIsCashInOutClick(true);
   };
+
+  // Auto Spin Cal Api
+  const autoSpinHandler = useCallback(() => {
+    intervalID.current = setInterval(() => {
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+    }, apiConfig.mainBtnApiTimeSpace);
+  }, [dispatch, ip, currentBtnPress]);
+
+  // Stop Auto Spin
+  const stopAutoSpinHandler = useCallback(() => {
+    clearInterval(intervalID.current);
+  }, [intervalID]);
 
   const subBtnEl = buttonList
     .filter((btn) => btn.button_name !== 'spin' && btn.button_name !== 'max')
@@ -160,6 +232,23 @@ const Aruze = ({
     // eslint-disable-next-line
   }, [isAuto]);
 
+  useEffect(() => {
+    if (isAuto.action) {
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      autoSpinHandler();
+    }
+
+    if (!isAuto.action) {
+      stopAutoSpinHandler();
+    }
+
+    // eslint-disable-next-line
+  }, [isAuto]);
+  useEffect(() => {
+    setShowAutoForm(true);
+    // eslint-disable-next-line
+  }, [ ]);
+
   return (
     <Wrapper img={image} className={styles.container}>
       {/* Menu */}
@@ -171,7 +260,7 @@ const Aruze = ({
           setIsAuto={setIsAuto}
         />
       </section>
-
+      <div style={{ backgroundColor: '#0ff', width: '100px', height: '100px' }}>wefijweof</div>
       {/* Video */}
       <section className={styles['video-box']}>
         <div className={styles['button-box']}>
@@ -277,10 +366,12 @@ Aruze.propTypes = {
   setCurrentSubBtn: PropTypes.func.isRequired,
   setIsAuto: PropTypes.func.isRequired,
   isAuto: PropTypes.bool.isRequired,
+  setShowAutoForm: PropTypes.func.isRequired,
+  currentBtnPress: PropTypes.string,
 };
 
 Aruze.defaultProps = {
-  // currentBtnPress: null,
+  currentBtnPress: null,
 };
 
 export default Aruze;

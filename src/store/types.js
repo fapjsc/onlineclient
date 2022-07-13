@@ -58,6 +58,10 @@ export const egmActionTypes = {
   // Set Cash in out Form
   SET_AFT_FORM: 'SET_AFT_FORM',
   CLEAR_AFT_FORM: 'CLEAR_AFT_FORM',
+
+  //bookinList
+  BOOKING_LIST_SUCCESS: 'BOOKING_LIST_SUCCESS',
+  BOOKING_LIST_ERROR: 'BOOKING_LIST_ERROR',
 };
 
 export const menuActionTypes = {

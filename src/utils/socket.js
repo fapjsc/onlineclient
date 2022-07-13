@@ -50,6 +50,7 @@ export const connectSocket = (token) => {
     const existsIP = data?.map((el) => el.ip);
     const filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
     if (!filterArr?.length) return;
+    // eslint-disable-next-line
     store.dispatch(upDateEgmData(filterArr));
   });
 

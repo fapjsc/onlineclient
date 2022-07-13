@@ -1,3 +1,4 @@
+import sortEgmList from '../../utils/sortEgmList';
 import { egmActionTypes, cashInActionTypes } from '../types';
 
 // Brand
@@ -57,7 +58,7 @@ export const egmListReducer = (state = emgListState, action) => {
   case egmActionTypes.SETUP_EGM_LIST_SUCCESS:
     return {
       isLoading: false,
-      data: action.payload.egmList,
+      data: sortEgmList(action.payload.egmList),
       error: '',
     };
 
@@ -71,7 +72,7 @@ export const egmListReducer = (state = emgListState, action) => {
   case egmActionTypes.UPDATE_EGM:
     return {
       isLoading: false,
-      data: action.payload.egmList,
+      data: sortEgmList(action.payload.egmList),
       error: '',
     };
 
@@ -174,6 +175,24 @@ export const egmButtonPressReducer = (state = buttonPressState, action) => {
   case egmActionTypes.CLEAR_BUTTON_PRESS_STATUS:
     return buttonPressState;
 
+  default:
+    return state;
+  }
+};
+
+const bookingListState = {
+  data: 'none',
+};
+export const bookingListReducer = (state = bookingListState, action) => {
+  switch (action.type) {
+  case egmActionTypes.BOOKING_LIST_SUCCESS:
+    return {
+      data: action.payload,
+    };
+  case egmActionTypes.BOOKING_LIST_ERROR:
+    return {
+      data: action.payload,
+    };
   default:
     return state;
   }
