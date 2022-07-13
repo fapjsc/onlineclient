@@ -103,6 +103,8 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   const {second:sec, minute:min, showWindow: show} = timeState;
   const {setShowWindow: setShow, countDownTimer: Timer} = timefunc;
 
+  const [egmIdClicked, setEgmIdClicked] = useState(null)
+
   const dispatch = useDispatch();
   const timeOutRef = useRef();
 
@@ -142,6 +144,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   const btnOnClick = async() => {
     console.log('egmId OnlineId',egmId,onlineId)
     if(status == 'origin') {
+      setEgmIdClicked(egmId)
       setStatus('connect')
       await btnAction(btnActionParams)
       isSomeOnePlaying()
@@ -152,6 +155,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       setStatus('booking')
     }
     else if(status == 'start') {
+      setEgmIdClicked(egmId)
       setStatus('connect')
       await btnAction(btnActionParams)
       isSomeOnePlaying()
@@ -159,15 +163,19 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   }
 
   useEffect(()=> {
-    isSomeOnePlaying()
+    if(status === 'origin' || status === 'someonePlaying') {
+      isSomeOnePlaying()
+    }
     //get booking List when egm update every time
-  }, []);
+  }, [egm]);
 
   useEffect(() => {
-    if (selectEgmLoading){
+    //console.log(egmIdClicked ,egmId)
+    if (selectEgmLoading && egmIdClicked === egmId){
       setStatus('connect')
     }else{
       isSomeOnePlaying()
+      setEgmIdClicked(null)
     }
   }, [selectEgmLoading])
 
