@@ -15,7 +15,6 @@ export const getEgmList = () => async (dispatch) => {
     const { data } = await axiosFetch.get(
       `${agentServer.api}/${egmAPi.getEgmList}`,
     );
-
     dispatch({
       type: egmActionTypes.SETUP_EGM_LIST_SUCCESS,
       payload: { egmList: data.result },

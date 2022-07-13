@@ -16,6 +16,7 @@ import { agentServer } from '../apis';
 
 // Helpers
 import { scrollToBottomAnimated } from './scrollToBottom';
+import sortEgmList from './sortEgmList';
 
 let socket;
 
@@ -50,11 +51,7 @@ export const connectSocket = (token) => {
     const existsIP = data?.map((el) => el.ip);
     let filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
     if (!filterArr?.length) return;
-    console.log('filterArr =>=>', filterArr);
     // eslint-disable-next-line
-    filterArr = filterArr.sort((a, b) => {
-      return a?.id > b?.id;
-    });
     store.dispatch(upDateEgmData(filterArr));
   });
 

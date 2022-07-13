@@ -1,3 +1,4 @@
+import sortEgmList from '../../utils/sortEgmList';
 import { egmActionTypes, cashInActionTypes } from '../types';
 
 // Brand
@@ -57,7 +58,7 @@ export const egmListReducer = (state = emgListState, action) => {
   case egmActionTypes.SETUP_EGM_LIST_SUCCESS:
     return {
       isLoading: false,
-      data: action.payload.egmList,
+      data: sortEgmList(action.payload.egmList),
       error: '',
     };
 
@@ -71,7 +72,7 @@ export const egmListReducer = (state = emgListState, action) => {
   case egmActionTypes.UPDATE_EGM:
     return {
       isLoading: false,
-      data: action.payload.egmList,
+      data: sortEgmList(action.payload.egmList),
       error: '',
     };
 

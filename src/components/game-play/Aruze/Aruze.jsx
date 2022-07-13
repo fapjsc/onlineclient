@@ -20,6 +20,10 @@ import PropTypes from 'prop-types';
 
 // Actions
 import { buttonPress } from '../../../store/actions/egmActions';
+import { egmActionTypes } from '../../../store/types';
+
+// Config
+import { apiConfig } from '../../../apis';
 
 // Config
 import styleConfig from '../../../config/styleConfig';
@@ -46,6 +50,7 @@ const Aruze = ({
   url,
   // buttonList,
   ip,
+  currentBtnPress,
   setShowMenu,
   showMenu,
   exitGameHandler,
@@ -98,7 +103,6 @@ const Aruze = ({
 
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
-    // eslint-disable-next-line
     if (!currentBtnPress) {
       Dialog.alert({
         content: '請先選擇倍率按鈕',
@@ -114,7 +118,7 @@ const Aruze = ({
     switch (name) {
     case 'spin':
       setIsAuto({ action: false, limit: null });
-      // eslint-disable-next-line
+
       dispatch(buttonPress({ code: currentBtnPress, ip }));
       break;
 
@@ -127,7 +131,6 @@ const Aruze = ({
       setIsAuto({ action: false, limit: null });
       dispatch(buttonPress({ code, ip }));
       dispatch({
-        // eslint-disable-next-line
         type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
         payload: { currentBtnCode: code },
       });
@@ -170,6 +173,18 @@ const Aruze = ({
     setIsCashInOutClick(true);
   };
 
+  // Auto Spin Cal Api
+  const autoSpinHandler = useCallback(() => {
+    intervalID.current = setInterval(() => {
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+    }, apiConfig.mainBtnApiTimeSpace);
+  }, [dispatch, ip, currentBtnPress]);
+
+  // Stop Auto Spin
+  const stopAutoSpinHandler = useCallback(() => {
+    clearInterval(intervalID.current);
+  }, [intervalID]);
+
   const subBtnEl = buttonList
     .filter((btn) => btn.button_name !== 'spin' && btn.button_name !== 'max')
     .sort((a, b) => a.sequence - b.sequence)
@@ -204,6 +219,23 @@ const Aruze = ({
     // eslint-disable-next-line
   }, [isAuto]);
 
+  useEffect(() => {
+    if (isAuto.action) {
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      autoSpinHandler();
+    }
+
+    if (!isAuto.action) {
+      stopAutoSpinHandler();
+    }
+
+    // eslint-disable-next-line
+  }, [isAuto]);
+  useEffect(() => {
+    setShowAutoForm(true);
+    // eslint-disable-next-line
+  }, [ ]);
+
   return (
     <Wrapper img={image} className={styles.container}>
       {/* Menu */}
@@ -215,7 +247,7 @@ const Aruze = ({
           setIsAuto={setIsAuto}
         />
       </section>
-
+      <div style={{ backgroundColor: '#0ff', width: '100px', height: '100px' }}>wefijweof</div>
       {/* Video */}
       <section className={styles['video-box']}>
         <div className={styles['button-box']}>
@@ -322,10 +354,11 @@ Aruze.propTypes = {
   setIsAuto: PropTypes.func.isRequired,
   isAuto: PropTypes.bool.isRequired,
   setShowAutoForm: PropTypes.func.isRequired,
+  currentBtnPress: PropTypes.string,
 };
 
 Aruze.defaultProps = {
-  // currentBtnPress: null,
+  currentBtnPress: null,
 };
 
 export default Aruze;
