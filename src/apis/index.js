@@ -24,6 +24,7 @@ export const egmAPi = {
   getBrandList: 'egmBrandList',
   leaveEgm: 'leaveEgm',
   bookingList: 'reserve_egm',
+  sammyCashInOut: 'coin',
 };
 
 export const apiConfig = {

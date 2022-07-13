@@ -145,16 +145,29 @@ const Aruze = ({
     }
   };
 
-  // eslint-disable-next-line
+  // Sub Button Press call api
   const subBtnClickHandler = ({ name, code, spinEffect }) => {
     if (currentSubBtn) return;
+    setIsAuto({ action: false, limit: null });
+
     setCurrentSubBtn(name);
+    dispatch(buttonPress({ name, code, ip }));
 
-    throttledBtnPress({ code, name });
-
+    let timer;
+    // 如果是line按鈕才紀錄
+    if (spinEffect === 1) {
+      timer = apiConfig.lineBtnTimeSpace;
+      dispatch({
+        type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+        payload: { currentBtnCode: code },
+      });
+    }
+    if (spinEffect !== 1) {
+      timer = apiConfig.betBtnTimeSpace;
+    }
     setTimeout(() => {
       setCurrentSubBtn('');
-    }, 800);
+    }, timer);
   };
 
   const autoClick = () => {

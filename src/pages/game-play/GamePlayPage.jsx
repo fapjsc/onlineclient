@@ -264,7 +264,7 @@ const GamePlay = () => {
   }, [playStatus]);
 
   useEffect(() => {
-    console.log(isAuto);
+    console.log('isAuto status => ', isAuto);
   }, [isAuto]);
 
   return (
