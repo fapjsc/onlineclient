@@ -180,7 +180,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   }, [selectEgmLoading])
 
   useEffect(() => {
-    let waitingList, syn;
+    let waitingList, syn = '';
     if(status === 'booking') {
       console.log('start booking ')
       waitingList = egm?.waitingList || [];
@@ -188,10 +188,15 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       setTotalBooking(waitingList?.length || 0);
       for(let item=0; item < waitingList.length; item++) {
         if (waitingList[item].onlineId == onlineId){
-          syn = item;
+          syn = item + 1;
         }
       }
-      setSynPosition(!syn ? 0 : syn);
+      console.log('egm membere => ', egm?.member)
+      if(syn === 1 && Object.keys(egm?.member).length === 0) {
+        syn = 0
+      }
+      
+      setSynPosition(syn === '' ? '' : syn);
     }
     else if(status === 'someonePlaying'){
       setSynPosition('')
