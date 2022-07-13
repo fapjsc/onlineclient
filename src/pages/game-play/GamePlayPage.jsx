@@ -359,6 +359,8 @@ const GamePlay = () => {
             setCurrentSubBtn={setCurrentSubBtn}
             setIsAuto={setIsAuto}
             isAuto={isAuto}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 
@@ -384,6 +386,8 @@ const GamePlay = () => {
             setShowSubBtn={setShowSubBtn}
             currentSubBtn={currentSubBtn}
             setCurrentSubBtn={setCurrentSubBtn}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 
@@ -403,6 +407,8 @@ const GamePlay = () => {
             ip={ip}
             name={name}
             brand={brandName}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
 
@@ -422,6 +428,8 @@ const GamePlay = () => {
             ip={ip}
             name={name}
             brand={brandName}
+            showAutoForm={showAutoForm}
+            setShowAutoForm={setShowAutoForm}
           />
         )}
       </div>

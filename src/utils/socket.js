@@ -48,8 +48,13 @@ export const connectSocket = (token) => {
   socket.on('onlineEgmList', (egmStatus) => {
     const { data } = store.getState().egmList;
     const existsIP = data?.map((el) => el.ip);
-    const filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
+    let filterArr = Object.values(egmStatus).filter((egm) => existsIP?.includes(egm.ip));
     if (!filterArr?.length) return;
+    console.log('filterArr =>=>', filterArr);
+    // eslint-disable-next-line
+    filterArr = filterArr.sort((a, b) => {
+      return a?.id > b?.id;
+    });
     store.dispatch(upDateEgmData(filterArr));
   });
 

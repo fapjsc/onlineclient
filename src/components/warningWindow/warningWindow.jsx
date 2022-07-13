@@ -73,16 +73,30 @@ const WarningWindow = ({propStatus, btnAction}) => {
     data: egmListData,
   } = useSelector((state) => state.egmList);
 
+  const egmListDataReduce = () => egmListData.filter((item, index) => {
+    let reduceArr = Object.keys(item).reduce((all, currKey) => {
+      if(currKey === 'id' || currKey === 'playerPressTime') {
+        return [...all, currKey]
+      }
+      return all
+    }, [])
+    if (reduceArr.length === 2) {
+      if (item.id === egmID) return item;
+    }
+  })
 
 
-  let [{ playerPressTime }] = (!egmListData) ? [playerPressTimeDefault] : egmListData?.map((item,index) => {
-    if(!egmID || !item || !item.id) return playerPressTimeDefault;
+  let [{ playerPressTime }] = (!egmListData) ? [playerPressTimeDefault] : (egmListDataReduce().length > 0 ? egmListDataReduce()  : [playerPressTimeDefault])
+  /*
+  egmListData?.map((item,index) => {
+    if(!egmID || !item ) return playerPressTimeDefault;
     if (item?.id === egmID) {
       console.log(item?.id, egmID ,'equal')
       let a = item?.playerPressTime || playerPressTimeDefault;
       return a == playerPressTimeDefault ? a :item;
     }
   }) || [playerPressTimeDefault];
+  */
 
   const btnOnClick = () => {
     setShow(false)

@@ -6,6 +6,9 @@ import React, {
   useEffect,
 } from 'react';
 
+// Antd
+import { Dialog } from 'antd-mobile';
+
 // Lodash
 import throttle from 'lodash.throttle';
 
@@ -43,7 +46,6 @@ const Aruze = ({
   url,
   // buttonList,
   ip,
-  // currentBtnPress,
   setShowMenu,
   showMenu,
   exitGameHandler,
@@ -57,6 +59,7 @@ const Aruze = ({
   setCurrentSubBtn,
   setIsAuto,
   isAuto,
+  setShowAutoForm,
 }) => {
   // Init State
   const [mainBtnClick, setMainBtnClick] = useState({
@@ -93,9 +96,50 @@ const Aruze = ({
     [btnPressApiHandler],
   );
 
+  // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
-    if (name === 'auto') return;
-    throttledBtnPress({ code, name });
+    // eslint-disable-next-line
+    if (!currentBtnPress) {
+      Dialog.alert({
+        content: '請先選擇倍率按鈕',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
+
+      setIsAuto({ action: false, limit: null });
+
+      return;
+    }
+
+    switch (name) {
+    case 'spin':
+      setIsAuto({ action: false, limit: null });
+      // eslint-disable-next-line
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      break;
+
+    case 'auto':
+      setShowAutoForm(true);
+      setIsAuto({ action: false, limit: null });
+      break;
+
+    case 'max':
+      setIsAuto({ action: false, limit: null });
+      dispatch(buttonPress({ code, ip }));
+      dispatch({
+        // eslint-disable-next-line
+        type: egmActionTypes.SETUP_CURRENT_BTN_PRESS,
+        payload: { currentBtnCode: code },
+      });
+      break;
+
+    default:
+      Dialog.alert({
+        content: '按鈕錯誤',
+        closeOnMaskClick: true,
+        confirmText: '確定',
+      });
+    }
   };
 
   // eslint-disable-next-line
@@ -277,6 +321,7 @@ Aruze.propTypes = {
   setCurrentSubBtn: PropTypes.func.isRequired,
   setIsAuto: PropTypes.func.isRequired,
   isAuto: PropTypes.bool.isRequired,
+  setShowAutoForm: PropTypes.func.isRequired,
 };
 
 Aruze.defaultProps = {
