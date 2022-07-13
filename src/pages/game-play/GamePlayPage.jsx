@@ -34,6 +34,7 @@ import {
   clearButtonPressStatus,
   clearSelectEgmData,
   clearLeaveEgm,
+  getEgmList,
 } from '../../store/actions/egmActions';
 
 import { setCurrentMenu } from '../../store/actions/menuActions';
@@ -109,6 +110,10 @@ const GamePlay = () => {
       connectSocket(token);
     }
   }, [token]);
+
+  useEffect(() => {
+    dispatch(getEgmList());
+  }, [dispatch]);
 
   // Aft Submit Call Api
   const aftSubmitHandler = () => {

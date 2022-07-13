@@ -23,6 +23,7 @@ export const egmAPi = {
   aftOut: 'aftOut',
   getBrandList: 'egmBrandList',
   leaveEgm: 'leaveEgm',
+  sammyCashInOut: 'coin',
 };
 
 export const apiConfig = {

@@ -331,12 +331,17 @@ export const clearLeaveEgm = () => ({
 });
 
 // 直接 call 拳王 egm 投幣 (暫時)
-export const buttonPressToEGMCashInOut = () => async (dispatch) => {
-  const url = 'http://220.135.67.240:1880/slot/coin/enter';
+export const buttonPressToEGMCashInOut = ({ type, egmId }) => async (dispatch) => {
+  console.log(type, egmId);
+  // const url = 'http://220.135.67.240:1880/slot/coin/enter';
+  const url = `${agentServer.api}/${egmAPi.sammyCashInOut}`;
   dispatch({ type: cashInActionTypes.CASH_IN_BEGIN });
 
   try {
-    const { data } = await authFetch.get(url);
+    const { data } = await authFetch.post(url, {
+      type,
+      egmId,
+    });
 
     dispatch({
       type: cashInActionTypes.CASH_IN_SUCCESS,

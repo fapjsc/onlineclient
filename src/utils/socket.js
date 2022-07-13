@@ -58,7 +58,6 @@ export const connectSocket = (token) => {
   });
 
   socket.on('chatRoomDemo', (message) => {
-    // console.log(message, 'from server');
     store.dispatch(setMessages(message));
     scrollToBottomAnimated('message-container');
   });
@@ -81,6 +80,5 @@ export const getSocket = () => socket;
 
 export const sendMessage = (message) => {
   if (!socket) return;
-
   socket.emit('chatRoomDemo', message);
 };

@@ -1,60 +1,43 @@
 import React, { useState } from 'react';
 
+import PropTypes from 'prop-types';
+
 // Components
 import HeaderWrapper from './HeaderWrapper';
 import Menu from '../Menu';
 
-// Hooks
-// import useExitGame from '../../../hooks/useExitGame';
-
 // Styles
 import styles from './GameHeader.module.scss';
 
-// Image
-import headerRed from '../../../assets/game-machine/header/red.webp';
-// import headerGreen from '../../../assets/game-machine/header/green.webp';
-import headerYellow from '../../../assets/game-machine/header/yellow.webp';
-
-// eslint-disable-next-line
-const GameHeader = ({ exitGameHandler, point }) => {
-  const { coin, win } = point || {};
+const GameHeader = ({
+  exitGameHandler, point, egmName, egmID, userLevel, userName,
+}) => {
   const [showMenu, setShowMenu] = useState(false);
-  // const { exitGameHandler } = useExitGame();
-
-  // console.log(exitGameHandler);
 
   return (
     <HeaderWrapper className={styles.header}>
       <section className={styles['header-left-box']}>
         <div
-          className={`${styles['header-left-item']} ${styles['header-title']}`}
+          className={styles['egm-info']}
         >
-          <span>拳王</span>
-          <span>EGM-001</span>
+          <span className={styles['game-name']}>{egmName}</span>
+          <span className={styles['game-number']}>
+            NO.
+            {egmID}
+          </span>
         </div>
         <div
-          className={`${styles['header-left-item']} ${styles['header-red']}`}
+          className={styles['play-info']}
         >
-          <img src={headerRed} alt="red" />
-          <span>{coin}</span>
+          <span className={styles['user-level']}>{userLevel?.toUpperCase()}</span>
+          <span className={styles['user-name']}>{userName}</span>
         </div>
-        <div
-          className={`${styles['header-left-item']} ${styles['header-yellow']}`}
-        >
-          <img src={headerYellow} alt="yellow" />
-          <span>{win}</span>
-        </div>
-        {/* <div
-          className={`${styles['header-left-item']} ${styles['header-green']}`}
-        >
-          <img src={headerGreen} alt="green" />
-          <span>121234</span>
-        </div> */}
+
       </section>
       <section className={styles['header-right-box']}>
         <div className={styles['header-total']}>
-          <span>TOTAL</span>
-          {/* <span>987987</span> */}
+          <span>代幣</span>
+          <span>{point}</span>
         </div>
         <div className={styles['header-menu']}>
           <Menu
@@ -67,6 +50,19 @@ const GameHeader = ({ exitGameHandler, point }) => {
       </section>
     </HeaderWrapper>
   );
+};
+
+GameHeader.propTypes = {
+  exitGameHandler: PropTypes.func.isRequired,
+  point: PropTypes.number,
+  egmName: PropTypes.string.isRequired,
+  egmID: PropTypes.number.isRequired,
+  userLevel: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+};
+
+GameHeader.defaultProps = {
+  point: 0,
 };
 
 export default GameHeader;

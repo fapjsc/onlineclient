@@ -16,12 +16,14 @@ import classnames from 'classnames';
 
 // Css in Js
 import styled from 'styled-components';
+// import { sendCashInOut } from '../../../utils/socket';
 
 // actions
 import {
   // eslint-disable-next-line
   buttonPress,
   buttonPressDemo,
+  // eslint-disable-next-line
   buttonPressToEGMCashInOut,
   sammyAutoPlay,
 } from '../../../store/actions/egmActions';
@@ -80,8 +82,8 @@ const Sammy = ({
 }) => {
   const [topBtn, setTopBtn] = useState({
     bet: { action: false, code: '5' },
-    cashIn: { action: false, code: 'cashIn' },
-    cashOut: { action: false, code: 'cashOut' },
+    coinIn: { action: false, code: 'coinIn' },
+    coinOut: { action: false, code: 'coinOut' },
     cashMove: { action: false, code: 'cashMove' },
   });
 
@@ -98,8 +100,25 @@ const Sammy = ({
   // Redux
   const dispatch = useDispatch();
 
-  const { point } = useSelector((state) => state.japanSlot);
   const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
+
+  const { data: userData } = useSelector((state) => state.user);
+  const { level: userLevel, member_account: userName } = userData || {};
+
+  const { data } = useSelector((state) => state.selectEgm);
+  const { id: egmId } = data || {};
+
+  const { data: egmList } = useSelector((state) => state.egmList);
+
+  const sammyItem = egmList?.find((el) => el?.brand_name === 'sammy') || {};
+
+  let point;
+  const egmID = sammyItem?.id;
+
+  if (Object.prototype.hasOwnProperty.call(sammyItem, 'sammy')) {
+    const { sammy } = sammyItem;
+    point = sammy?.coinPurse;
+  }
 
   const btnPressApiHandler = useCallback(
     (code) => {
@@ -137,8 +156,8 @@ const Sammy = ({
       throttledBtnPress(topBtn[target.id].code);
     }
 
-    if (target.id === 'cashIn') {
-      dispatch(buttonPressToEGMCashInOut());
+    if (target.id === 'coinIn' || target.id === 'coinOut') {
+      dispatch(buttonPressToEGMCashInOut({ type: target.id, egmId }));
     }
 
     setTimeout(() => {
@@ -197,7 +216,14 @@ const Sammy = ({
 
   return (
     <>
-      <GameHeader exitGameHandler={exitGameHandler} point={point} />
+      <GameHeader
+        exitGameHandler={exitGameHandler}
+        point={point}
+        egmName={name}
+        egmID={egmID}
+        userLevel={userLevel}
+        userName={userName}
+      />
 
       <Wrapper jp img={image} className={styles.container} model={model}>
         <section type={name} className={styles['video-box']}>
@@ -244,7 +270,9 @@ const Sammy = ({
                 className={`
                 ${styles.bet} 
                 ${styles['top-btn']} 
-                ${classnames({ [styles['top-circe-btn-move']]: topBtn.bet.action })}
+                ${classnames({
+                  [styles['top-circe-btn-move']]: topBtn.bet.action,
+                })}
                 `}
               />
 
@@ -263,7 +291,7 @@ const Sammy = ({
               />
 
               <CashInBtn
-                id="cashIn"
+                id="coinIn"
                 type={name}
                 name="cash-in"
                 brand={brand}
@@ -273,13 +301,13 @@ const Sammy = ({
                 ${styles['cash-in']} 
                 ${styles['top-btn']}
                 ${classnames({
-                  [styles['top-square-btn-move']]: topBtn.cashIn.action,
+                  [styles['top-square-btn-move']]: topBtn.coinIn.action,
                 })}
                 `}
               />
 
               <CashOutBtn
-                id="cashOut"
+                id="coinOut"
                 name="cash-out"
                 brand={brand}
                 model={model}
@@ -288,7 +316,7 @@ const Sammy = ({
                 ${styles['cash-out']} 
                 ${styles['top-btn']} 
                 ${classnames({
-                  [styles['top-square-btn-move']]: topBtn.cashOut.action,
+                  [styles['top-square-btn-move']]: topBtn.coinOut.action,
                 })}
                 `}
               />
