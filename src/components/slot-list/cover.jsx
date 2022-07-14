@@ -98,8 +98,12 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   const [synPosition, setSynPosition] = useState(-1);
   const [totalBooking, setTotalBooking] = useState(-1);
 
+  const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
+  const expiredTimeSec = Math.round(expiredTime % 60);
+  const expiredTimeMin = Math.round(expiredTime / 60);
+  //console.log('expiredTime => ', expiredTimeSec, expiredTimeMin, expiredTime)
 
-  const [timeState, timefunc ] = useTimer(59, 1, 0);
+  const [timeState, timefunc ] = useTimer(expiredTimeSec, expiredTimeMin, 0);
   const {second:sec, minute:min, showWindow: show} = timeState;
   const {setShowWindow: setShow, countDownTimer: Timer} = timefunc;
 
@@ -211,7 +215,15 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     }
     console.log('預約人數',synPosition,totalBooking)
   }, [synPosition, totalBooking])
+/*
+  useEffect(() => {
+    if (status === "start") {
+      const nowDate = new Date();
+      set
+    }
 
+  }, [egm?.waitingExpiredTime, status])
+*/
   useEffect(() => {
     if(sec === 0 && min ===0) {
       //把人踢掉
