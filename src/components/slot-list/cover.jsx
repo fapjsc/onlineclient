@@ -98,14 +98,12 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   const [synPosition, setSynPosition] = useState(-1);
   const [totalBooking, setTotalBooking] = useState(-1);
 
-  const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
-  const expiredTimeSec = Math.round(expiredTime % 60);
-  const expiredTimeMin = Math.round(expiredTime / 60);
+
   //console.log('expiredTime => ', expiredTimeSec, expiredTimeMin, expiredTime)
 
-  const [timeState, timefunc ] = useTimer(expiredTimeSec, expiredTimeMin, 0);
+  const [timeState, timefunc ] = useTimer(59, 2, 0);
   const {second:sec, minute:min, showWindow: show} = timeState;
-  const {setShowWindow: setShow, countDownTimer: Timer} = timefunc;
+  const {setShowWindow: setShow, countDownTimer: Timer, setTimer: changeTime, ClearTimer} = timefunc;
 
   const [egmIdClicked, setEgmIdClicked] = useState(null)
 
@@ -127,6 +125,27 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     dispatch(getBookingList(egmId, onlineId))
   }
 
+  const isInWaitingList = () => {
+    //當waitingList改變 以及狀態改變成booking 去計算 總預訂人數 以及自己的順位
+    let waitingList, syn = '';
+
+    console.log('start booking ')
+    waitingList = egm?.waitingList || [];
+
+    setTotalBooking(waitingList?.length || 0);
+    for(let item=0; item < waitingList.length; item++) {
+      if (waitingList[item].onlineId == onlineId){
+        syn = item + 1;
+      }
+    }
+    console.log('egm membere => ', egm?.member)
+    if(syn === 1 && Object.keys(egm?.member).length === 0) {
+      syn = 0
+    }
+    
+    setSynPosition(syn === '' ? '' : syn);
+    
+  }
 
   const isSomeOnePlaying = () => {
     if ((Object.keys(egm?.member).length > 0)
@@ -134,8 +153,11 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       ||egm?.waitingList?.length > 0)
       {
       //判斷是否有人在遊戲中
-      if (status !== 'someonePlaying' && status !== 'booking'){
+      if (status !== 'someonePlaying' && status !== 'booking' && status !== 'start'){
         setStatus('someonePlaying');
+      }
+      else if(status !== 'start'){
+        isInWaitingList()
       }
       return true;
     }
@@ -146,6 +168,8 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   };
 
   const btnOnClick = async() => {
+    setSynPosition('')
+    setTotalBooking('')
     console.log('egmId OnlineId',egmId,onlineId)
     if(status == 'origin') {
       setEgmIdClicked(egmId)
@@ -167,6 +191,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   }
 
   useEffect(()=> {
+    //每當
     if(status === 'origin' || status === 'someonePlaying') {
       isSomeOnePlaying()
     }
@@ -174,6 +199,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   }, [egm]);
 
   useEffect(() => {
+    //當在loading的時候就 如果被按下去的egmid是自己 狀態就設為connect 
     //console.log(egmIdClicked ,egmId)
     if (selectEgmLoading && egmIdClicked === egmId){
       setStatus('connect')
@@ -184,52 +210,40 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   }, [selectEgmLoading])
 
   useEffect(() => {
-    let waitingList, syn = '';
-    if(status === 'booking') {
-      console.log('start booking ')
-      waitingList = egm?.waitingList || [];
+    //當狀態改變 以及 waitingList 改變 去找找是否在waitingList
+    if(status === 'booking' || status === 'someonePlaying') {
+      isInWaitingList();
+    }
 
-      setTotalBooking(waitingList?.length || 0);
-      for(let item=0; item < waitingList.length; item++) {
-        if (waitingList[item].onlineId == onlineId){
-          syn = item + 1;
-        }
-      }
-      console.log('egm membere => ', egm?.member)
-      if(syn === 1 && Object.keys(egm?.member).length === 0) {
-        syn = 0
-      }
-      
-      setSynPosition(syn === '' ? '' : syn);
-    }
-    else if(status === 'someonePlaying'){
-      setSynPosition('')
-      setTotalBooking('000')
-    }
   }, [egm?.waitingList, status]);
 
   useEffect(() => {
+    //當順位為零的時候就開始遊戲
     if(synPosition === 0){
+      ClearTimer()
       Timer()
       setStatus('start')
     }
+    else if(synPosition >0) {
+      //如果有在waitinList 裏面
+      setStatus('booking')
+    }
     console.log('預約人數',synPosition,totalBooking)
   }, [synPosition, totalBooking])
-/*
+
   useEffect(() => {
-    if (status === "start") {
-      const nowDate = new Date();
-      set
-    }
+    console.log('waitingExpireTime => ', egm.waitingExpiredTime)
+    const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
+    const expiredTimeSec = Math.round(expiredTime % 60);
+    const expiredTimeMin = Math.round(expiredTime / 60);
+    changeTime(expiredTimeSec, expiredTimeMin)
 
   }, [egm?.waitingExpiredTime, status])
-*/
+
   useEffect(() => {
     if(sec === 0 && min ===0) {
       //把人踢掉
-      setTimeout(() => {
         isSomeOnePlaying()
-      }, 2000);
     }
   }, [sec, min])
 
