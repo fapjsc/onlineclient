@@ -78,6 +78,6 @@ function useTimer(propSec, propMin, propTimeOutCount) {
 
   return [{
     second: countDown.sec, minute: countDown.min, showWindow: show,
-  }, { countDownTimer: Timer, setShowWindow: setShow, ClearTimer: Clear }];
+  }, { countDownTimer: Timer, setShowWindow: setShow, ClearTimer: Clear, setTimer: changeTime }];
 }
 export default useTimer;
