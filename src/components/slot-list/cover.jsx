@@ -139,7 +139,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       }
     }
     console.log('egm membere => ', egm?.member)
-    if(syn === 1 && Object.keys(egm?.member).length === 0) {
+    if(syn === 1 && Object.keys(egm?.member).length === 0 && !egm?.hasCredit) {
       syn = 0
     }
     
