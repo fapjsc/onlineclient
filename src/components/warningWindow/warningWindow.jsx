@@ -73,6 +73,7 @@ const WarningWindow = ({propStatus, btnAction}) => {
     data: egmListData,
   } = useSelector((state) => state.egmList);
 
+  /*
   const egmListDataReduce = () => egmListData.filter((item, index) => {
     let reduceArr = Object.keys(item).reduce((all, currKey) => {
       if(currKey === 'id' || currKey === 'playerPressTime') {
@@ -84,9 +85,15 @@ const WarningWindow = ({propStatus, btnAction}) => {
       if (item.id === egmID) return item;
     }
   })
+*/
 
+const findEgmListData = () => egmListData?.find((item) => {
+  if (item?.id === egmID) {
+    return item;
+  }
+});
 
-  let [{ playerPressTime }] = (!egmListData) ? [playerPressTimeDefault] : (egmListDataReduce().length > 0 ? egmListDataReduce()  : [playerPressTimeDefault])
+  let { playerPressTime } = (!egmListData) ? playerPressTimeDefault : Object.keys(findEgmListData)?.length > 0 ? findEgmListData : playerPressTimeDefault
   /*
   egmListData?.map((item,index) => {
     if(!egmID || !item ) return playerPressTimeDefault;
@@ -103,7 +110,7 @@ const WarningWindow = ({propStatus, btnAction}) => {
     console.log('onclick')
     if (statusText[status].btnText === '返回大廳' || statusText[status].windowText === '請登入會員') {
       console.log('回到主頁')
-      btnAction()
+      //btnAction()
     }
   }
 
