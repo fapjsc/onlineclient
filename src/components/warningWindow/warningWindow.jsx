@@ -87,13 +87,13 @@ const WarningWindow = ({propStatus, btnAction}) => {
   })
 */
 
-const findEgmListData = () => egmListData?.find((item) => {
-  if (item?.id === egmID) {
-    return item;
-  }
-});
+  const findEgmListData = egmListData?.find((item) => {
+    if (item?.id === egmID) {
+      return item;
+    }
+  });
 
-  let { playerPressTime } = (!egmListData) ? playerPressTimeDefault : Object.keys(findEgmListData)?.length > 0 ? findEgmListData : playerPressTimeDefault
+  let { playerPressTime } = egmListData && Object.keys(findEgmListData)?.length > 0 ? findEgmListData : playerPressTimeDefault
   /*
   egmListData?.map((item,index) => {
     if(!egmID || !item ) return playerPressTimeDefault;
