@@ -269,10 +269,6 @@ const GamePlay = () => {
     };
   }, [playStatus]);
 
-  useEffect(() => {
-    console.log('isAuto status => ', isAuto);
-  }, [isAuto]);
-
   return (
     <>
       <CSSTransition

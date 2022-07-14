@@ -135,12 +135,11 @@ const Sammy = ({
 
   const onSpinClick = () => {
     if (auto) return;
-
-    setSpin((prev) => ({ ...prev, actin: true }));
+    setSpin((prev) => ({ ...prev, action: true }));
     throttledBtnPress(spin.code);
 
     setTimeout(() => {
-      setSpin((prev) => ({ ...prev, actin: false }));
+      setSpin((prev) => ({ ...prev, action: false }));
     }, 400);
   };
 
