@@ -27,7 +27,7 @@ import notFoundImg from '../../assets/slot-list/找不到圖片.png';
 
 // Styles
 import styles from './SlotList.module.scss';
-import Cover from './cover';
+import Cover from './Cover';
 
 const SlotList = () => {
   const dispatch = useDispatch();

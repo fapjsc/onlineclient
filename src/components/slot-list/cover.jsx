@@ -147,16 +147,25 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     
   }
 
+  const calcExpireTime = () => {
+    console.log('waitingExpireTime => ', egm.waitingExpiredTime)
+    const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
+    console.log('倒數計時 => ', expiredTime)
+    const expiredTimeSec = Math.round(expiredTime % 60);
+    const expiredTimeMin = Math.round(expiredTime / 60);
+    changeTime(expiredTimeSec, expiredTimeMin)
+  }
+
   const isSomeOnePlaying = () => {
     if ((Object.keys(egm?.member).length > 0)
       || egm?.hasCredit 
       ||egm?.waitingList?.length > 0)
       {
       //判斷是否有人在遊戲中
-      if (status !== 'someonePlaying' && status !== 'booking' && status !== 'start'){
+      if (status !== 'someonePlaying' && status !== 'booking'){
         setStatus('someonePlaying');
       }
-      else if(status !== 'start'){
+      else {
         isInWaitingList()
       }
       return true;
@@ -195,6 +204,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     if(status === 'origin' || status === 'someonePlaying') {
       isSomeOnePlaying()
     }
+    calcExpireTime()
     //get booking List when egm update every time
   }, [egm]);
 
@@ -211,16 +221,16 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
 
   useEffect(() => {
     //當狀態改變 以及 waitingList 改變 去找找是否在waitingList
-    if(status === 'booking' || status === 'someonePlaying') {
+    if(status === 'booking' || status === 'someonePlaying' || status === 'start') {
       isInWaitingList();
     }
 
   }, [egm?.waitingList, status]);
 
-  useEffect(() => {
+  useEffect(async() => {
     //當順位為零的時候就開始遊戲
     if(synPosition === 0){
-      ClearTimer()
+      calcExpireTime()
       Timer()
       setStatus('start')
     }
@@ -228,16 +238,16 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       //如果有在waitinList 裏面
       setStatus('booking')
     }
+    else if(synPosition === '') {
+      //找不到人在waiting List 裏面
+      isSomeOnePlaying()
+      setSynPosition(-1)
+    }
     console.log('預約人數',synPosition,totalBooking)
   }, [synPosition, totalBooking])
 
   useEffect(() => {
-    console.log('waitingExpireTime => ', egm.waitingExpiredTime)
-    const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
-    const expiredTimeSec = Math.round(expiredTime % 60);
-    const expiredTimeMin = Math.round(expiredTime / 60);
-    changeTime(expiredTimeSec, expiredTimeMin)
-
+    calcExpireTime();
   }, [egm?.waitingExpiredTime, status])
 
   useEffect(() => {

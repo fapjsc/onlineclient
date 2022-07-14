@@ -292,7 +292,6 @@ const Sammy = ({
                 })}
                 `}
               />
-
               <CoinBtn
                 brand={brand}
                 model={model}

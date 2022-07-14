@@ -246,6 +246,8 @@ const Aruze = ({
   }, [isAuto]);
   useEffect(() => {
     setShowAutoForm(true);
+    setCurrentSubBtn('auto');
+    setIsAuto({ action: true, limit: 19099090923 });
     // eslint-disable-next-line
   }, [ ]);
 

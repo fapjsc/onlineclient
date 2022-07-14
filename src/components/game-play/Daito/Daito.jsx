@@ -188,7 +188,7 @@ const Daito = ({
               })}`}
               onClick={onCreditClick}
             />
-
+            <div style={{ backgroundColor: '#0ff', width: '100px', height: '100px' }}>wefijweof</div>
             <CoinBtn
               type={name}
               name="coin"

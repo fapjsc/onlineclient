@@ -14,30 +14,33 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     setCountDown({sec: secs, min: mins});
   };
 
-  const Clear = async () => {
-    console.log('reset Timer');
+  const Clear = () => {
+    //console.log('reset Timer');
     if (timeIntervalTimer.current !== 0) {
-      console.log('clearInterval');
       clearInterval(timeIntervalTimer.current);
+      //console.log('清除timerInterval id => ', timeIntervalTimer.current)
     }
     if (timeOutTimer.current !== 0) {
-      console.log('clearTimeOut');
       clearTimeout(timeOutTimer.current);
+      //console.log('清除timerOut id => ', timeOutTimer.current)
     }
     timeIntervalTimer.current = 0;
     timeOutTimer.current = 0;
     console.log('clear');
   };
 
-  const Timer = async () => {
-    await Clear();
+  const Timer = () => {
+    //console.log('timer id => ', timeIntervalTimer.current,timeOutTimer.current)
+    //await Clear();
+    clearInterval(timeIntervalTimer.current)
+    clearTimeout(timeOutTimer.current)
     changeTime(propSec, propMin);
     console.log(`reset success 等待${propTimeOutCount}秒 重新計時`);
     timeOutTimer.current = setTimeout(() => {
       timeIntervalTimer.current = setInterval(() => {
         setCountDown((prev) => {
           if (prev.sec <= 0 && prev.min <= 0) {
-            clearInterval(timeIntervalTimer);
+            clearInterval(timeIntervalTimer.current);
             return{
               sec: 0,
               min: 0,
@@ -63,6 +66,7 @@ function useTimer(propSec, propMin, propTimeOutCount) {
   useEffect(() => {
     changeTime(propSec, propMin);
     console.log('reset_timer');
+    Clear()
     // eslint-disable-next-line
   }, []);
 
