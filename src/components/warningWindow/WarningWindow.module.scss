@@ -1,0 +1,127 @@
+%center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+}
+
+.warningwindow2 {
+  @extend %center;
+
+  width: 400px;
+  height: 300px;
+  background-color: rgb(26 26 26 / 70%);
+  color: #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  >div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  >div:first-child {
+    border-bottom: 1px solid #846430;
+  }
+
+  >div:nth-child(2) {
+    flex-direction: column;
+
+    &::before {
+      width: 50px;
+      height: 50px;
+      content: "";
+      background-image: url("./clock.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+  }
+
+  > div:last-child > div {
+    width: calc(100% - 10px);
+    border: 1px solid #e5e5e5;
+    margin: 10px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255 255 255 / 30%);
+
+    &:hover {
+      filter: brightness(1000);
+      cursor: pointer;
+    }
+  }
+}
+
+.position-center {
+  @extend %center;
+}
+
+.warningwindow1 {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  background-color: rgb(26 26 26 / 70%);
+  color: #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  >div {
+    width: 90%;
+    display: flex;
+  }
+
+  >div:first-child {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    max-width: 20px;
+    max-height: 20px;
+    overflow: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    >div {
+      background-image: url("./corss-x.png");
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(30px 0 rgb(255 255 255));
+      transform: translateX(-30px);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+
+  button {
+    width: 90%;
+    background-color: #be8b27;
+    border: 1px solid #be8b27;
+    color: #000;
+    transform: translateY(-20px);
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #fbc861;
+    }
+  }
+}
+
+.mask {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgb(26 26 26 / 30%);
+  z-index: 10000;
+}
