@@ -104,6 +104,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   const [timeState, timefunc ] = useTimer(59, 2, 0);
   const {second:sec, minute:min, showWindow: show} = timeState;
   const {setShowWindow: setShow, countDownTimer: Timer, setTimer: changeTime, ClearTimer} = timefunc;
+  const [trigger, setTrigger] = useState(false)
 
   const [egmIdClicked, setEgmIdClicked] = useState(null)
 
@@ -152,8 +153,10 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
     console.log('倒數計時 => ', expiredTime)
     const expiredTimeSec = Math.round(expiredTime % 60);
-    const expiredTimeMin = Math.round(expiredTime / 60);
+    const expiredTimeMin = parseInt(expiredTime / 60)
+    console.log('倒數計時分秒=> ', expiredTimeMin ,expiredTimeSec)
     changeTime(expiredTimeSec, expiredTimeMin)
+    setTrigger(true)
   }
 
   const isSomeOnePlaying = () => {
@@ -204,7 +207,6 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     if(status === 'origin' || status === 'someonePlaying') {
       isSomeOnePlaying()
     }
-    calcExpireTime()
     //get booking List when egm update every time
   }, [egm]);
 
@@ -231,7 +233,6 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     //當順位為零的時候就開始遊戲
     if(synPosition === 0){
       calcExpireTime()
-      Timer()
       setStatus('start')
     }
     else if(synPosition >0) {
@@ -255,7 +256,11 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       //把人踢掉
         isSomeOnePlaying()
     }
-  }, [sec, min])
+    else if(trigger && status === 'start'){
+      Timer()
+      setTrigger(false)
+    }
+  }, [sec, min, trigger, status])
 
   return (
     <div

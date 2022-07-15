@@ -34,7 +34,6 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     //await Clear();
     clearInterval(timeIntervalTimer.current)
     clearTimeout(timeOutTimer.current)
-    changeTime(propSec, propMin);
     console.log(`reset success 等待${propTimeOutCount}秒 重新計時`);
     timeOutTimer.current = setTimeout(() => {
       timeIntervalTimer.current = setInterval(() => {
