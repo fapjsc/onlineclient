@@ -43,7 +43,7 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
-import WarningWindow from '../../components/warningWindow/warningWindow';
+import WarningWindow from '../../components/warningWindow/WarningWindow';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
@@ -390,6 +390,8 @@ const GamePlay = () => {
             setCurrentSubBtn={setCurrentSubBtn}
             showAutoForm={showAutoForm}
             setShowAutoForm={setShowAutoForm}
+            isAuto={isAuto}
+            setIsAuto={setIsAuto}
           />
         )}
 

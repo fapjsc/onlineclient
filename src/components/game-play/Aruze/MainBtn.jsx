@@ -6,6 +6,8 @@ import classnames from 'classnames';
 
 import styles from './MainBtn.module.scss';
 
+import TheCountdown from '../../Countdown';
+
 const MainBtn = ({
   mainBtnHandler,
   mainBtnClick,
@@ -67,6 +69,13 @@ const MainBtn = ({
           })}`}
         />
       ))}
+      {
+        isAuto.action && (
+          <div className={styles['countdown-box']}>
+            <TheCountdown setIsAuto={setIsAuto} isAuto={isAuto} />
+          </div>
+        )
+      }
 
       {/* <div
         role="presentation"

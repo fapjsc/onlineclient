@@ -14,17 +14,20 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+    
     >div{
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
+        text-align: center;
     }
     >div:first-child{
         border-bottom: 1px solid #846430;
     }
     >div:nth-child(2){
         flex-direction: column;
+        
         &::before{
             width: 50px;
             height: 50px;

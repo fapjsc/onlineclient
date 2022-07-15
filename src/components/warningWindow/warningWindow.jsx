@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './warningWindow.module.scss';
+import styles from './WarningWindow.module.scss';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
@@ -89,13 +89,15 @@ const WarningWindow = ({propStatus, btnAction}) => {
   })
 */
 
-const findEgmListData = () => egmListData?.find((item) => {
-  if (item?.id === egmID) {
-    return item;
-  }
-});
+  let findEgmListData = egmListData?.find((item) => {
+    if (item?.id === egmID) {
+      return item;
+    }
+  });
+  
+  findEgmListData = !findEgmListData || typeof findEgmListData === 'undefined' ? {} : findEgmListData
 
-  let { playerPressTime } = (!egmListData) ? playerPressTimeDefault : Object.keys(findEgmListData)?.length > 0 ? findEgmListData : playerPressTimeDefault
+  let { playerPressTime } = !egmListData && Object.keys(findEgmListData)?.length === 0 ? playerPressTimeDefault : findEgmListData 
   /*
   egmListData?.map((item,index) => {
     if(!egmID || !item ) return playerPressTimeDefault;

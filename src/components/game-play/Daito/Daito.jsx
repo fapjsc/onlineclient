@@ -188,7 +188,6 @@ const Daito = ({
               })}`}
               onClick={onCreditClick}
             />
-
             <CoinBtn
               type={name}
               name="coin"
