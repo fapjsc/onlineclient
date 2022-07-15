@@ -264,7 +264,6 @@ const Igt = ({
           點擊後開始播放
         </button>
       )}
-      <div style={{ backgroundColor: '#0ff', width: '100px', height: '100px' }}>wefijweof</div>
       {/* Aft Button */}
       <section className={styles['cash-in-out-box']}>
         <div

@@ -262,7 +262,6 @@ const Aruze = ({
           setIsAuto={setIsAuto}
         />
       </section>
-      <div style={{ backgroundColor: '#0ff', width: '100px', height: '100px' }}>wefijweof</div>
       {/* Video */}
       <section className={styles['video-box']}>
         <div className={styles['button-box']}>
