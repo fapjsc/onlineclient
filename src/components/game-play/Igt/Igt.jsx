@@ -80,6 +80,7 @@ const Igt = ({
   const dispatch = useDispatch();
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
+    /*
     if (!currentBtnPress) {
       Dialog.alert({
         content: '請先選擇倍率按鈕',
@@ -91,7 +92,7 @@ const Igt = ({
 
       return;
     }
-
+    */
     switch (name) {
     case 'spin':
       setIsAuto({ action: false, limit: null });
@@ -276,7 +277,6 @@ const Igt = ({
       {/* Main Button */}
       <section className={styles['main-btn-box']}>
         <MainBtn
-          // mainBtnHandler={mainBtnHandler}
           mainBtnClick={mainBtnClick}
           setMainBtnClick={setMainBtnClick}
           mainBtnHandler={mainBtnHandler}

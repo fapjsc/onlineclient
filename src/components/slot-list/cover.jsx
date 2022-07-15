@@ -243,6 +243,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       //找不到人在waiting List 裏面
       isSomeOnePlaying()
       setSynPosition(-1)
+      isSomeOnePlaying()
     }
     console.log('預約人數',synPosition,totalBooking)
   }, [synPosition, totalBooking])

@@ -20,6 +20,19 @@
     }
   }
 
+  .countdown-box {
+    background-color: rgb(0 0 0 / 70%);
+    color: #8eec41;
+    position: absolute;
+    bottom: -1rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    border-radius: 5px;
+  }
+
   .auto {
     background-image: url(../../../assets/button/aruze/main/en/auto.webp);
   }

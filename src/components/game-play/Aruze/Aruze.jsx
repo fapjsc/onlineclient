@@ -1,17 +1,17 @@
 import React, {
   useRef,
   useState,
-  useMemo,
+  /*useMemo,*/
   useCallback,
   useEffect,
 } from 'react';
 
 // Antd
 import { Dialog } from 'antd-mobile';
-
+/*
 // Lodash
 import throttle from 'lodash.throttle';
-
+*/
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -88,7 +88,7 @@ const Aruze = ({
   const mainBtnList = buttonList.filter(
     (btn) => btn.button_name === 'max' || btn.button_name === 'spin',
   );
-
+  /*
   const btnPressApiHandler = useCallback(
     ({ code, name }) => {
       dispatch(buttonPress({ ip, code, name }));
@@ -100,9 +100,10 @@ const Aruze = ({
     () => throttle(btnPressApiHandler, 2000),
     [btnPressApiHandler],
   );
-
+  */
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
+    /*
     if (!currentBtnPress) {
       Dialog.alert({
         content: '請先選擇倍率按鈕',
@@ -114,7 +115,7 @@ const Aruze = ({
 
       return;
     }
-
+  */
     switch (name) {
     case 'spin':
       setIsAuto({ action: false, limit: null });
@@ -169,7 +170,7 @@ const Aruze = ({
       setCurrentSubBtn('');
     }, timer);
   };
-
+  /*
   const autoClick = () => {
     intervalID.current = setInterval(() => {
       // 這裡需注意 spin 的 code 是不是 0
@@ -180,6 +181,7 @@ const Aruze = ({
   const stopAuto = () => {
     clearInterval(intervalID.current);
   };
+  */
 
   const aftClick = () => {
     setIsAuto(false);
@@ -220,7 +222,7 @@ const Aruze = ({
         />
       );
     });
-
+  /*
   useEffect(() => {
     if (isAuto) {
       throttledBtnPress({ name: 'spin', code: '0' });
@@ -231,7 +233,7 @@ const Aruze = ({
 
     // eslint-disable-next-line
   }, [isAuto]);
-
+  */
   useEffect(() => {
     if (isAuto.action) {
       dispatch(buttonPress({ code: currentBtnPress, ip }));
@@ -244,12 +246,6 @@ const Aruze = ({
 
     // eslint-disable-next-line
   }, [isAuto]);
-  useEffect(() => {
-    setShowAutoForm(true);
-    setCurrentSubBtn('auto');
-    setIsAuto({ action: true, limit: 19099090923 });
-    // eslint-disable-next-line
-  }, [ ]);
 
   return (
     <Wrapper img={image} className={styles.container}>
@@ -314,7 +310,6 @@ const Aruze = ({
       {/* Main Button */}
       <section className={styles['main-btn-box']}>
         <MainBtn
-          // mainBtnHandler={mainBtnHandler}
           mainBtnClick={mainBtnClick}
           setMainBtnClick={setMainBtnClick}
           mainBtnHandler={mainBtnHandler}

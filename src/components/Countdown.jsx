@@ -10,6 +10,9 @@ const TheCountdown = ({ setIsAuto, isAuto }) => {
     if (completed) {
       return <div>completed</div>;
     }
+    if (isAuto.limit === -1) {
+      return <span>自動遊戲中</span>;
+    }
 
     return <span>{`自動遊戲中  ${minutes}:${seconds}`}</span>;
   };
