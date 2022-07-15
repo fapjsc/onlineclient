@@ -156,7 +156,7 @@ const WarningWindow = ({propStatus, btnAction}) => {
                 <div>{statusText[status].btnText}</div>
               </div>
             </div>
-          : <div className={styles.positionCenter}>
+          : <div className={styles['position-center']}>
             <div className={styles.warningwindow1}>
               <div role="button" onClick={() => setShow(false)}></div>
               {/*this is corssX*/}
