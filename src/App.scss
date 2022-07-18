@@ -22,7 +22,8 @@
 }
 
 #root {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       to right bottom,
       rgb(#000, 0.7),
       rgb(#000, 0.7)
@@ -32,4 +33,20 @@
   background-size: cover;
   background-repeat: no-repeat;
   object-fit: cover;
+}
+
+.adm-capsule-tabs-tab.adm-capsule-tabs-tab-active {
+  background-color: #6f644f;
+  color: #f2e9b4;
+}
+
+.adm-capsule-tabs-tab {
+  border-radius: 0;
+  color: #6f644f;
+  background-color: transparent;
+}
+
+.adm-capsule-tabs-header {
+  border-bottom: 1px solid #887235;
+  border-top: 1px solid #2d2e30;
 }

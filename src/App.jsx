@@ -19,6 +19,7 @@ import './App.scss';
 const GamePlayPage = React.lazy(() => import('./pages/game-play/GamePlayPage'));
 const Layout = React.lazy(() => import('./pages/Layout/Layout'));
 const HomePage = React.lazy(() => import('./pages/home/HomePage'));
+const GameTypePage = React.lazy(() => import('./pages/game-type/GameTypePage'));
 
 const AnimatedSwitch = () => {
   const location = useLocation();
@@ -44,6 +45,7 @@ const AnimatedSwitch = () => {
 
           <Route element={<Layout />}>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/game-type" element={<GameTypePage />} />
             <Route path="/autoLogin" element={<LandingPage />} />
           </Route>
 

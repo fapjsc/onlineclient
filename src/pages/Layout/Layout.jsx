@@ -8,7 +8,7 @@ import styles from './Layout.module.scss';
 // Hooks
 import useWindowSize from '../../hooks/useWindowSize';
 
-const text = `
+export const text = `
 【普丁侵略計劃受阻再失猛將！】
 俄羅斯投入大量兵力侵犯烏克蘭，但攻勢卻停滯不前，侵烏計劃不但連番阻礙，連不少高階將領都在這場侵略戰爭中喪命；
 領導俄羅斯斯巴達獨立偵察營的指揮官佐加（Vladimir Zhoga）上週末不幸戰死烏克蘭，
@@ -29,6 +29,24 @@ const Layout = () => {
   const [height, width] = useWindowSize();
 
   const { pathname } = useLocation();
+
+  console.log(pathname);
+
+  if (pathname?.includes('game-type')) {
+    return (
+      <div
+        style={{
+          height,
+          width,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+
+        <Outlet />
+      </div>
+    );
+  }
 
   if (pathname?.includes('autoLogin')) {
     return (

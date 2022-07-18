@@ -41,7 +41,7 @@ const SlotList = () => {
   } = useSelector((state) => state.egmList);
 
   const {
-    data: brandListData,
+    // data: brandListData,
     error: brandListError,
     // eslint-disable-next-line
     isLoading: brandListLoading,
@@ -153,7 +153,7 @@ const SlotList = () => {
 
   return (
     <section className={styles.container}>
-      <div className={styles['brand-box']}>
+      {/* <div className={styles['brand-box']}>
         {brandListData
           && Object.keys(brandListData)?.map((brand) => (
             <div key={brand}>
@@ -178,7 +178,7 @@ const SlotList = () => {
               />
             </div>
           ))}
-      </div>
+      </div> */}
       <div className={styles['slot-box']}>
         {egmListData?.map((egm) => (
 

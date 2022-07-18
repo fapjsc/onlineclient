@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import classnames from 'classnames';
 
@@ -7,6 +8,8 @@ import PropTypes from 'prop-types';
 import styles from './HomeButton.module.scss';
 
 const HomeButton = ({ setCurrentAction }) => {
+  const navigate = useNavigate();
+
   const [btnClick, setBtnClick] = useState({
     home: false,
     'game-type': false,
@@ -27,7 +30,8 @@ const HomeButton = ({ setCurrentAction }) => {
     }
 
     if (id === 'game-type') {
-      setCurrentAction('game-type');
+      // setCurrentAction('game-type');
+      navigate('/game-type');
     }
 
     if (id === 'user') {
