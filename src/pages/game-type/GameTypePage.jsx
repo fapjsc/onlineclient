@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import SlotList from '../../components/slot-list/SlotList';
 import { text } from '../Layout/Layout';
 import styles from './GameTypePage.module.scss';
 
+import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
+
 const jpSlotList = ['sammy', 'daito'];
 
 const GameTypePage = () => {
@@ -19,6 +21,19 @@ const GameTypePage = () => {
   const [height] = useWindowSize();
 
   const [showJpSlot, setShowJpSlot] = useState({ action: false, model: null });
+
+  const pixiRef = useRef(null);
+
+  useEffect(() => {
+    if (!showJpSlot.action) return;
+
+    const pixiApp = new PixiApp();
+    pixiApp.run();
+
+    return () => {
+      pixiApp.destroy();
+    };
+  }, [showJpSlot]);
 
   return (
     <div
@@ -68,7 +83,7 @@ const GameTypePage = () => {
               {jpSlotList.map((el) => (
                 <CapsuleTabs.Tab key={el} title={el.toUpperCase()} className={styles.tab}>
                   <div className={styles.body} style={{ height: height * 0.63 }}>
-                    <div style={{ backgroundColor: 'blue', height: '100rem' }}>{el}</div>
+                    <div id="jp-pixi" ref={pixiRef} />
                   </div>
                 </CapsuleTabs.Tab>
               ))}
