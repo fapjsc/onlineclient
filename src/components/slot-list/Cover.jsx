@@ -20,17 +20,25 @@ const statusText = {
   },
   start: {
     btnText: '開始遊戲',
-    windowText: <>
-      可以開始遊戲<br/> 
-      請在時間內完成開分<br/>
-    </>,
+    windowText: (
+      <>
+        可以開始遊戲
+        <br />
+        請在時間內完成開分
+        <br />
+      </>
+    ),
   },
   booking: {
     btnText: '我的順位',
-    windowText: <>
-      已預約機台<br/> 
-      預約人數<br/>
-    </>,
+    windowText: (
+      <>
+        已預約機台
+        <br />
+        預約人數
+        <br />
+      </>
+    ),
   },
   origin: {
     btnText: '',
@@ -84,188 +92,196 @@ const statusStyle = {
     textColor: '#f00',
   },
 };
-const renderer = ({
-  formatted: { minutes, seconds }, completed,
-}) => {
+const renderer = ({ formatted: { minutes, seconds }, completed }) => {
   if (completed) {
     return <></>;
   }
 
   return <>{`${minutes}:${seconds}`}</>;
 };
-const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) => {
-  const [status, setStatus] = useState('origin')
+const Cover = ({
+  btnAction,
+  btnActionParams,
+  bonusImg,
+  egm,
+  selectEgmLoading,
+}) => {
+  const [status, setStatus] = useState('origin');
   const [synPosition, setSynPosition] = useState(-1);
   const [totalBooking, setTotalBooking] = useState(-1);
 
-
   //console.log('expiredTime => ', expiredTimeSec, expiredTimeMin, expiredTime)
 
-  const [timeState, timefunc ] = useTimer(59, 2, 0);
-  const {second:sec, minute:min, showWindow: show} = timeState;
-  const {setShowWindow: setShow, countDownTimer: Timer, setTimer: changeTime, ClearTimer} = timefunc;
-  const [trigger, setTrigger] = useState(false)
+  const [timeState, timefunc] = useTimer(59, 2, 0);
+  const { second: sec, minute: min, showWindow: show } = timeState;
+  const {
+    setShowWindow: setShow,
+    countDownTimer: Timer,
+    setTimer: changeTime,
+    ClearTimer,
+  } = timefunc;
+  const [trigger, setTrigger] = useState(false);
 
-  const [egmIdClicked, setEgmIdClicked] = useState(null)
+  const [egmIdClicked, setEgmIdClicked] = useState(null);
 
   const dispatch = useDispatch();
   const timeOutRef = useRef();
 
-  const {
-    data: bookingList
-  } = useSelector((state) => state.bookingList)
+  const { data: bookingList } = useSelector((state) => state.bookingList);
 
-  const {
-    data: userData
-  } = useSelector((state) => state.user)
+  const { data: userData } = useSelector((state) => state.user);
 
   const { online_id: onlineId } = userData || {};
   const { id: egmId } = egm || {};
 
   const changeBookingList = async () => {
-    dispatch(getBookingList(egmId, onlineId))
-  }
+    dispatch(getBookingList(egmId, onlineId));
+  };
 
   const isInWaitingList = () => {
     //當waitingList改變 以及狀態改變成booking 去計算 總預訂人數 以及自己的順位
-    let waitingList, syn = '';
+    let waitingList,
+      syn = '';
 
-    console.log('start booking ')
+    console.log('start booking ');
     waitingList = egm?.waitingList || [];
 
     setTotalBooking(waitingList?.length || 0);
-    for(let item=0; item < waitingList.length; item++) {
-      if (waitingList[item].onlineId == onlineId){
+    for (let item = 0; item < waitingList.length; item++) {
+      if (waitingList[item].onlineId == onlineId) {
         syn = item + 1;
       }
     }
-    console.log('egm membere => ', egm?.member)
-    if(syn === 1 && Object.keys(egm?.member).length === 0 && !egm?.hasCredit) {
-      syn = 0
+    console.log('egm membere => ', egm?.member);
+    if (syn === 1 && Object.keys(egm?.member).length === 0 && !egm?.hasCredit) {
+      syn = 0;
     }
-    
+
     setSynPosition(syn === '' ? '' : syn);
-    
-  }
+  };
 
   const calcExpireTime = () => {
-    console.log('waitingExpireTime => ', egm.waitingExpiredTime)
-    const expiredTime = (egm?.waitingExpiredTime - new Date()) > 0 ? (egm?.waitingExpiredTime - new Date()) / 1000 : 0;
-    console.log('倒數計時 => ', expiredTime)
+    console.log('waitingExpireTime => ', egm.waitingExpiredTime);
+    const expiredTime =
+      egm?.waitingExpiredTime - new Date() > 0
+        ? (egm?.waitingExpiredTime - new Date()) / 1000
+        : 0;
+    console.log('倒數計時 => ', expiredTime);
     const expiredTimeSec = Math.round(expiredTime % 60);
-    const expiredTimeMin = parseInt(expiredTime / 60)
-    console.log('倒數計時分秒=> ', expiredTimeMin ,expiredTimeSec)
-    changeTime(expiredTimeSec, expiredTimeMin)
-    setTrigger(true)
-  }
+    const expiredTimeMin = parseInt(expiredTime / 60);
+    console.log('倒數計時分秒=> ', expiredTimeMin, expiredTimeSec);
+    changeTime(expiredTimeSec, expiredTimeMin);
+    setTrigger(true);
+  };
 
   const isSomeOnePlaying = () => {
-    if ((Object.keys(egm?.member).length > 0)
-      || egm?.hasCredit 
-      ||egm?.waitingList?.length > 0)
-      {
-      //判斷是否有人在遊戲中
-      if (status !== 'someonePlaying' && status !== 'booking'){
-        setStatus('someonePlaying');
+    try {
+      if (
+        Object.keys(egm?.member).length > 0 ||
+        egm?.hasCredit ||
+        egm?.waitingList?.length > 0
+      ) {
+        //判斷是否有人在遊戲中
+        if (status !== 'someonePlaying' && status !== 'booking') {
+          setStatus('someonePlaying');
+        } else {
+          isInWaitingList();
+        }
+        return true;
+      } else {
+        setStatus('origin');
+        return false;
       }
-      else {
-        isInWaitingList()
-      }
-      return true;
-    }
-    else{
-      setStatus('origin')
-      return false;
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const btnOnClick = async() => {
-    setSynPosition('')
-    setTotalBooking('')
-    console.log('egmId OnlineId',egmId,onlineId)
-    if(status == 'origin') {
-      setEgmIdClicked(egmId)
-      setStatus('connect')
-      await btnAction(btnActionParams)
-      isSomeOnePlaying()
-    }
-    else if(status === 'someonePlaying') {
+  const btnOnClick = async () => {
+    setSynPosition('');
+    setTotalBooking('');
+    console.log('egmId OnlineId', egmId, onlineId);
+    if (status == 'origin') {
+      setEgmIdClicked(egmId);
+      setStatus('connect');
+      await btnAction(btnActionParams);
+      isSomeOnePlaying();
+    } else if (status === 'someonePlaying') {
       //do switch booking and check booking list
-      await changeBookingList()
-      setStatus('booking')
+      await changeBookingList();
+      setStatus('booking');
+    } else if (status == 'start') {
+      setEgmIdClicked(egmId);
+      setStatus('connect');
+      await btnAction(btnActionParams);
+      isSomeOnePlaying();
     }
-    else if(status == 'start') {
-      setEgmIdClicked(egmId)
-      setStatus('connect')
-      await btnAction(btnActionParams)
-      isSomeOnePlaying()
-    }
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     //每當
-    if(status === 'origin' || status === 'someonePlaying') {
-      isSomeOnePlaying()
+    if (status === 'origin' || status === 'someonePlaying') {
+      isSomeOnePlaying();
     }
     //get booking List when egm update every time
   }, [egm]);
 
   useEffect(() => {
-    //當在loading的時候就 如果被按下去的egmid是自己 狀態就設為connect 
+    //當在loading的時候就 如果被按下去的egmid是自己 狀態就設為connect
     //console.log(egmIdClicked ,egmId)
-    if (selectEgmLoading && egmIdClicked === egmId){
-      setStatus('connect')
-    }else{
-      isSomeOnePlaying()
-      setEgmIdClicked(null)
+    if (selectEgmLoading && egmIdClicked === egmId) {
+      setStatus('connect');
+    } else {
+      isSomeOnePlaying();
+      setEgmIdClicked(null);
     }
-  }, [selectEgmLoading])
+  }, [selectEgmLoading]);
 
   useEffect(() => {
     //當狀態改變 以及 waitingList 改變 去找找是否在waitingList
-    if(status === 'booking' || status === 'someonePlaying' || status === 'start') {
+    if (
+      status === 'booking' ||
+      status === 'someonePlaying' ||
+      status === 'start'
+    ) {
       isInWaitingList();
     }
-
   }, [egm?.waitingList, status]);
 
-  useEffect(async() => {
+  useEffect(async () => {
     //當順位為零的時候就開始遊戲
-    if(synPosition === 0){
-      calcExpireTime()
-      setStatus('start')
-    }
-    else if(synPosition >0) {
+    if (synPosition === 0) {
+      calcExpireTime();
+      setStatus('start');
+    } else if (synPosition > 0) {
       //如果有在waitinList 裏面
-      setStatus('booking')
-    }
-    else if(synPosition === '') {
+      setStatus('booking');
+    } else if (synPosition === '') {
       //找不到人在waiting List 裏面
-      isSomeOnePlaying()
-      setSynPosition(-1)
-      isSomeOnePlaying()
+      isSomeOnePlaying();
+      setSynPosition(-1);
+      isSomeOnePlaying();
     }
-    console.log('預約人數',synPosition,totalBooking)
-  }, [synPosition, totalBooking])
+    console.log('預約人數', synPosition, totalBooking);
+  }, [synPosition, totalBooking]);
 
   useEffect(() => {
     calcExpireTime();
-  }, [egm?.waitingExpiredTime, status])
+  }, [egm?.waitingExpiredTime, status]);
 
   useEffect(() => {
-    if(sec === 0 && min ===0) {
+    if (sec === 0 && min === 0) {
       //把人踢掉
-        isSomeOnePlaying()
+      isSomeOnePlaying();
+    } else if (trigger && status === 'start') {
+      Timer();
+      setTrigger(false);
     }
-    else if(trigger && status === 'start'){
-      Timer()
-      setTrigger(false)
-    }
-  }, [sec, min, trigger, status])
+  }, [sec, min, trigger, status]);
 
   return (
     <div
-      onClick={() => status === 'origin'&&(btnOnClick())}
+      onClick={() => status === 'origin' && btnOnClick()}
       className={styles.cover}
       style={{
         border: statusStyle[status].coverBorderColor,
@@ -273,7 +289,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
     >
       <div className={styles.exclamationMark} />
       <div
-      style={{
+        style={{
           flex: 1,
           display: 'flex',
           width: '90%',
@@ -286,13 +302,10 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
         {statusText[status].windowText}
         {status === 'booking'
           ? `${totalBooking}`
-          : status === 'start'
-            &&(
-              (min >= 10 ? `${min}` : `0${min}`)
-              +' : '+
-              (sec >= 10 ? `${sec}` : `0${sec}`)
-             )
-        }
+          : status === 'start' &&
+            (min >= 10 ? `${min}` : `0${min}`) +
+              ' : ' +
+              (sec >= 10 ? `${sec}` : `0${sec}`)}
       </div>
       {bonusImg && <div className={styles.bonusImg} />}
       <div
@@ -302,7 +315,9 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
           alignItems: 'flex-end',
         }}
       >
-        <div style={{ width: '50%', color: 'white' }}>{egm.name === egm.model ? egm.name :egm.name + egm.model}</div>
+        <div style={{ width: '50%', color: 'white' }}>
+          {egm.name === egm.model ? egm.name : egm.name + egm.model}
+        </div>
         {status === 'start' || status === 'someonePlaying' ? (
           <button
             onClick={btnOnClick}
@@ -334,7 +349,7 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
       </div>
     </div>
   );
-}
+};
 
 Cover.propTypes = {
   selectEgmLoading: PropTypes.bool.isRequired,
