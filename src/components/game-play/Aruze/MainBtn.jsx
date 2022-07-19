@@ -18,6 +18,7 @@ const MainBtn = ({
 }) => {
   // Main button 動畫邏輯判斷
   const animationHandler = (id) => {
+    if (mainBtnClick[id]) return;
     if (id === 'auto') {
       setIsAuto((prev) => !prev);
     }
@@ -65,7 +66,7 @@ const MainBtn = ({
           } ${classnames({
             [styles['main-btn-animation']]: mainBtnClick[`${btn.button_name}`],
             [styles['auto-spin-animation']]:
-              btn.button_name === 'spin' && isAuto,
+              btn.button_name === 'spin' && isAuto.action,
           })}`}
         />
       ))}
