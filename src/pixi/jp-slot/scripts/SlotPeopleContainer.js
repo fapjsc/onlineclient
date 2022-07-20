@@ -20,7 +20,7 @@ export class SlotPeopleContainer extends PIXI.Container {
     //eslint-disable-next-line
     for (let item = this.amount; item > 0; item--) {
       const container = new PIXI.Container();
-      container.position.set(-30 + item * 50, 0 - item * 20);
+      container.position.set(-30 + item * 47, 0 - item * 20);
       const slot = new Slot(item);
       const peopleContainer = new PeopleContainer(item, 1, 'vip');
       //slot.x = slot.toLocal(slot.position, people).x;
