@@ -11,10 +11,10 @@ export class SlotPeopleContainer extends PIXI.Container {
     this.height = 100;
     this.position.set(positionX, positionY);
     this.amount = amount;
-    this.createContainer();
   }
 
-  createContainer() {
+  createContainer(sexual, level) {
+    console.log(this.amount);
     this.createStage();
     this.createTimes();
     //eslint-disable-next-line
@@ -22,7 +22,9 @@ export class SlotPeopleContainer extends PIXI.Container {
       const container = new PIXI.Container();
       container.position.set(-30 + item * 47, 0 - item * 20);
       const slot = new Slot(item);
-      const peopleContainer = new PeopleContainer(item, 1, 'vip');
+      const peopleContainer = new PeopleContainer(item, sexual[item - 1]);
+      peopleContainer.createVipSign(level[item - 1]);
+      console.log(sexual[item]);
       //slot.x = slot.toLocal(slot.position, people).x;
       container.addChild(slot, peopleContainer);
       this.addChild(container);
@@ -35,6 +37,7 @@ export class SlotPeopleContainer extends PIXI.Container {
   }
 
   createTimes() {
+    //倍率場景
     const times = new PIXI.Sprite(Globals.resources.times.texture);
     times.position.set(0, -280);
     times.rotation = 0.07;
