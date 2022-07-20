@@ -24,6 +24,7 @@ import {
 import { japanSlotReducer } from './reducers/japanSlotReducer';
 
 import chatReducer from './reducers/chatReducer';
+import { pixiReducer } from './reducers/pixiReducer';
 
 const persistConfig = {
   key: 'root',
@@ -32,6 +33,7 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
+  pixi: pixiReducer,
   user: userReducer,
   egmList: egmListReducer,
   egmStatus: egmStatusReducer,

@@ -160,23 +160,29 @@ const Cover = ({btnAction, btnActionParams, bonusImg, egm, selectEgmLoading}) =>
   }
 
   const isSomeOnePlaying = () => {
-    if ((Object.keys(egm?.member).length > 0)
-      || egm?.hasCredit 
-      ||egm?.waitingList?.length > 0)
-      {
-      //判斷是否有人在遊戲中
-      if (status !== 'someonePlaying' && status !== 'booking'){
-        setStatus('someonePlaying');
+    try{
+      if(!egm.member) return
+      if ((Object.keys(egm?.member).length > 0)
+        || egm?.hasCredit 
+        ||egm?.waitingList?.length > 0)
+        {
+        //判斷是否有人在遊戲中
+        if (status !== 'someonePlaying' && status !== 'booking'){
+          setStatus('someonePlaying');
+        }
+        else {
+          isInWaitingList()
+        }
+        return true;
       }
-      else {
-        isInWaitingList()
+      else{
+        setStatus('origin')
+        return false;
       }
-      return true;
+    } catch{
+      
     }
-    else{
-      setStatus('origin')
-      return false;
-    }
+
   };
 
   const btnOnClick = async() => {

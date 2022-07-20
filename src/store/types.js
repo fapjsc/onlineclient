@@ -64,6 +64,11 @@ export const egmActionTypes = {
   BOOKING_LIST_ERROR: 'BOOKING_LIST_ERROR',
 };
 
+export const pixiActionTypes = {
+  STATUS_ON: 'STATUS_ON',
+  STATUS_OFF: 'STATUS_OFF',
+};
+
 export const menuActionTypes = {
   SET_CURRENT_MENU: 'SET_CURRENT_MENU',
 };

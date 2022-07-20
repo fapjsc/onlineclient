@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-
 import { Button, NoticeBar, CapsuleTabs } from 'antd-mobile';
 import { UserCircleOutline } from 'antd-mobile-icons';
 
+import { useSelector } from 'react-redux';
 import useWindowSize from '../../hooks/useWindowSize';
 import SlotList from '../../components/slot-list/SlotList';
 
@@ -12,6 +12,7 @@ import { text } from '../Layout/Layout';
 import styles from './GameTypePage.module.scss';
 
 import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
+import PopUp from './PopUp';
 
 const jpSlotList = ['sammy', 'daito'];
 
@@ -21,14 +22,16 @@ const GameTypePage = () => {
   const [height] = useWindowSize();
 
   const [showJpSlot, setShowJpSlot] = useState({ action: false, model: null });
+  const { show: showPopUp } = useSelector((state) => state.pixi);
 
   const pixiRef = useRef(null);
 
   useEffect(() => {
-    if (!showJpSlot.action) return;
+    if (!showJpSlot.action || !pixiRef) return;
 
-    const pixiApp = new PixiApp();
-    pixiApp.run();
+    const pixiApp = new PixiApp(pixiRef.current.clientWidth);
+
+    pixiRef.current.appendChild(pixiApp.run().view);
 
     return () => {
       pixiApp.destroy();
@@ -91,6 +94,7 @@ const GameTypePage = () => {
           </nav>
         </>
       )}
+      <PopUp showPopUp={showPopUp} />
 
       {!showJpSlot.action && (
         <nav className={styles.nav}>
