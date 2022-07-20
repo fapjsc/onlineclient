@@ -7,12 +7,12 @@ export const pixiReducer = (state = pixiState, action) => {
   switch (action.type) {
   case pixiActionTypes.STATUS_ON:
     return {
-      show: true,
+      action: true,
     };
 
   case pixiActionTypes.STATUS_OFF:
     return {
-      show: false,
+      action: false,
     };
 
   default:

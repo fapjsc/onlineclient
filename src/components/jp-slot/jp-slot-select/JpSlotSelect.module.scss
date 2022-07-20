@@ -143,35 +143,106 @@
     }
 
     &-current-data {
-      background-color: red;
+      border-radius: 10px;
+      border: 1px solid #be8d29;
       height: 15%;
       padding: 5px;
       font-size: 1.2rem;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
       gap: 3%;
 
       .statistics {
-        background-color: blue;
         height: 100%;
-        width: 30%;
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content:space-around;
+        &>:first-child{
+          text-align: start;
+          color: rgb(255, 255, 255);
+          font-size: small;
+        }
+        &>:last-child{
+          text-align: end;
+          color: rgb(98, 196, 45);
+        }
+        
       }
     }
 
     &-chart {
-      background-color: red;
-      height: 30%;
+      border-radius: 10px;
+      border: 1px solid #be8d29;
+      height: 50%;
+      background-image: url('./data.png');
+      background-size:auto;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     &-bb {
-      background-color: red;
+      color: red;
+      border-radius: 10px;
+      border: 1px solid #be8d29;
       height: 15%;
+      font-size: 1.2rem;
+      gap: 3%;
+      .spaceBetween{
+        height: 70%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .statistics {
+        height: 100%;
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content:space-around;
+        &>:first-child{
+          text-align: start;
+          font-size: small;
+          opacity: 0.5;
+        }
+        &>:last-child{
+          text-align: end;
+        }
+        
+      }
     }
 
     &-rb {
-      background-color: red;
+      color: yellow;
+      border-radius: 10px;
+      border: 1px solid #be8d29;
       height: 15%;
+      font-size: 1.2rem;
+
+      gap: 3%;
+      .spaceBetween{
+        height: 70%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .statistics {
+        height: 100%;
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content:space-around;
+        &>:first-child{
+          text-align: start;
+          font-size: small;
+          opacity: 0.5;
+        }
+        &>:last-child{
+          text-align: end;
+        }
+        
+      }
     }
   }
 }

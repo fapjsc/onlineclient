@@ -12,7 +12,7 @@ export class Slot extends PIXI.Sprite {
     this.name = 'slot';
     this.width = 130;
     this.height = 130;
-    //this.position.set(50, 50);
+    this.position.set(0, -10);
     this.Event();
   }
 

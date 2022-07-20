@@ -17,16 +17,15 @@ export class PeopleAnim extends PIXI.AnimatedSprite {
 
       textureArray.push(texture);
     }
-    console.log(textureArray);
     if (sexual === 1) {
       super(textureArray);
     } else {
       super(Globals.resources.woman.texture);
     }
     this.id = id;
-    this.width = 50;
-    this.height = 70;
-    this.position.set(70, 45);
+    this.width = 70;
+    this.height = 90;
+    this.position.set(60, 20);
     this.animationSpeed = 0.1;
     this.name = 'people';
     this.interactive = true;

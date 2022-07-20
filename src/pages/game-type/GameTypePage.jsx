@@ -10,6 +10,8 @@ import { UserCircleOutline } from 'antd-mobile-icons';
 import { useSelector } from 'react-redux';
 import useWindowSize from '../../hooks/useWindowSize';
 
+import { store } from '../../store/index';
+
 // Components
 import SlotList from '../../components/slot-list/SlotList';
 import JpSlotSelect from '../../components/jp-slot/jp-slot-select/JpSlotSelect';
@@ -19,10 +21,10 @@ import { text } from '../Layout/Layout';
 
 // Pixi
 import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
-import PopUp from './PopUp';
 
 // Styles
 import styles from './GameTypePage.module.scss';
+import { setPixiStatus } from '../../store/actions/pixiAction';
 
 const jpSlotList = ['sammy', 'daito'];
 
@@ -31,16 +33,8 @@ const GameTypePage = () => {
 
   const [height] = useWindowSize();
 
-<<<<<<< HEAD
-  const [showJpSlot, setShowJpSlot] = useState({ action: false, model: null });
-  const { show: showPopUp } = useSelector((state) => state.pixi);
-=======
   const [showJpSlot, setShowJpSlot] = useState({ action: true, model: null });
-  const [showJpSelect, setShowJpSelect] = useState({
-    action: true,
-    model: null,
-  });
->>>>>>> 66c167be7ecb6c838e2b4450590f6e7f18e9f2df
+  const { action: showJpSelectAction } = useSelector((state) => state.pixi);
 
   const pixiRef = useRef(null);
 
@@ -56,12 +50,19 @@ const GameTypePage = () => {
     };
   }, [showJpSlot]);
 
+  useEffect(() => {
+    console.log('showJpSelectAction => ', showJpSelectAction);
+  }, [showJpSelectAction]);
+  useEffect(() => {
+    store.dispatch(setPixiStatus(false));
+  }, []);
+
   const openJpSelect = () => {
-    setShowJpSelect((prev) => ({ ...prev, action: true }));
+
   };
 
   const closeJpSelect = () => {
-    setShowJpSelect((prev) => ({ ...prev, action: false }));
+    store.dispatch(setPixiStatus(false));
   };
 
   return (
@@ -94,49 +95,13 @@ const GameTypePage = () => {
           />
         </div>
 
-<<<<<<< HEAD
-      {showJpSlot.action && (
-        <>
-          <div className={styles['jp-slot-header']}>
-            <div className={styles.back} role="presentation" onClick={() => setShowJpSlot({ action: false, model: null })} />
-            <div className={styles.title}>{`${showJpSlot.model.toUpperCase()}遊戲大廳`}</div>
-          </div>
-          <nav className={styles.nav}>
-            <CapsuleTabs
-              defaultActiveKey={showJpSlot.model}
-              onChange={(key) => {
-                setShowJpSlot((prev) => ({
-                  ...prev,
-                  model: key,
-                }));
-              }}
-            >
-              {jpSlotList.map((el) => (
-                <CapsuleTabs.Tab key={el} title={el.toUpperCase()} className={styles.tab}>
-                  <div className={styles.body} style={{ height: height * 0.63 }}>
-                    <div id="jp-pixi" ref={pixiRef} />
-                  </div>
-                </CapsuleTabs.Tab>
-              ))}
-            </CapsuleTabs>
-          </nav>
-        </>
-      )}
-      <PopUp showPopUp={showPopUp} />
-
-      {!showJpSlot.action && (
-        <nav className={styles.nav}>
-          <CapsuleTabs>
-            <CapsuleTabs.Tab title="老虎機" key="slot" className={styles.tab}>
-              <div className={styles.body} style={{ height: height * 0.69 }}>
-                <SlotList />
-=======
         {showJpSlot.action && (
           <>
-            {showJpSelect.action && (
+            {showJpSelectAction && (
               <JpSlotSelect
                 visible={showJpSlot.action}
                 hidden={closeJpSelect}
+                showJpSelectAction={showJpSelectAction}
               />
             )}
 
@@ -148,7 +113,6 @@ const GameTypePage = () => {
               />
               <div className={styles.title}>
                 {`${showJpSlot.model?.toUpperCase()}遊戲大廳`}
->>>>>>> 66c167be7ecb6c838e2b4450590f6e7f18e9f2df
               </div>
             </div>
             <nav className={styles.nav}>
