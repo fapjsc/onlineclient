@@ -8,6 +8,8 @@ export class PeopleContainer extends PIXI.Container {
     this.position.set(0, 0);
     this.people = new PeopleAnim(id, sexual);
     this.addChild(this.people);
+    // eslint-disable-next-line prefer-template
+    this.id = id;
   }
 
   createVipSign(level) {

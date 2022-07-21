@@ -1,42 +1,72 @@
+// import * as PIXI from 'pixi.js';
+// import { Loader } from './Loader';
+// import { MainScene } from './MainScene';
+
+// export class PixiApp {
+//   constructor(width) {
+//     //this.element = document.getElementById('jp-pixi');
+//     this.width = width;
+//     this.height = 1206;
+//   }
+
+//   run() {
+//     this.app = new PIXI.Application({
+//       backgroundColor: 0x5BBA6F,
+//       width: this.width,
+//       height: this.height,
+//       antialias: true,
+//       resolution: 1,
+//     });
+
+//     //this.element.appendChild(this.app.view);
+
+//     // load sprite
+//     this.loader = new Loader(this.app.loader);
+
+//     this.loader.preload().then(() => {
+//       this.start();
+//     });
+
+//     return this.app;
+//   }
+
+//   start() {
+//     console.log('game start!');
+//     this.scene = new MainScene(this.width, this.height);
+//     this.app.stage.addChild(this.scene);
+//   }
+
+//   destroy() {
+//     this.app.destroy();
+//   }
+// }
+
 import * as PIXI from 'pixi.js';
 import { Loader } from './Loader';
 import { MainScene } from './MainScene';
 
-export class PixiApp {
+export class PixiApp extends PIXI.Application {
   constructor(width) {
-    //this.element = document.getElementById('jp-pixi');
-    this.width = width;
-    this.height = 1206;
-  }
-
-  run() {
-    this.app = new PIXI.Application({
-      backgroundColor: 0x5BBA6F,
-      width: this.width,
-      height: this.height,
+    super({
+      width: width,
+      height: 1206,
+      backgroundColor: 0xFBBA6F,
       antialias: true,
       resolution: 1,
     });
+  }
 
-    //this.element.appendChild(this.app.view);
-
-    // load sprite
-    this.loader = new Loader(this.app.loader);
-
-    this.loader.preload().then(() => {
-      this.start();
+  Start(rowAmount, columnAmount) {
+    const loaders = new Loader(this.loader);
+    loaders.preload().then(() => {
+      console.log('game start!');
+      this.scene = new MainScene(this.width, this.height);
+      // eslint-disable-next-line no-plusplus
+      for (let item = 0; item < columnAmount; item++) {
+        this.scene.createSlot(item + 1, 30, 450 + 300 * item, rowAmount[item]);
+      }
+      this.stage.addChild(this.scene);
+      console.log('get child', this.stage.getChildAt(0));
     });
-
-    return this.app;
-  }
-
-  start() {
-    console.log('game start!');
-    this.scene = new MainScene(this.width, this.height);
-    this.app.stage.addChild(this.scene);
-  }
-
-  destroy() {
-    this.app.destroy();
   }
 }

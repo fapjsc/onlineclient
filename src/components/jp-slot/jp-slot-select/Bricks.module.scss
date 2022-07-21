@@ -1,0 +1,49 @@
+.container{
+    justify-content: center;
+    align-content: center;
+
+    height: 100%;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(11, 7%);
+    grid-template-rows: repeat(13, 6%);
+    grid-column-gap: 5px;
+    grid-row-gap: 3px;
+    color: white;
+    >div{
+        text-align: center;
+        font-size: 0.01em;
+        border-radius: 2px;
+        &:not(.container-noneBg):not(.container-text):hover{
+            box-shadow: 1px 1px 1px white,
+            -1px -1px 1px white;
+            cursor: pointer;
+        }
+    }
+    &-seaBlueBg{
+        background-color: aqua;
+    }
+    &-redBg{
+        background-color: red;
+    }
+    &-greenBg{
+        background-color: green;
+    }
+    &-currentBg{
+        text-align: right!important;
+        background-color: rgb(66, 8, 8);
+    }
+    &-startBg{
+        background-color:rgb(4, 48, 4);
+    }
+    &-text{
+
+    }
+
+    &-noneBg{
+
+        border-radius: 0px!important;
+        border: 0.5px solid #333;
+    }
+
+}

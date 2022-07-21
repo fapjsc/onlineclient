@@ -6,6 +6,7 @@ import { setPixiStatus } from '../../../store/actions/pixiAction';
 export class Slot extends PIXI.Sprite {
   constructor(id) {
     super(Globals.resources.slot.texture);
+    // eslint-disable-next-line prefer-template
     this.id = id;
     this.interactive = true;
     this.buttonMode = true;
@@ -18,7 +19,7 @@ export class Slot extends PIXI.Sprite {
 
   Event() {
     this.on('pointerover', () => {
-      this.tint = 0xD0D0D0;
+      this.tint = 0xFFE66F;
     });
     this.on('pointerout', () => {
       this.tint = 0xFFFFFF;

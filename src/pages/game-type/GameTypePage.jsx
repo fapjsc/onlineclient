@@ -36,19 +36,34 @@ const GameTypePage = () => {
   const [showJpSlot, setShowJpSlot] = useState({ action: true, model: null });
   const { action: showJpSelectAction } = useSelector((state) => state.pixi);
 
+  const {
+    data: selectEgmDta,
+    // eslint-disable-next-line no-unused-vars
+    isLoading: selectEgmLoading,
+    // eslint-disable-next-line no-unused-vars
+    error: selectEgmError,
+  } = useSelector((state) => state.selectEgm);
+
   const pixiRef = useRef(null);
+  const { id: egmID } = selectEgmDta || {};
 
   useEffect(() => {
     if (!showJpSlot.action || !pixiRef) return;
-
     const pixiApp = new PixiApp(pixiRef.current.clientWidth);
-
-    pixiRef.current.appendChild(pixiApp.run().view);
-
+    pixiApp.Start([6, 3, 5], 3);
+    pixiRef.current.appendChild(pixiApp.view);
     return () => {
       pixiApp.destroy();
     };
   }, [showJpSlot]);
+
+  // 有egmID 代表select egm 成功
+  useEffect(() => {
+    if (egmID) {
+      navigate('/game-play', { replace: true });
+      window.history.pushState(null, null, null);
+    }
+  }, [egmID, navigate]);
 
   useEffect(() => {
     console.log('showJpSelectAction => ', showJpSelectAction);

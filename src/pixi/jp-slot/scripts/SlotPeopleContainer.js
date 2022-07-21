@@ -13,16 +13,17 @@ export class SlotPeopleContainer extends PIXI.Container {
     this.amount = amount;
   }
 
-  createContainer(sexual, level) {
-    console.log(this.amount);
+  createContainer(sexual, level, horizonID) {
     this.createStage();
     this.createTimes();
     //eslint-disable-next-line
     for (let item = this.amount; item > 0; item--) {
+      // eslint-disable-next-line prefer-template
+      const id = (horizonID + '') + (item + '');
       const container = new PIXI.Container();
       container.position.set(-30 + item * 47, 0 - item * 20);
-      const slot = new Slot(item);
-      const peopleContainer = new PeopleContainer(item, sexual[item - 1]);
+      const slot = new Slot(id);
+      const peopleContainer = new PeopleContainer(id, sexual[item - 1]);
       peopleContainer.createVipSign(level[item - 1]);
       console.log(sexual[item]);
       //slot.x = slot.toLocal(slot.position, people).x;
@@ -32,7 +33,7 @@ export class SlotPeopleContainer extends PIXI.Container {
   }
 
   createStage() {
-    const stage = new Stage(this.amount);
+    const stage = new Stage();
     this.addChild(stage);
   }
 
@@ -41,6 +42,7 @@ export class SlotPeopleContainer extends PIXI.Container {
     const times = new PIXI.Sprite(Globals.resources.times.texture);
     times.position.set(0, -280);
     times.rotation = 0.07;
+    times.buttonMode = false;
     this.addChild(times);
   }
 }

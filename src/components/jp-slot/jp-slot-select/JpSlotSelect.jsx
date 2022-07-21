@@ -19,21 +19,34 @@ import {
 
 // Styles
 import styles from './JpSlotSelect.module.scss';
+import Bricks from './Bricks';
+import EgmInfo from './egmInfo';
+import { useState } from 'react';
 
+// eslint-disable-next-line no-unused-vars
 const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
   const dispatch = useDispatch();
+  const [showEgmInfo, setShowEgmInfo] = useState(false);
   const selectEgmHandler = (id) => {
     dispatch(selectEgm(id));
   };
+  const egmInfoClose = () => {
+    setShowEgmInfo(false);
+  };
+  const egmInfoOpen = () => {
+    setShowEgmInfo(true);
+  };
+
   return (
     <>
       {/* <Mask visible={visible} onMaskClick={hidden} opacity={0.1} /> */}
+      <EgmInfo show={showEgmInfo} close={egmInfoClose} />
       <section style={{ display: showJpSelectAction ? 'block' : 'none' }} className={styles.container}>
         <div className={styles.header}>
           <div className={styles['header-title']}>
             <span>北斗之拳-拳王</span>
             <div className={styles['header-icon-box']}>
-              <ExclamationCircleOutline />
+              <ExclamationCircleOutline onClick={egmInfoOpen} />
               <CloseCircleOutline onClick={hidden} />
             </div>
           </div>
@@ -44,7 +57,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
               <button type="button" className={styles['booking-btn']}>
                 預約
               </button>
-              <button type="button" onClick={() => selectEgmHandler(1)} className={styles['start-btn']}>
+              <button type="button" onClick={() => selectEgmHandler('1001')} className={styles['start-btn']}>
                 開始遊戲
               </button>
             </div>
@@ -65,14 +78,18 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
             </span>
           </div>
           <div className={styles['body-current-data']}>
-            {[['Games', 25], ['TotalGames', 9999], ['Average', 924]].map((item) => (
+            {[['Games', 25], ['TotalGames', 9999], ['Average', '1/166']].map((item) => (
               <div className={styles.statistics}>
                 <div>{item[0]}</div>
                 <div>{item[1]}</div>
               </div>
             ))}
           </div>
-          <div className={styles['body-chart']}></div>
+          <div className={styles['body-chart']}>
+            <DownFill />
+            <Bricks />
+            <DownFill />
+          </div>
           <div className={styles['body-bb']}>
             <div>BB</div>
             <div className={styles.spaceBetween}>

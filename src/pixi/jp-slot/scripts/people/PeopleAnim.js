@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Globals } from '../Globals';
 
 const textureArr = (sexual) => {
   let frames = [];
@@ -32,7 +31,8 @@ const textureArr = (sexual) => {
       'womanFrame26',
     ];
   }
-  //console.log(sexual);
+
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < frames.length; i++) {
     const texture = PIXI.Texture.from(frames[i]);
 
@@ -44,7 +44,6 @@ const textureArr = (sexual) => {
 export class PeopleAnim extends PIXI.AnimatedSprite {
   constructor(id, sexual) {
     super(textureArr(sexual));
-    this.id = id;
     this.width = 70;
     this.height = 90;
     this.position.set(60, 20);
@@ -54,6 +53,8 @@ export class PeopleAnim extends PIXI.AnimatedSprite {
     this.buttonMode = true;
     this.Event();
     this.play();
+    /* eslint-disable prefer-template */
+    this.id = id;
 
     //this.peopleEvent = this.Event;
   }
