@@ -12,6 +12,14 @@ export class PeopleContainer extends PIXI.Container {
     this.id = id;
   }
 
+  show(id) {
+    if (id === this.id) {
+      this.visible = false;
+    } else {
+      this.visible = true;
+    }
+  }
+
   createVipSign(level) {
     if (level === 'vip') {
       this.vipSign = new PIXI.Sprite(Globals.resources.vipSign.texture);

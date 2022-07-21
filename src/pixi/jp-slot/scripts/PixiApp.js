@@ -46,6 +46,8 @@ import { Loader } from './Loader';
 import { MainScene } from './MainScene';
 
 export class PixiApp extends PIXI.Application {
+  //_mainScene;
+
   constructor(width) {
     super({
       width: width,
@@ -56,17 +58,32 @@ export class PixiApp extends PIXI.Application {
     });
   }
 
-  Start(rowAmount, columnAmount) {
+  active(rowAmount, columnAmount) {
     const loaders = new Loader(this.loader);
     loaders.preload().then(() => {
       console.log('game start!');
-      this.scene = new MainScene(this.width, this.height);
+      const mainScene = new MainScene(this.width, this.height);
       // eslint-disable-next-line no-plusplus
       for (let item = 0; item < columnAmount; item++) {
-        this.scene.createSlot(item + 1, 30, 450 + 300 * item, rowAmount[item]);
+        mainScene.createSlot(item + 1, 30, 450 + 300 * item, rowAmount[item]);
       }
-      this.stage.addChild(this.scene);
+      //this.ticker.add((delta) => console.log(delta));
+      this.stage.addChild(mainScene);
       console.log('get child', this.stage.getChildAt(0));
     });
   }
+
+  effectUpdate(numbers) {
+    this.ticker.update(numbers);
+    this.ticker.start();
+  }
+
+  gameLoop(delta) {
+    console.log(delta);
+  }
+/*
+  get mainScene() {
+    return this._mainScene;
+  }
+*/
 }
