@@ -60,7 +60,7 @@ export class PeopleAnim extends PIXI.AnimatedSprite {
 
   Event() {
     this.on('pointerover', () => {
-      this.tint = 0xFF093;
+      this.tint = 0xD0D0D0;
     });
     this.on('pointerout', () => {
       this.tint = 0xFFFFFF;
