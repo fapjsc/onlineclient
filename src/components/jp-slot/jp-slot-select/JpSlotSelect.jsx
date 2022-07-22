@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Antd
 // eslint-disable-next-line
@@ -21,7 +21,6 @@ import {
 import styles from './JpSlotSelect.module.scss';
 import Bricks from './Bricks';
 import EgmInfo from './egmInfo';
-import { useState } from 'react';
 
 // eslint-disable-next-line no-unused-vars
 const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
