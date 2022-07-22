@@ -2,10 +2,10 @@ import * as PIXI from 'pixi.js';
 import { Globals } from '../Globals';
 import { PeopleAnim } from './PeopleAnim';
 
-export class PeopleContainer extends PIXI.Container {
-  constructor(id, sexual) {
+export class People extends PIXI.Container {
+  constructor(id, sexual, offsetX, offsetY) {
     super();
-    this.position.set(0, 0);
+    this.position.set(offsetX, offsetY);
     this.people = new PeopleAnim(id, sexual);
     this.addChild(this.people);
     // eslint-disable-next-line prefer-template
@@ -15,8 +15,7 @@ export class PeopleContainer extends PIXI.Container {
   show(id) {
     if (id === this.id) {
       this.visible = false;
-    } else {
-      this.visible = true;
+      console.log('showId', id, this.id);
     }
   }
 

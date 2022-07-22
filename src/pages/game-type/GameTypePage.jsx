@@ -51,6 +51,7 @@ const GameTypePage = () => {
     if (!showJpSlot.action || !pixiRef) return;
     const pixiApp = new PixiApp(pixiRef.current.clientWidth);
     pixiApp.active([6, 3, 5], 3);
+
     pixiRef.current.appendChild(pixiApp.view);
     return () => {
       pixiApp.destroy();

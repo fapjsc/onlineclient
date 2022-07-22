@@ -46,7 +46,7 @@ import { Loader } from './Loader';
 import { MainScene } from './MainScene';
 
 export class PixiApp extends PIXI.Application {
-  //_mainScene;
+  Scene = 0;
 
   constructor(width) {
     super({
@@ -58,15 +58,20 @@ export class PixiApp extends PIXI.Application {
     });
   }
 
-  active(rowAmount, columnAmount) {
+  active(rowSlotAmount, rowAmount) {
+    const sexual = ['w1', 'm1', 'w2', 'm1', 'w1', 'w1'];
+    const level = ['vip', 'vip', '', 'vip', '', 'vip'];
+    const slotType = ['slot', 'slotGizon', 'slotGizon', 'slotGizon', 'slot', 'slotGizon'];
     const loaders = new Loader(this.loader);
+
     loaders.preload().then(() => {
       console.log('game start!');
       const mainScene = new MainScene(this.width, this.height);
       // eslint-disable-next-line no-plusplus
-      for (let item = 0; item < columnAmount; item++) {
-        mainScene.createSlot(item + 1, 30, 450 + 300 * item, rowAmount[item]);
+      for (let item = 0; item < rowAmount; item++) {
+        mainScene.createGroup(item + 1, 30, 450 + 300 * item, rowSlotAmount[item], slotType, sexual, level);
       }
+      mainScene.people.show('12');
       //this.ticker.add((delta) => console.log(delta));
       this.stage.addChild(mainScene);
       console.log('get child', this.stage.getChildAt(0));
@@ -81,9 +86,4 @@ export class PixiApp extends PIXI.Application {
   gameLoop(delta) {
     console.log(delta);
   }
-/*
-  get mainScene() {
-    return this._mainScene;
-  }
-*/
 }

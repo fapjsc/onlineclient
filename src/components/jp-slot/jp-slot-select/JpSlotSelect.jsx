@@ -19,8 +19,8 @@ import {
 
 // Styles
 import styles from './JpSlotSelect.module.scss';
-import Bricks from './Bricks';
-import EgmInfo from './egmInfo';
+import Bricks from '../../egmInfo/Bricks';
+import EgmInfo from '../../egmInfo/egmInfo';
 
 // eslint-disable-next-line no-unused-vars
 const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {

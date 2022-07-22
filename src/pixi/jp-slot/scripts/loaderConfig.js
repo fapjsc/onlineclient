@@ -4,6 +4,7 @@ export const loadConfig = {
   bg: require('../sprites/bg.jpg'),
 
   slot: require('../sprites/機台.png'),
+  slotGizon: require('../sprites/吉宗.png'),
 
   sign: require('../sprites/背景物件1.png'),
 
@@ -31,6 +32,7 @@ export const loadConfig = {
   womanFrame24: require("../sprites/womanFrame/woman24.png"),
   womanFrame25: require("../sprites/womanFrame/woman25.png"),
   womanFrame26: require("../sprites/womanFrame/woman26.png"),
+
 
   vipSign: require("../sprites/玩家等級.png"),
   times: require("../sprites/比例_未完成.png")

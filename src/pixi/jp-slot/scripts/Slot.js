@@ -4,8 +4,14 @@ import { store } from '../../../store/index';
 import { setPixiStatus } from '../../../store/actions/pixiAction';
 
 export class Slot extends PIXI.Sprite {
-  constructor(id) {
-    super(Globals.resources.slot.texture);
+  constructor(id, offsetX, offsetY, slotType) {
+    let machine = null;
+    if (slotType === 'slotGizon') {
+      machine = 'slotGizon';
+    } else if (slotType === 'slot') {
+      machine = 'slot';
+    }
+    super(Globals.resources[machine].texture);
     // eslint-disable-next-line prefer-template
     this.id = id;
     this.interactive = true;
@@ -13,7 +19,7 @@ export class Slot extends PIXI.Sprite {
     this.name = 'slot';
     this.width = 130;
     this.height = 130;
-    this.position.set(0, -10);
+    this.position.set(offsetX, offsetY - 10);
     this.Event();
   }
 

@@ -7,18 +7,7 @@ import {
   ClockCircleOutline,
 } from 'antd-mobile-icons';
 import styles from './egmInfo.module.scss';
-
-const egmInfoText = {
-  '1': <>
-    10回合的AT，只有8次的15枚小獎。<br />
-    但例外的是「純摃龜」或者是「特殊綠瓜」有時也會引發JACIN。<br/>
-    TYPE-C機種並沒有BIG（大獎彩金），只有REG（通常採金 / JAC 遊戲一回合）。<br/>
-    JAC遊戲: 一般來說有特定獎項 8回。最大12回。<br/>
-    <br/>
-    「北斗之拳」是靠著戰鬥彩金 BB 的連莊來累積增加代幣<br/>
-
-    </>
-}
+import { egmInfoText } from './emgInfoText';
 
 const EgmInfo = ({ show, close }) => (
   <div style={{ display: show ? 'flex' : 'none' }} className={styles.container}>
@@ -41,7 +30,7 @@ const EgmInfo = ({ show, close }) => (
       </div>
       <div className={styles['body-thirdBox']}>
         {
-          egmInfoText['1']
+          egmInfoText['北斗之拳']
         }
       </div>
     </div>
