@@ -56,26 +56,28 @@ export class PixiApp extends PIXI.Application {
       antialias: true,
       resolution: 1,
     });
+    this.mainScene = null;
   }
 
-  active(rowSlotAmount, rowAmount) {
+  async active(rowSlotAmount, rowAmount) {
     const sexual = ['w1', 'm1', 'w2', 'm1', 'w1', 'w1'];
     const level = ['vip', 'vip', '', 'vip', '', 'vip'];
     const slotType = ['slot', 'slotGizon', 'slotGizon', 'slotGizon', 'slot', 'slotGizon'];
     const loaders = new Loader(this.loader);
 
-    loaders.preload().then(() => {
+    this.mainScene = await loaders.preload().then(() => {
       console.log('game start!');
       const mainScene = new MainScene(this.width, this.height);
       // eslint-disable-next-line no-plusplus
       for (let item = 0; item < rowAmount; item++) {
+        // eslint-disable-next-line
         mainScene.createGroup(item + 1, 30, 450 + 300 * item, rowSlotAmount[item], slotType, sexual, level);
       }
-      mainScene.people.show('12');
       //this.ticker.add((delta) => console.log(delta));
       this.stage.addChild(mainScene);
-      console.log('get child', this.stage.getChildAt(0));
+      return mainScene;
     });
+    console.log(this.mainScene);
   }
 
   effectUpdate(numbers) {

@@ -21,11 +21,23 @@ import {
 import styles from './JpSlotSelect.module.scss';
 import Bricks from '../../egmInfo/Bricks';
 import EgmInfo from '../../egmInfo/egmInfo';
+import image1 from '../../../assets/slot-list/sammy/拳王.webp';
+import image2 from '../../../assets/slot-list/daito/吉宗.webp';
 
-// eslint-disable-next-line no-unused-vars
-const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
+const select = (slotType) => {
+  if (slotType === 'slot') {
+    return { img: image1, titleName: '北斗之拳' };
+  }
+  if (slotType === 'slotGizon') {
+    return { img: image2, titleName: '吉宗' };
+  }
+};
+
+// eslint-disable-next-line
+const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
   const dispatch = useDispatch();
   const [showEgmInfo, setShowEgmInfo] = useState(false);
+
   const selectEgmHandler = (id) => {
     dispatch(selectEgm(id));
   };
@@ -39,7 +51,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
   return (
     <>
       {/* <Mask visible={visible} onMaskClick={hidden} opacity={0.1} /> */}
-      <EgmInfo show={showEgmInfo} close={egmInfoClose} />
+      <EgmInfo show={showEgmInfo} close={egmInfoClose} slotType={slotType} />
       <section style={{ display: showJpSelectAction ? 'block' : 'none' }} className={styles.container}>
         <div className={styles.header}>
           <div className={styles['header-title']}>
@@ -51,7 +63,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction }) => {
           </div>
 
           <div className={styles['header-content']}>
-            <div className={styles['header-content-image']} />
+            <img src={select(slotType).img} alt="info" className={styles['header-content-image']} />
             <div className={styles['header-content-action']}>
               <button type="button" className={styles['booking-btn']}>
                 預約
@@ -122,6 +134,10 @@ JpSlotSelect.propTypes = {
   visible: PropTypes.bool.isRequired,
   hidden: PropTypes.func.isRequired,
   showJpSelectAction: PropTypes.bool.isRequired,
+  slotType: PropTypes.string,
+};
+JpSlotSelect.defaultProps = {
+  slotType: 'slot',
 };
 
 export default JpSlotSelect;

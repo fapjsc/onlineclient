@@ -34,7 +34,9 @@ const GameTypePage = () => {
   const [height] = useWindowSize();
 
   const [showJpSlot, setShowJpSlot] = useState({ action: true, model: null });
-  const { action: showJpSelectAction } = useSelector((state) => state.pixi);
+  const { action: showJpSelectAction, slotType } = useSelector((state) => state.pixi);
+  const pixiSlotGroup = useRef(null);
+  const pixiPeopleGroup = useRef(null);
 
   const {
     data: selectEgmDta,
@@ -48,11 +50,34 @@ const GameTypePage = () => {
   const { id: egmID } = selectEgmDta || {};
 
   useEffect(() => {
+    setTimeout(() => {
+      //pixiPeopleGroup.current[0].people.animationSpeed = 2;
+      pixiPeopleGroup.current[5].people.visible = false;
+      pixiPeopleGroup.current[7].people.visible = false;
+      pixiPeopleGroup.current[9].people.visible = false;
+      pixiPeopleGroup.current[13].people.visible = false;
+      pixiSlotGroup.current[6].slot.visib = false;
+      pixiSlotGroup.current[1].slot.visible = false;
+      pixiSlotGroup.current[2].slot.visible = false;
+      pixiSlotGroup.current[10].slot.visible = false;
+    }, 5000);
+  }, []);
+
+  useEffect(() => {
     if (!showJpSlot.action || !pixiRef) return;
     const pixiApp = new PixiApp(pixiRef.current.clientWidth);
-    pixiApp.active([6, 3, 5], 3);
+
+    pixiApp.active([6, 3, 5], 3).then(() => {
+      //need to wait active create mainScene then catch people group and slot Group
+      console.log('get people Group', pixiApp.mainScene.people);
+      console.log('get Slot Group', pixiApp.mainScene.slot);
+      pixiPeopleGroup.current = pixiApp.mainScene.people;
+      pixiSlotGroup.current = pixiApp.mainScene.slot;
+      pixiApp.mainScene.people[3].people.visible = false;
+    });
 
     pixiRef.current.appendChild(pixiApp.view);
+
     return () => {
       pixiApp.destroy();
     };
@@ -67,8 +92,9 @@ const GameTypePage = () => {
   }, [egmID, navigate]);
 
   useEffect(() => {
-    console.log('showJpSelectAction => ', showJpSelectAction);
-  }, [showJpSelectAction]);
+    console.log('pixiData => ', showJpSelectAction, slotType);
+  }, [showJpSelectAction, slotType]);
+
   useEffect(() => {
     store.dispatch(setPixiStatus(false));
   }, []);
@@ -118,6 +144,7 @@ const GameTypePage = () => {
                 visible={showJpSlot.action}
                 hidden={closeJpSelect}
                 showJpSelectAction={showJpSelectAction}
+                slotType={slotType}
               />
             )}
 

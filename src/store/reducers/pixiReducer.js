@@ -8,6 +8,7 @@ export const pixiReducer = (state = pixiState, action) => {
   case pixiActionTypes.STATUS_ON:
     return {
       action: true,
+      slotType: action.payload,
     };
 
   case pixiActionTypes.STATUS_OFF:

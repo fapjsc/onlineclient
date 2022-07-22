@@ -1,6 +1,6 @@
 /* eslint-disable */
 export const egmInfoText = {
-    '北斗之拳': <>
+    slot: <>
     {/*北斗之拳*/}
     ●機種概要
         TYPE-C<br/>
@@ -215,7 +215,7 @@ export const egmInfoText = {
         意即天國狀態中，青再最好不要太頻繁，平均每13次就有一次中標。<br/>
 
     </>,
-    '吉宗':<>
+    slotGizon:<>
         模式可分為3種類<br/>
         <br/>
         模式A<br/>

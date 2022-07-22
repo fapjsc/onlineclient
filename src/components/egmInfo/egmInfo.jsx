@@ -1,36 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ExclamationCircleOutline,
   CloseCircleOutline,
-  DownFill,
-  ClockCircleOutline,
 } from 'antd-mobile-icons';
 import styles from './egmInfo.module.scss';
 import { egmInfoText } from './emgInfoText';
+import image1 from './北斗之拳遊戲說明.webp';
+import image2 from './吉宗遊戲說明.webp';
 
-const EgmInfo = ({ show, close }) => (
+const select = (slotType) => {
+  if (slotType === 'slot') {
+    return { img: image1, titleName: '北斗之拳' };
+  }
+  if (slotType === 'slotGizon') {
+    return { img: image2, titleName: '吉宗' };
+  }
+};
+
+const EgmInfo = ({ show, close, slotType }) => (
   <div style={{ display: show ? 'flex' : 'none' }} className={styles.container}>
     <div className={styles.header}>
-      <div>北斗之拳</div>
+      <div>{select(slotType).titleName}</div>
       <CloseCircleOutline onClick={close} />
     </div>
     <div className={styles.body}>
-      <div className={styles['body-firstBox']}>
-        <div className={styles['body-firstBox-left']}>
-            <div></div>
-            <div></div>
-        </div>
-        <div className={styles['body-firstBox-right']}>
-        </div>
-      </div>
+      <img src={select(slotType).img} alt="info" className={styles['body-firstBox']} />
 
       <div className={styles['body-secondBox']}>
-        <a href='#'>實際機台遊玩影片</a>
+        {/*eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
+        <a href="#">實際機台遊玩影片</a>
       </div>
       <div className={styles['body-thirdBox']}>
         {
-          egmInfoText['北斗之拳']
+          egmInfoText[slotType]
         }
       </div>
     </div>
@@ -39,5 +41,9 @@ const EgmInfo = ({ show, close }) => (
 EgmInfo.propTypes = {
   show: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  slotType: PropTypes.string,
+};
+EgmInfo.defaultProps = {
+  slotType: 'slot',
 };
 export default EgmInfo;

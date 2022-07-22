@@ -16,7 +16,7 @@ export class Slot extends PIXI.Sprite {
     this.id = id;
     this.interactive = true;
     this.buttonMode = true;
-    this.name = 'slot';
+    this.name = machine;
     this.width = 130;
     this.height = 130;
     this.position.set(offsetX, offsetY - 10);
@@ -32,7 +32,7 @@ export class Slot extends PIXI.Sprite {
     });
     this.on('pointerdown', () => {
       console.log(`slot ${this.id} is clicked`);
-      store.dispatch(setPixiStatus(true));
+      store.dispatch(setPixiStatus(true, this.name));
     });
   }
 }
