@@ -1,65 +1,57 @@
 import * as PIXI from 'pixi.js';
+import { Slot } from '../Slot';
 
-const textureArr = (sexual) => {
-  let frames = [];
-  const textureArray = [];
-  if (sexual === 'm1') {
-    frames = [
-      'manFrame11',
-      'manFrame12',
-      'manFrame13',
-      'manFrame14',
-      'manFrame15',
-      'manFrame16',
-    ];
-  } else if (sexual === 'w1') {
-    frames = [
-      'womanFrame11',
-      'womanFrame12',
-      'womanFrame13',
-      'womanFrame14',
-      'womanFrame15',
-      'womanFrame16',
-    ];
-  } else if (sexual === 'w2') {
-    frames = [
-      'womanFrame21',
-      'womanFrame22',
-      'womanFrame23',
-      'womanFrame24',
-      'womanFrame25',
-      'womanFrame26',
-    ];
-  }
+const textureArr = () => {
+  const frames = [
+    'manFrame11',
+    'manFrame12',
+    'manFrame13',
+    'manFrame14',
+    'manFrame15',
+    'manFrame16',
+    'womanFrame11',
+    'womanFrame12',
+    'womanFrame13',
+    'womanFrame14',
+    'womanFrame15',
+    'womanFrame16',
+    'womanFrame21',
+    'womanFrame22',
+    'womanFrame23',
+    'womanFrame24',
+    'womanFrame25',
+    'womanFrame26',
+  ];
 
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < frames.length; i++) {
-    const texture = PIXI.Texture.from(frames[i]);
-
-    textureArray.push(texture);
-  }
-  return textureArray;
+  return Slot.createTexture(frames);
 };
 
 export class PeopleAnim extends PIXI.AnimatedSprite {
-  constructor(id, sexual) {
-    super(textureArr(sexual));
+  constructor(id) {
+    super(textureArr());
     this.width = 70;
     this.height = 90;
     this.position.set(60, 20);
-    this.animationSpeed = 0.1;
+    this.animationSpeed = 0.2;
     this.name = 'people';
     this.interactive = true;
     this.buttonMode = true;
-    this.Event();
-    this.play();
+    this.#Event();
+    // let frames = 0;
+    // if (sexual === 'w1') {
+    //   frames = 6;
+    // } else if (sexual === 'w2') {
+    //   frames = 12;
+    // }
+    // this.gotoAndPlay(frames);
     /* eslint-disable prefer-template */
     this.id = id;
+    this.play();
 
     //this.peopleEvent = this.Event;
   }
 
-  Event() {
+  #Event() {
     this.on('pointerover', () => {
       this.tint = 0xD0D0D0;
     });

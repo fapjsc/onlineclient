@@ -67,6 +67,10 @@ export const egmActionTypes = {
 export const pixiActionTypes = {
   STATUS_ON: 'STATUS_ON',
   STATUS_OFF: 'STATUS_OFF',
+  SET_PEOPLE: 'SET_PEOPLE',
+  SET_SLOT: 'SET_SLOT',
+  CHANGE_PEOPLE: 'CHANGE_PEOPLE',
+  CHANGE_SLOT: 'CHANGE_SLOT',
 };
 
 export const menuActionTypes = {

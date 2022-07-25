@@ -3,33 +3,29 @@ import { Globals } from '../Globals';
 import { PeopleAnim } from './PeopleAnim';
 
 export class People extends PIXI.Container {
-  constructor(id, sexual, offsetX, offsetY) {
+  constructor(id, offsetX, offsetY) {
     super();
     this.position.set(offsetX, offsetY);
-    this.people = new PeopleAnim(id, sexual);
-    this.addChild(this.people);
+    this.anim = new PeopleAnim(id);
+    this.addChild(this.anim);
     // eslint-disable-next-line prefer-template
     this.id = id;
+    this.visible = false;
+    this.alpha = 0;
+    this.vipSign = this.#_createVipSign();
   }
 
-  show(id) {
-    if (id === this.id) {
-      this.visible = false;
-      console.log('showId', id, this.id);
-    }
+  #_createVipSign() {
+    const vipSign = new PIXI.Sprite(Globals.resources.vipSign.texture);
+    vipSign.position.set(90, 20);
+    vipSign.visible = false;
+    this.#_vipSignEvent(vipSign);
+    this.addChild(vipSign);
+    return vipSign;
   }
 
-  createVipSign(level) {
-    if (level === 'vip') {
-      this.vipSign = new PIXI.Sprite(Globals.resources.vipSign.texture);
-      this.vipSign.position.set(90, 20);
-      this.vipSignEvent();
-      this.addChild(this.vipSign);
-    }
-  }
-
-  vipSignEvent() {
-    this.vipSign.on('click', () => {
+  #_vipSignEvent(vipSign) {
+    vipSign.on('click', () => {
     });
   }
 }

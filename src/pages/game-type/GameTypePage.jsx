@@ -24,7 +24,7 @@ import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
 
 // Styles
 import styles from './GameTypePage.module.scss';
-import { setPixiStatus } from '../../store/actions/pixiAction';
+import { changePeople, setPixiStatus } from '../../store/actions/pixiAction';
 
 const jpSlotList = ['sammy', 'daito'];
 
@@ -35,8 +35,8 @@ const GameTypePage = () => {
 
   const [showJpSlot, setShowJpSlot] = useState({ action: true, model: null });
   const { action: showJpSelectAction, slotType } = useSelector((state) => state.pixi);
-  const pixiSlotGroup = useRef(null);
-  const pixiPeopleGroup = useRef(null);
+
+  const pixiRef = useRef(null);
 
   const {
     data: selectEgmDta,
@@ -46,42 +46,33 @@ const GameTypePage = () => {
     error: selectEgmError,
   } = useSelector((state) => state.selectEgm);
 
-  const pixiRef = useRef(null);
   const { id: egmID } = selectEgmDta || {};
-
-  useEffect(() => {
-    setTimeout(() => {
-      //pixiPeopleGroup.current[0].people.animationSpeed = 2;
-      pixiPeopleGroup.current[5].people.visible = false;
-      pixiPeopleGroup.current[7].people.visible = false;
-      pixiPeopleGroup.current[9].people.visible = false;
-      pixiPeopleGroup.current[13].people.visible = false;
-      pixiSlotGroup.current[6].slot.visib = false;
-      pixiSlotGroup.current[1].slot.visible = false;
-      pixiSlotGroup.current[2].slot.visible = false;
-      pixiSlotGroup.current[10].slot.visible = false;
-    }, 5000);
-  }, []);
 
   useEffect(() => {
     if (!showJpSlot.action || !pixiRef) return;
     const pixiApp = new PixiApp(pixiRef.current.clientWidth);
 
-    pixiApp.active([6, 3, 5], 3).then(() => {
-      //need to wait active create mainScene then catch people group and slot Group
-      console.log('get people Group', pixiApp.mainScene.people);
-      console.log('get Slot Group', pixiApp.mainScene.slot);
-      pixiPeopleGroup.current = pixiApp.mainScene.people;
-      pixiSlotGroup.current = pixiApp.mainScene.slot;
-      pixiApp.mainScene.people[3].people.visible = false;
-    });
+    pixiApp.active([6, 3, 5], 2);
 
     pixiRef.current.appendChild(pixiApp.view);
+    let a = 'w1';
+
+    setInterval(() => {
+      store.dispatch(changePeople(13, a, 'vip'));
+      if (a === 'w1') {
+        a = 'w2';
+      } else if (a === 'w2') {
+        a = 'm1';
+      } else if (a === 'm1') {
+        a = '';
+      }
+    }, [5000]);
 
     return () => {
       pixiApp.destroy();
     };
-  }, [showJpSlot]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 有egmID 代表select egm 成功
   useEffect(() => {

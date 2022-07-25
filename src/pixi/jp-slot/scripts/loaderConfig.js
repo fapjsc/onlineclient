@@ -33,6 +33,10 @@ export const loadConfig = {
   womanFrame25: require("../sprites/womanFrame/woman25.png"),
   womanFrame26: require("../sprites/womanFrame/woman26.png"),
 
+  modeSign4: require("../sprites/設定4.png"),
+  modeSign5: require("../sprites/設定5.png"),
+  modeSign6: require("../sprites/設定6.png"),
+  modeSign456: require("../sprites/設定456.png"),
 
   vipSign: require("../sprites/玩家等級.png"),
   times: require("../sprites/比例_未完成.png")
