@@ -195,6 +195,7 @@ const Cover = ({
     } catch (error) {
       console.log(error);
     }
+
   };
 
   const btnOnClick = async () => {

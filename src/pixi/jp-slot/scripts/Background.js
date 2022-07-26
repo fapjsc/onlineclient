@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 import { Globals } from './Globals';
 
-export class Background {
+export class Background extends PIXI.Container {
   constructor() {
-    this.container = new PIXI.Container();
+    super();
     this.createSprites();
   }
 
@@ -14,6 +14,7 @@ export class Background {
 
   createSprite() {
     const sprite = new PIXI.Sprite(Globals.resources.bg.texture);
-    this.container.addChild(sprite);
+
+    this.addChild(sprite);
   }
 }
