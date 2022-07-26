@@ -7,12 +7,25 @@ import { store } from '../../../store';
 import { setPeople, setSlot } from '../../../store/actions/pixiAction';
 
 export class MainScene extends PIXI.Container {
+  prevBg = null;
+
+  mainSceneWidth = 0;
+
   constructor(width, height) {
     super();
     this.width = width;
+    this.mainSceneWidth = width;
     this.height = height;
-    this.bg = new Background();
-    this.addChild(this.bg);
+    const bgCount = Math.ceil(height / 1206);
+    //console.log(bgCount, height, 501 - width);
+    new Array(bgCount).fill('').forEach((item, index) => {
+      const bg = new Background();
+      if (index > 0) {
+        bg.y = this.prevBg.height + this.prevBg.y;
+      }
+      this.addChild(bg);
+      this.prevBg = bg;
+    });
     this.visible = true;
     this.name = 'MainScene';
     this.slot = [];//this is the slot group  and store the slot info at here;
@@ -26,6 +39,7 @@ export class MainScene extends PIXI.Container {
     //slotType => 機器種類 [string, string .....]
     //sexual => 性別 [string, string .....]
     this.#_createSign();
+    const rwdOffset = (501 - this.mainSceneWidth) / 2;
 
     const peopleContainer = new PIXI.Container();
     const slotContainer = new PIXI.Container();
@@ -37,12 +51,12 @@ export class MainScene extends PIXI.Container {
       // eslint-disable-next-line prefer-template
       const id = parseInt((horizonID + '') + (item + ''), 10);
 
-      peopleContainer.position.set(offsetX - 30 + item * 47, offsetY - item * 20);
+      peopleContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
       const newPeople = new People(id, offsetX - 30 + item * 47, 0 - item * 20);
       this.people.push({ people: newPeople, id: id });//store to people arr
       peopleContainer.addChild(newPeople);
 
-      slotContainer.position.set(offsetX - 30 + item * 47, offsetY - item * 20);
+      slotContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
       const newSlot = new Slot(id, offsetX - 30 + item * 47, 0 - item * 20);
       this.slot.push({ slot: newSlot, id: id });
       slotContainer.addChild(newSlot);//store to slot arr
@@ -50,6 +64,15 @@ export class MainScene extends PIXI.Container {
       store.dispatch(setSlot({ id: id, machine: 'slot', mode: '' }));
       store.dispatch(setPeople({ id: id, sexual: '', level: '' }));
     }
+    if (rwdOffset > 0) {
+      slotContainer.width -= rwdOffset + 30;
+      slotContainer.height -= rwdOffset + 30;
+      peopleContainer.width -= rwdOffset - 10;
+      peopleContainer.height -= rwdOffset - 30;
+    }
+
+    console.log('Peoplecontainer => ', peopleContainer.width, peopleContainer.height, this.mainSceneWidth);
+    console.log('slotcontainer => ', slotContainer.width, slotContainer.height, rwdOffset);
     this.addChild(slotContainer, peopleContainer);
     this.people.sort((item1, item2) => item1.id - item2.id);
     this.slot.sort((item1, item2) => item1.id - item2.id);

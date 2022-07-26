@@ -10,7 +10,7 @@ export class People extends PIXI.Container {
     this.addChild(this.anim);
     // eslint-disable-next-line prefer-template
     this.id = id;
-    this.visible = false;
+    this.visible = true;
     this.alpha = 0;
     this.vipSign = this.#_createVipSign();
   }

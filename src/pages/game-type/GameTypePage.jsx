@@ -8,6 +8,8 @@ import { Button, NoticeBar, CapsuleTabs } from 'antd-mobile';
 import { UserCircleOutline } from 'antd-mobile-icons';
 
 import { useSelector } from 'react-redux';
+// eslint-disable-next-line no-unused-vars
+import axios from 'axios';
 import useWindowSize from '../../hooks/useWindowSize';
 
 import { store } from '../../store/index';
@@ -24,7 +26,7 @@ import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
 
 // Styles
 import styles from './GameTypePage.module.scss';
-import { changePeople, setPixiStatus } from '../../store/actions/pixiAction';
+import { changePeople, changeSlot, setPixiStatus } from '../../store/actions/pixiAction';
 
 const jpSlotList = ['sammy', 'daito'];
 
@@ -33,10 +35,11 @@ const GameTypePage = () => {
 
   const [height] = useWindowSize();
 
-  const [showJpSlot, setShowJpSlot] = useState({ action: true, model: null });
+  const [showJpSlot, setShowJpSlot] = useState({ action: false, model: null });
   const { action: showJpSelectAction, slotType } = useSelector((state) => state.pixi);
 
   const pixiRef = useRef(null);
+  const pixiApp = useRef(null);
 
   const {
     data: selectEgmDta,
@@ -48,16 +51,79 @@ const GameTypePage = () => {
 
   const { id: egmID } = selectEgmDta || {};
 
+  const addPeopleSlot = () => {
+    if (showJpSlot.model === 'sammy') {
+      [6].forEach((item, index) => {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < item; i++) {
+          const id = parseInt(`${index + 1 }${i + 1}`, 10);
+          store.dispatch(changeSlot(id, 'slot', '4'));
+          store.dispatch(changePeople(id, 'w1', 'vip'));
+        }
+      });
+    } else if (showJpSlot.model === 'daito') {
+      [6].forEach((item, index) => {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < item; i++) {
+          const id = parseInt(`${index + 1 }${i + 1}`, 10);
+          store.dispatch(changeSlot(id, 'slotGizon', '4'));
+          store.dispatch(changePeople(id, 'w1', 'vip'));
+        }
+      });
+    }
+  };
+
   useEffect(() => {
+    if (!showJpSlot.action || !pixiRef.current || !pixiApp.current) return;
+    pixiRef.current.appendChild(pixiApp.current.view);
+    console.log('showJpSlot', showJpSlot, pixiApp.current);
+    addPeopleSlot();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showJpSlot]);
+
+  useEffect(() => {
+    console.log('pixi', showJpSlot, pixiRef, pixiApp);
     if (!showJpSlot.action || !pixiRef) return;
-    const pixiApp = new PixiApp(pixiRef.current.clientWidth);
+    if (pixiApp.current) return;
+    console.log();
+    pixiApp.current = new PixiApp(pixiRef.current.clientWidth);
+    pixiApp.current.active([6]).then(() => {
+      addPeopleSlot();
+    });
+    // axios({
+    //   method: 'GET',
+    //   url: 'http://127.0.0.1:5001/pixi',
+    //   headers: { 'Content-Type': 'application/json' },
+    // }).then((response) => {
+    //   const { data } = response;
+    //   const slotCount = Object.keys(data).map((item) => data[item].length);
 
-    pixiApp.active([6, 3, 5], 2);
+    //   if (slotCount.length > 3) {
+    //     pixiApp.current.renderer.autoResize = true;
+    // eslint-disable-next-line max-len
+    //     pixiApp.current.renderer.resize(pixiRef.current.clientWidth, 1206 + 300 * (slotCount.length - 3));
+    //     console.log('resize');
+    //   }
 
-    pixiRef.current.appendChild(pixiApp.view);
+    //   pixiApp.current.active(slotCount).then(() => {
+    //     Object.keys(data).forEach((item, index) => {
+    //       data[item].forEach((element) => {
+    //         const id = parseInt(`${index + 1 }${ element.id}`, 10);
+    //         console.log(id);
+    //         store.dispatch(changePeople(id, element.member.sexual, element.member.level));
+    //         store.dispatch(changeSlot(id, element.machine, element.mode));
+    //       });
+    //     });
+    //   });
+
+    //   console.log(Object.keys(data), slotCount);
+    // });
+
+    pixiRef.current.appendChild(pixiApp.current.view);
+    console.log(pixiRef.current);
     let a = 'w1';
-
     setInterval(() => {
+      //store.dispatch(changeSlot(13, 'slotGizon', '4'));
       store.dispatch(changePeople(13, a, 'vip'));
       if (a === 'w1') {
         a = 'w2';
@@ -67,12 +133,8 @@ const GameTypePage = () => {
         a = '';
       }
     }, [5000]);
-
-    return () => {
-      pixiApp.destroy();
-    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [showJpSlot]);
 
   // 有egmID 代表select egm 成功
   useEffect(() => {

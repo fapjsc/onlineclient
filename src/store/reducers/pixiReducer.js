@@ -44,7 +44,8 @@ export const slotReducer = (state = slotState, action) => {
   switch (action.type) {
   case pixiActionTypes.SET_SLOT:
     return { slot: action.payload.sort((item1, item2) => item1.id - item2.id) };
-
+  case pixiActionTypes.CHANGE_SLOT:
+    return { slot: action.payload.sort((item1, item2) => item1.id - item2.id) };
   default:
     return state;
   }

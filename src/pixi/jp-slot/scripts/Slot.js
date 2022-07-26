@@ -9,7 +9,7 @@ export class Slot extends PIXI.Container {
     this.name = null;
     this.position.set(offsetX, offsetY - 10);
     this.visible = true;
-    this.slot = this.#_createSlot();
+    this.anim = this.#_createSlot();
     this.modeSign = this.#_createMode();
   }
 

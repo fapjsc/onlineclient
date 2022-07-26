@@ -20,17 +20,17 @@ export class PixiApp extends PIXI.Application {
     this.renderer.plugins.interaction.autoPreventDefault = false;
     this.view.style.touchAction = 'auto';
     this.prevPeopleSexual = [];
-    //this.prevSlot = [];
+    this.prevSlot = [];
   }
 
-  async active(rowSlotAmount, rowAmount) {
+  async active(rowSlotAmount) {
     const loaders = new Loader(this.loader);
 
     this.mainScene = await loaders.preload().then(() => {
       console.log('game start!');
-      const mainScene = new MainScene(this.width, this.height);
+      const mainScene = new MainScene(this.view.width, this.view.height);
       // eslint-disable-next-line no-plusplus
-      for (let item = 0; item < rowAmount; item++) {
+      for (let item = 0; item < rowSlotAmount.length; item++) {
         // eslint-disable-next-line
         mainScene.createGroup(item + 1, 30, 450 + 300 * item, rowSlotAmount[item]);
       }
@@ -57,6 +57,8 @@ export class PixiApp extends PIXI.Application {
     let endFrame = 0;
     const { people } = store.getState().peopleList;
     // eslint-disable-next-line array-callback-return
+    if (!people || people?.length === 0) return;
+    // eslint-disable-next-line array-callback-return
     people.map((item, index) => {
       switch (item.sexual) {
       case 'm1':
@@ -76,6 +78,7 @@ export class PixiApp extends PIXI.Application {
         endFrame = 2;
         break;
       }
+      if (!this.mainScene.people[index]?.people) return;
       if (item !== this.prevPeopleSexual[index] || (startFrame === 1 && endFrame === 2)) {
         //如果沒有人或是 item 是新的item
         this.mainScene.people[index].people.alpha = 0;
@@ -92,6 +95,7 @@ export class PixiApp extends PIXI.Application {
     });
 
     people.map((item, index) => {
+      if (!this.mainScene.people[index]?.people) return;
       if (item.level === 'vip') {
         this.mainScene.people[index].people.vipSign.visible = true;
       } else {
@@ -107,6 +111,7 @@ export class PixiApp extends PIXI.Application {
     let modeFrame = 0;
     let slotFrame = 0;
     slot.map((item, index) => {
+      if (!this.mainScene.slot[index]?.slot) return;
       switch (item.machine) {
       case 'slot':
         slotFrame = 0;
@@ -118,12 +123,13 @@ export class PixiApp extends PIXI.Application {
         slotFrame = 0;
         break;
       }
-      this.mainScene.slot[index].slot.slot.gotoAndStop(slotFrame);
+      this.mainScene.slot[index]?.slot?.anim.gotoAndStop(slotFrame);
       this.mainScene.slot[index].slot.visible = true;
       return item;
     });
 
     slot.map((item, index) => {
+      if (!this.mainScene.slot[index]?.slot) return;
       switch (item.mode) {
       case '4':
         this.mainScene.slot[index].slot.modeSign.visible = true;
@@ -146,7 +152,7 @@ export class PixiApp extends PIXI.Application {
         modeFrame = 0;
         break;
       }
-      this.mainScene.slot[index].slot.modeSign.gotoAndStop(modeFrame);
+      this.mainScene.slot[index]?.slot?.modeSign.gotoAndStop(modeFrame);
       return item;
     });
   }

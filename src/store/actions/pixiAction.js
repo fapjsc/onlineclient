@@ -9,6 +9,7 @@ export const setPixiStatus = (status, slotType = null) => {
 };
 
 export const setPeople = (data) => {
+  //data => {id: , sexual: , level: }
   const { people } = store.getState().peopleList;
   return {
     type: pixiActionTypes.SET_PEOPLE,
@@ -37,6 +38,7 @@ export const changePeople = (id, sexual, level) => {
 };
 
 export const setSlot = (data) => {
+  //data => {id: , machine: , mode: }
   const { slot } = store.getState().slotList;
   return {
     type: pixiActionTypes.SET_SLOT,
@@ -46,9 +48,10 @@ export const setSlot = (data) => {
 
 export const changeSlot = (id, machine, mode) => {
   const { slot } = store.getState().slotList;
-  //console.log(people);
+  //console.log(id, machine, mode);
   const slotChanged = slot.map((item) => {
     if (item.id === id) {
+      //console.log('change => ', id);
       return {
         id: id,
         machine: machine,
@@ -57,7 +60,7 @@ export const changeSlot = (id, machine, mode) => {
     }
     return item;
   });
-  //console.log(peopleChanged);
+  //console.log(slotChanged);
   return {
     type: pixiActionTypes.CHANGE_SLOT,
     payload: slotChanged,
