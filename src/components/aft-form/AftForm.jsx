@@ -48,6 +48,8 @@ const AftForm = ({
 
   const dispatch = useDispatch();
 
+  // const { data: aftData } = useSelector((state) => state.cashInOut);
+
   let amountArr = [];
 
   if (aftType === 'aft-out') amountArr = ['全洗'];
@@ -108,6 +110,12 @@ const AftForm = ({
       setShowNav(true);
     }
   }, [aftType]);
+
+  // useEffect(() => {
+  //   if (!aftData) return;
+  //   console.log(aftData);
+  //   dispatch(leaveEgm());
+  // }, [aftData, dispatch]);
 
   return (
     <Mask
