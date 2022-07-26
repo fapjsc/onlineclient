@@ -9,7 +9,7 @@ export class PixiApp extends PIXI.Application {
   constructor(width) {
     super({
       width: width,
-      height: 1206,
+      height: 600,
       backgroundColor: 0xFBBA6F,
       antialias: true,
       resolution: 1,
@@ -48,11 +48,6 @@ export class PixiApp extends PIXI.Application {
 
   // eslint-disable-next-line no-unused-vars
   #_peoplenAnim(delta) {
-    const states = store.getState().pixi;
-    if (states.action) {
-      this.mainScene.slot[0].slot.visible = false;
-      this.mainScene.slot[1].slot.modeSign.gotoAndStop(3);
-    }
     let startFrame = 0;
     let endFrame = 0;
     const { people } = store.getState().peopleList;

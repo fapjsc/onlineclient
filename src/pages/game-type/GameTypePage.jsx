@@ -51,44 +51,48 @@ const GameTypePage = () => {
 
   const { id: egmID } = selectEgmDta || {};
 
-  const addPeopleSlot = () => {
+  const resetSlotList = (type) => {
+    const { slot } = store.getState().slotList;
+    // eslint-disable-next-line no-unused-vars
+    slot.forEach((item) => {
+      store.dispatch(changeSlot(11, type, '5'));
+    });
+  };
+
+  const addPeopleSlot = async () => {
+    const { egmList } = store.getState();
+    const jpArr = egmList.data?.filter((item) => item.name === '吉宗' || item.name === '北斗之拳');
+    console.log(egmList.data);
+    const id = 11;
     if (showJpSlot.model === 'sammy') {
-      [6].forEach((item, index) => {
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < item; i++) {
-          const id = parseInt(`${index + 1 }${i + 1}`, 10);
-          store.dispatch(changeSlot(id, 'slot', '4'));
-          store.dispatch(changePeople(id, 'w1', 'vip'));
-        }
-      });
+      store.dispatch(changeSlot(id, 'slot', '4'));
+      const jp = await jpArr.find((item) => item.brand_name === 'sammy');
+      console.log(jp);
+      resetSlotList('slot');
+      if (Object.keys(jp.member).length > 0) {
+        store.dispatch(changeSlot(id, 'slot', '4'));
+        store.dispatch(changePeople(id, 'w1', 'vip'));
+      }
     } else if (showJpSlot.model === 'daito') {
-      [6].forEach((item, index) => {
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < item; i++) {
-          const id = parseInt(`${index + 1 }${i + 1}`, 10);
-          store.dispatch(changeSlot(id, 'slotGizon', '4'));
-          store.dispatch(changePeople(id, 'w1', 'vip'));
-        }
-      });
+      store.dispatch(changeSlot(id, 'slotGizon', '4'));
+      const jp = await jpArr.find((item) => item.brand_name === 'daito');
+      console.log(jp);
+      resetSlotList('slotGizon');
+      if (Object.keys(jp.member).length > 0) {
+        store.dispatch(changeSlot(id, 'slotGizon', '4'));
+        store.dispatch(changePeople(id, 'w1', 'vip'));
+      }
     }
   };
 
   useEffect(() => {
-    if (!showJpSlot.action || !pixiRef.current || !pixiApp.current) return;
-    pixiRef.current.appendChild(pixiApp.current.view);
-    console.log('showJpSlot', showJpSlot, pixiApp.current);
-    addPeopleSlot();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showJpSlot]);
-
-  useEffect(() => {
     console.log('pixi', showJpSlot, pixiRef, pixiApp);
     if (!showJpSlot.action || !pixiRef) return;
-    if (pixiApp.current) return;
     console.log();
     pixiApp.current = new PixiApp(pixiRef.current.clientWidth);
-    pixiApp.current.active([6]).then(() => {
+    pixiApp.current.active([1]).then(() => {
       addPeopleSlot();
+      console.log('showJpSlot', showJpSlot, pixiApp.current);
     });
     // axios({
     //   method: 'GET',
@@ -101,7 +105,7 @@ const GameTypePage = () => {
     //   if (slotCount.length > 3) {
     //     pixiApp.current.renderer.autoResize = true;
     // eslint-disable-next-line max-len
-    //     pixiApp.current.renderer.resize(pixiRef.current.clientWidth, 1206 + 300 * (slotCount.length - 3));
+    //     pixiApp.current.renderer.resize(pixiRef.current.clientWidth, 600 + 300 * (slotCount.length - 3));
     //     console.log('resize');
     //   }
 
@@ -133,6 +137,10 @@ const GameTypePage = () => {
         a = '';
       }
     }, [5000]);
+    return () => {
+      pixiApp.current.destroy();
+    };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showJpSlot]);
 
