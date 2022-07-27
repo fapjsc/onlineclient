@@ -55,6 +55,7 @@ const gameText = {
     並非每次都會發生［模式轉移］的。
     `,
   ],
+
 };
 
 export default gameText;

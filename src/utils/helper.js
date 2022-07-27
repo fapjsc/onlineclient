@@ -102,7 +102,7 @@ export const getGameDescriptionImg = ({ model, brand }) => {
   } catch (error) {
     console.log(error);
     //eslint-disable-next-line
-    imgObj = require('../assets/game-description/sammy/拳王.webp');
+    // imgObj = require('../assets/game-description/sammy/拳王.webp');
   }
 
   return imgObj;

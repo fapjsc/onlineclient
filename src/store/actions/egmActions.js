@@ -278,7 +278,7 @@ export const cashInOut = ({
 
     dispatch({
       type: egmActionTypes.CASH_IN_OUT_SUCCESS,
-      payload: { cashInOutData: data.result },
+      payload: { cashInOutData: data.message },
     });
   } catch (error) {
     if (error?.message === 'fetchTimeout') {
