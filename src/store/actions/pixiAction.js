@@ -8,12 +8,14 @@ export const setPixiStatus = (status, slotType = null) => {
   return { type: pixiActionTypes.STATUS_OFF };
 };
 
+// eslint-disable-next-line arrow-body-style
 export const setPeople = (data) => {
   //data => {id: , sexual: , level: }
-  const { people } = store.getState().peopleList;
+  //const { people } = store.getState().peopleList;
+  console.log(data);
   return {
     type: pixiActionTypes.SET_PEOPLE,
-    payload: [...people, data],
+    payload: [data],
   };
 };
 
@@ -37,12 +39,14 @@ export const changePeople = (id, sexual, level) => {
   };
 };
 
+// eslint-disable-next-line arrow-body-style
 export const setSlot = (data) => {
   //data => {id: , machine: , mode: }
-  const { slot } = store.getState().slotList;
+  //const { slot } = store.getState().slotList;
+  console.log(data);
   return {
     type: pixiActionTypes.SET_SLOT,
-    payload: [...slot, data],
+    payload: [data],
   };
 };
 

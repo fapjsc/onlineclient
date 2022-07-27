@@ -26,10 +26,10 @@ import image2 from '../../../assets/slot-list/daito/吉宗.webp';
 
 const select = (slotType) => {
   if (slotType === 'slot') {
-    return { img: image1, titleName: '北斗之拳', id: '1001' };
+    return { img: image1, titleName: '北斗之拳', id: '1' };
   }
   if (slotType === 'slotGizon') {
-    return { img: image2, titleName: '吉宗', id: '3' };
+    return { img: image2, titleName: '吉宗', id: '10' };
   }
 };
 
