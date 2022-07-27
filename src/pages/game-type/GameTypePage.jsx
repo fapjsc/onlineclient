@@ -109,7 +109,7 @@ const GameTypePage = () => {
   useEffect(() => {
     console.log('pixi', showJpSlot, pixiRef, pixiApp);
     if (!showJpSlot.action || !pixiRef) return;
-    console.log();
+    //if (pixiApp.current) {};
     pixiApp.current = new PixiApp(pixiRef.current.clientWidth);
     pixiApp.current.active([6]).then(() => {
       addPeopleSlot();
@@ -146,6 +146,7 @@ const GameTypePage = () => {
 
     pixiRef.current.appendChild(pixiApp.current.view);
     return () => {
+      //pixiRef.current.removeChild(pixiApp.current.view);
       pixiApp.current.destroy();
     };
 
