@@ -16,7 +16,6 @@ export class MainScene extends PIXI.Container {
     this.mainSceneWidth = width;
     this.height = height;
     const bgCount = Math.ceil(height / 600);
-    //console.log(bgCount, height, 501 - width);
     new Array(bgCount).fill('').forEach((item, index) => {
       const bg = new Background();
       if (index > 0) {
@@ -38,11 +37,10 @@ export class MainScene extends PIXI.Container {
     //slotType => 機器種類 [string, string .....]
     //sexual => 性別 [string, string .....]
     this.#_createSign();
-    const rwdOffset = (501 - this.mainSceneWidth) / 2;
+    const rwdOffset = (486 - this.mainSceneWidth) / 2;
 
     const peopleContainer = new PIXI.Container();
     const slotContainer = new PIXI.Container();
-    //container.position.set(offsetX, offsetY);
     this.#_createStage(slotContainer);
     this.#_createTimes(slotContainer);
     // eslint-disable-next-line no-plusplus
@@ -65,6 +63,7 @@ export class MainScene extends PIXI.Container {
     }
 
     if (rwdOffset > 0) {
+      console.log('here need to resize', this.mainSceneWidth, this.width);
       this.width -= rwdOffset + 60;
       this.height -= rwdOffset + 60;
     }

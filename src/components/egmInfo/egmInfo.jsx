@@ -4,9 +4,10 @@ import {
   CloseCircleOutline,
 } from 'antd-mobile-icons';
 import styles from './egmInfo.module.scss';
+// eslint-disable-next-line no-unused-vars
 import { egmInfoText } from './emgInfoText';
-import image1 from './北斗之拳遊戲說明.webp';
-import image2 from './吉宗遊戲說明.webp';
+import image1 from './北斗之拳遊戲說明_日文版.jpeg';
+import image2 from './吉宗遊戲說明_日文版.jpeg';
 
 const select = (slotType) => {
   if (slotType === 'slot') {
@@ -30,11 +31,11 @@ const EgmInfo = ({ show, close, slotType }) => (
         {/*eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
         <a href="#">實際機台遊玩影片</a>
       </div>
-      <div className={styles['body-thirdBox']}>
+      {/* <div className={styles['body-thirdBox']}>
         {
           egmInfoText[slotType]
         }
-      </div>
+      </div> */}
     </div>
   </div>
 );

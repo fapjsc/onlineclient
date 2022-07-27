@@ -14,7 +14,7 @@ export const setPeople = (data) => {
   const { people } = store.getState().peopleList;
   const findMutiple = people.find((item) => item.id === data.id);
   const arr = people.filter((item) => item !== findMutiple);
-  console.log('findMutiple', findMutiple);
+  //console.log('findMutiple', findMutiple);
   return {
     type: pixiActionTypes.SET_PEOPLE,
     payload: [...arr, data],
@@ -47,7 +47,7 @@ export const setSlot = (data) => {
   const { slot } = store.getState().slotList;
   const findMutiple = slot.find((item) => item.id === data.id);
   const arr = slot.filter((item) => item !== findMutiple);
-  console.log(arr);
+  //console.log(arr);
   return {
     type: pixiActionTypes.SET_SLOT,
     payload: [...arr, data],

@@ -52,53 +52,69 @@ const GameTypePage = () => {
 
   const { id: egmID } = selectEgmDta || {};
 
-  const resetSlotList = (type) => {
-    const { slot } = store.getState().slotList;
-    // eslint-disable-next-line no-unused-vars
-    slot.forEach((item, index) => {
-      store.dispatch(changeSlot(parseInt(`${1 }${ index + 1}`, 10), type, '5'));
-    });
-  };
-
-  const resetPeopleList = (sexual) => {
-    const { people } = store.getState().peopleList;
-    // eslint-disable-next-line no-unused-vars
-    people.forEach((item, index) => {
-      store.dispatch(changePeople(parseInt(`${1 }${ index + 1}`, 10), sexual, 'vip'));
-    });
-  };
-
-  const addPeopleSlot = async () => {
-    const jpArr = egmList.data?.filter((item) => item.brand_name === 'sammy' || item.brand_name === 'daito');
-    let jp;
-    console.log(egmList.data);
-    if (showJpSlot.model === 'sammy') {
-      jp = await jpArr.find((item) => item?.brand_name === 'sammy');
-      console.log('jp =>', jp, 'jparr =>', jpArr);
-      if (Object.keys(jp?.member).length > 0
-      || jp?.hasCredit
-      || jp?.waitingList?.length > 0) {
-        //有人在遊戲中
-        resetSlotList('slot');
-        resetPeopleList('w2');
-      } else {
-        resetPeopleList('');
-        resetSlotList('slot');
-      }
-    } else if (showJpSlot.model === 'daito') {
-      jp = await jpArr.find((item) => item?.brand_name === 'daito');
-      console.log('jp =>', jp, 'jparr =>', jpArr);
-      if (Object.keys(jp?.member).length > 0
-        || jp?.hasCredit
-        || jp?.waitingList?.length > 0) {
-        //有人在遊戲中
-        resetSlotList('slotGizon');
-        resetPeopleList('w1');
-      } else {
-        resetPeopleList('');
-        resetSlotList('slotGizon');
-      }
+  const genderSwitch = (gender) => {
+    let returngender;
+    switch (gender) {
+    case 'female':
+      returngender = 'w1';
+      break;
+    case 'male':
+      returngender = 'm1';
+      break;
+    default:
+      returngender = '';
+      break;
     }
+    console.log('gender => ', gender, returngender);
+    return returngender;
+  };
+
+  const resetSlotList = (type, row) => {
+    // eslint-disable-next-line no-unused-vars
+    new Array(6).fill('').forEach((item, index) => {
+      store.dispatch(changeSlot(parseInt(`${row + 1 }${ index + 1}`, 10), type, '5'));
+    });
+  };
+
+  const resetPeopleList = (gender, row) => {
+    // eslint-disable-next-line no-unused-vars
+    new Array(6).fill('').forEach((item, index) => {
+      store.dispatch(changePeople(parseInt(`${row + 1}${ index + 1}`, 10), genderSwitch(gender), 'vip'));
+    });
+  };
+
+  const brandNameSwitch = (brandName) => {
+    let returnName;
+    switch (brandName) {
+    case 'sammy':
+      returnName = 'slot';
+      break;
+    case 'daito':
+      returnName = 'slotGizon';
+      break;
+    default:
+      returnName = 'slot';
+      break;
+    }
+    console.log('brandName => ', brandName, returnName);
+    return returnName;
+  };
+
+  const addPeopleSlot = () => {
+    const jp = egmList.data?.filter((item) => item?.brand_name === showJpSlot.model);
+    if (!jp) return;
+    console.log('jp =>', jp);
+    jp.forEach((item, index) => {
+      if (Object.keys(item?.member).length > 0
+      || item?.hasCredit
+      || item?.waitingList?.length > 0) {
+      //有人在遊戲中
+        resetPeopleList(item?.member?.gender, index);
+      } else {
+        resetPeopleList('', index);
+      }
+      resetSlotList(brandNameSwitch(showJpSlot.model), index);
+    });
   };
 
   useEffect(() => {
@@ -107,47 +123,26 @@ const GameTypePage = () => {
   }, [egmList]);
 
   useEffect(() => {
+    if (!showJpSlot.action || !pixiRef.current) return;
     console.log('pixi', showJpSlot, pixiRef, pixiApp);
-    if (!showJpSlot.action || !pixiRef) return;
-    //if (pixiApp.current) {};
+    const jpArr = egmList.data?.filter((item) => item.brand_name === showJpSlot.model);
     pixiApp.current = new PixiApp(pixiRef.current.clientWidth);
-    pixiApp.current.active([6]).then(() => {
+    pixiApp.current.active(new Array(jpArr.length).fill(6)).then(() => {
       addPeopleSlot();
       console.log('showJpSlot', showJpSlot, pixiApp.current);
     });
-    // axios({
-    //   method: 'GET',
-    //   url: 'http://127.0.0.1:5001/pixi',
-    //   headers: { 'Content-Type': 'application/json' },
-    // }).then((response) => {
-    //   const { data } = response;
-    //   const slotCount = Object.keys(data).map((item) => data[item].length);
-
-    //   if (slotCount.length > 3) {
-    //     pixiApp.current.renderer.autoResize = true;
-    // eslint-disable-next-line max-len
-    //     pixiApp.current.renderer.resize(pixiRef.current.clientWidth, 600 + 300 * (slotCount.length - 3));
-    //     console.log('resize');
-    //   }
-
-    //   pixiApp.current.active(slotCount).then(() => {
-    //     Object.keys(data).forEach((item, index) => {
-    //       data[item].forEach((element) => {
-    //         const id = parseInt(`${index + 1 }${ element.id}`, 10);
-    //         console.log(id);
-    //         store.dispatch(changePeople(id, element.member.sexual, element.member.level));
-    //         store.dispatch(changeSlot(id, element.machine, element.mode));
-    //       });
-    //     });
-    //   });
-
-    //   console.log(Object.keys(data), slotCount);
-    // });
 
     pixiRef.current.appendChild(pixiApp.current.view);
     return () => {
-      //pixiRef.current.removeChild(pixiApp.current.view);
       pixiApp.current.destroy();
+      try {
+        if (pixiRef.current) {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          pixiRef.current?.removeChild(pixiRef.current.children[0]);
+        }
+      } catch (error) {
+        //pass
+      }
     };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
