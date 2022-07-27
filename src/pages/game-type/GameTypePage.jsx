@@ -69,11 +69,12 @@ const GameTypePage = () => {
   };
 
   const addPeopleSlot = async () => {
-    const jpArr = egmList.data?.filter((item) => item.brand_name === 'sammy' || item.name === 'daito');
+    const jpArr = egmList.data?.filter((item) => item.brand_name === 'sammy' || item.brand_name === 'daito');
+    let jp;
     console.log(egmList.data);
     if (showJpSlot.model === 'sammy') {
-      const jp = await jpArr.find((item) => item?.brand_name === 'sammy');
-      console.log(jp);
+      jp = await jpArr.find((item) => item?.brand_name === 'sammy');
+      console.log('jp =>', jp, 'jparr =>', jpArr);
       if (Object.keys(jp?.member).length > 0
       || jp?.hasCredit
       || jp?.waitingList?.length > 0) {
@@ -85,20 +86,15 @@ const GameTypePage = () => {
         resetSlotList('slot');
       }
     } else if (showJpSlot.model === 'daito') {
-      const jp = await jpArr.find((item) => item?.brand_name === 'daito');
-      console.log(jp);
-      try {
-        if (Object.keys(jp?.member).length > 0
+      jp = await jpArr.find((item) => item?.brand_name === 'daito');
+      console.log('jp =>', jp, 'jparr =>', jpArr);
+      if (Object.keys(jp?.member).length > 0
         || jp?.hasCredit
         || jp?.waitingList?.length > 0) {
-          //有人在遊戲中
-          resetSlotList('slotGizon');
-          resetPeopleList('w2');
-        } else {
-          resetPeopleList('');
-          resetSlotList('slotGizon');
-        }
-      } catch {
+        //有人在遊戲中
+        resetSlotList('slotGizon');
+        resetPeopleList('w1');
+      } else {
         resetPeopleList('');
         resetSlotList('slotGizon');
       }
