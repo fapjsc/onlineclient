@@ -147,7 +147,7 @@ const GamePlay = () => {
 
     setTimeout(() => {
       navigate('/');
-    }, 0);
+    }, 10);
   };
 
   // 如果有aft form data , 就call開洗分api

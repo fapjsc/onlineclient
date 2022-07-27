@@ -53,8 +53,8 @@ const Daito = ({
   model,
   name,
   // showMenu,
-  // setShowMenu,
-  // exitGameHandler,
+  //setShowMenu,
+  exitGameHandler,
   url,
   playVideo,
   setPlayVideo,
@@ -131,7 +131,7 @@ const Daito = ({
 
   return (
     <>
-      <GameHeader />
+      <GameHeader exitGameHandler={exitGameHandler} />
       <Wrapper jp img={image} className={styles.container} model={model}>
         <section type={name} className={styles['video-box']}>
           <Video
@@ -247,7 +247,7 @@ Daito.propTypes = {
   model: PropTypes.string.isRequired,
   // showMenu: PropTypes.bool.isRequired,
   // setShowMenu: PropTypes.func.isRequired,
-  // exitGameHandler: PropTypes.func.isRequired,
+  exitGameHandler: PropTypes.func.isRequired,
   getSdkRef: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
   playStatus: PropTypes.string.isRequired,
