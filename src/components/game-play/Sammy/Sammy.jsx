@@ -112,13 +112,10 @@ const Sammy = ({
 
   const sammyItem = egmList?.find((el) => el?.brand_name === 'sammy') || {};
 
-  let point;
   const egmID = sammyItem?.id;
 
-  if (Object.prototype.hasOwnProperty.call(sammyItem, 'sammy')) {
-    const { sammy } = sammyItem;
-    point = sammy?.coinPurse;
-  }
+  const { jpSlot } = sammyItem || {};
+  const point = jpSlot?.coinPurse;
 
   const btnPressApiHandler = useCallback(
     (code) => {
