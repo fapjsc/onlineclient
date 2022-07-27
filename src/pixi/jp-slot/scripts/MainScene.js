@@ -13,7 +13,6 @@ export class MainScene extends PIXI.Container {
 
   constructor(width, height) {
     super();
-    this.width = width;
     this.mainSceneWidth = width;
     this.height = height;
     const bgCount = Math.ceil(height / 600);
@@ -43,7 +42,6 @@ export class MainScene extends PIXI.Container {
 
     const peopleContainer = new PIXI.Container();
     const slotContainer = new PIXI.Container();
-    const outContainer = new PIXI.Container();
     //container.position.set(offsetX, offsetY);
     this.#_createStage(slotContainer);
     this.#_createTimes(slotContainer);
@@ -65,13 +63,13 @@ export class MainScene extends PIXI.Container {
       store.dispatch(setSlot({ id: id, machine: 'slot', mode: '' }));
       store.dispatch(setPeople({ id: id, sexual: '', level: '' }));
     }
-    outContainer.addChild(slotContainer, peopleContainer);
+
     if (rwdOffset > 0) {
-      outContainer.width -= rwdOffset + 30;
-      outContainer.height -= rwdOffset + 30;
-      outContainer.position.y += rwdOffset;
+      this.width -= rwdOffset + 60;
+      this.height -= rwdOffset + 60;
     }
-    this.addChild(outContainer);
+    this.addChild(slotContainer, peopleContainer);
+
     this.people.sort((item1, item2) => item1.id - item2.id);
     this.slot.sort((item1, item2) => item1.id - item2.id);
   }
