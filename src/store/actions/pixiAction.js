@@ -11,11 +11,13 @@ export const setPixiStatus = (status, slotType = null) => {
 // eslint-disable-next-line arrow-body-style
 export const setPeople = (data) => {
   //data => {id: , sexual: , level: }
-  //const { people } = store.getState().peopleList;
-  console.log(data);
+  const { people } = store.getState().peopleList;
+  const findMutiple = people.find((item) => item.id === data.id);
+  const arr = people.filter((item) => item !== findMutiple);
+  console.log('findMutiple', findMutiple);
   return {
     type: pixiActionTypes.SET_PEOPLE,
-    payload: [data],
+    payload: [...arr, data],
   };
 };
 
@@ -42,11 +44,13 @@ export const changePeople = (id, sexual, level) => {
 // eslint-disable-next-line arrow-body-style
 export const setSlot = (data) => {
   //data => {id: , machine: , mode: }
-  //const { slot } = store.getState().slotList;
-  console.log(data);
+  const { slot } = store.getState().slotList;
+  const findMutiple = slot.find((item) => item.id === data.id);
+  const arr = slot.filter((item) => item !== findMutiple);
+  console.log(arr);
   return {
     type: pixiActionTypes.SET_SLOT,
-    payload: [data],
+    payload: [...arr, data],
   };
 };
 

@@ -55,38 +55,52 @@ const GameTypePage = () => {
   const resetSlotList = (type) => {
     const { slot } = store.getState().slotList;
     // eslint-disable-next-line no-unused-vars
-    slot.forEach((item) => {
-      store.dispatch(changeSlot(11, type, '5'));
+    slot.forEach((item, index) => {
+      store.dispatch(changeSlot(parseInt(`${1 }${ index + 1}`, 10), type, '5'));
+    });
+  };
+
+  const resetPeopleList = (sexual) => {
+    const { people } = store.getState().peopleList;
+    // eslint-disable-next-line no-unused-vars
+    people.forEach((item, index) => {
+      store.dispatch(changePeople(parseInt(`${1 }${ index + 1}`, 10), sexual, 'vip'));
     });
   };
 
   const addPeopleSlot = async () => {
     const jpArr = egmList.data?.filter((item) => item.brand_name === 'sammy' || item.name === 'daito');
     console.log(egmList.data);
-    const id = 11;
     if (showJpSlot.model === 'sammy') {
-      store.dispatch(changeSlot(id, 'slot', '4'));
-      const jp = await jpArr.find((item) => item.brand_name === 'sammy');
+      const jp = await jpArr.find((item) => item?.brand_name === 'sammy');
       console.log(jp);
-      resetSlotList('slot');
-      if (Object.keys(jp.member).length > 0
+      if (Object.keys(jp?.member).length > 0
       || jp?.hasCredit
       || jp?.waitingList?.length > 0) {
         //有人在遊戲中
-        store.dispatch(changeSlot(id, 'slot', '4'));
-        store.dispatch(changePeople(id, 'w1', 'vip'));
+        resetSlotList('slot');
+        resetPeopleList('w2');
+      } else {
+        resetPeopleList('');
+        resetSlotList('slot');
       }
     } else if (showJpSlot.model === 'daito') {
-      store.dispatch(changeSlot(id, 'slotGizon', '4'));
-      const jp = await jpArr.find((item) => item.brand_name === 'daito');
+      const jp = await jpArr.find((item) => item?.brand_name === 'daito');
       console.log(jp);
-      resetSlotList('slotGizon');
-      if (Object.keys(jp.member).length > 0
-      || jp?.hasCredit
-      || jp?.waitingList?.length > 0) {
-        //有人在遊戲中
-        store.dispatch(changeSlot(id, 'slotGizon', '4'));
-        store.dispatch(changePeople(id, 'w1', 'vip'));
+      try {
+        if (Object.keys(jp?.member).length > 0
+        || jp?.hasCredit
+        || jp?.waitingList?.length > 0) {
+          //有人在遊戲中
+          resetSlotList('slotGizon');
+          resetPeopleList('w2');
+        } else {
+          resetPeopleList('');
+          resetSlotList('slotGizon');
+        }
+      } catch {
+        resetPeopleList('');
+        resetSlotList('slotGizon');
       }
     }
   };
@@ -94,7 +108,7 @@ const GameTypePage = () => {
   useEffect(() => {
     addPeopleSlot();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showJpSlot, egmList]);
+  }, [egmList]);
 
   useEffect(() => {
     console.log('pixi', showJpSlot, pixiRef, pixiApp);
