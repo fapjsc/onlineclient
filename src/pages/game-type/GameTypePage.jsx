@@ -4,7 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Antd
+// eslint-disable-next-line no-unused-vars
 import { Button, NoticeBar, CapsuleTabs } from 'antd-mobile';
+// eslint-disable-next-line no-unused-vars
 import { UserCircleOutline } from 'antd-mobile-icons';
 
 import { useSelector } from 'react-redux';
@@ -19,7 +21,7 @@ import SlotList from '../../components/slot-list/SlotList';
 import JpSlotSelect from '../../components/jp-slot/jp-slot-select/JpSlotSelect';
 
 // Layout
-import { text } from '../Layout/Layout';
+// import { text } from '../Layout/Layout';
 
 // Pixi
 import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
@@ -178,7 +180,7 @@ const GameTypePage = () => {
         className={styles.container}
         style={{ width: window.innerWidth, height: window.innerHeight }}
       >
-        <header className={styles.header}>
+        {/* <header className={styles.header}>
           <span
             role="presentation"
             className={styles.logo}
@@ -200,7 +202,7 @@ const GameTypePage = () => {
             }}
             content={text}
           />
-        </div>
+        </div> */}
 
         {showJpSlot.action && (
           <>
@@ -281,18 +283,18 @@ const GameTypePage = () => {
                 </div>
               </CapsuleTabs.Tab>
 
-              <CapsuleTabs.Tab disabled title="骰寶" key="dice">
+              {/* <CapsuleTabs.Tab disabled title="骰寶" key="dice">
                 骰寶
               </CapsuleTabs.Tab>
 
               <CapsuleTabs.Tab disabled title="輪盤" key="roulette">
                 輪盤
-              </CapsuleTabs.Tab>
+              </CapsuleTabs.Tab> */}
             </CapsuleTabs>
           </nav>
         )}
 
-        <div className={styles['footer-nav']}>
+        {/* <div className={styles['footer-nav']}>
           <div
             role="presentation"
             onClick={() => navigate('/home')}
@@ -328,7 +330,7 @@ const GameTypePage = () => {
           >
             客服
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
