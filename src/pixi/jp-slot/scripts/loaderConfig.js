@@ -1,14 +1,14 @@
 /* eslint-disable */
 export const loadConfig = {
 
-  bg: require('../sprites/bg.jpg'),
+  bg: require('../sprites/bg_日本版.jpg'),
 
   slot: require('../sprites/機台.png'),
   slotGizon: require('../sprites/吉宗.png'),
 
-  sign: require('../sprites/背景物件1.png'),
+  sign: require('../sprites/背景物件_日本版.png'),
 
-  slotStage: require('../sprites/底.png'),
+  slotStage: require('../sprites/底_日本版.png'),
 
   //manGif: require("../sprites/manGif.gif"),
 
@@ -39,5 +39,5 @@ export const loadConfig = {
   modeSign456: require("../sprites/設定456.png"),
 
   vipSign: require("../sprites/玩家等級.png"),
-  times: require("../sprites/比例_未完成.png")
+  times: require("../sprites/比例_日本版.png")
 };

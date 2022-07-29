@@ -19,10 +19,14 @@ import {
 
 // Styles
 import styles from './JpSlotSelect.module.scss';
+
 import Bricks from '../../egmInfo/Bricks';
 import EgmInfo from '../../egmInfo/egmInfo';
 import image1 from '../../../assets/slot-list/sammy/拳王.webp';
 import image2 from '../../../assets/slot-list/daito/吉宗.webp';
+
+// Language
+import language from './language';
 
 const select = (slotType) => {
   if (slotType === 'slot') {
@@ -55,7 +59,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
       <section style={{ display: showJpSelectAction ? 'block' : 'none' }} className={styles.container}>
         <div className={styles.header}>
           <div className={styles['header-title']}>
-            <span>北斗之拳-拳王</span>
+            <span>{language[slotType]}</span>
             <div className={styles['header-icon-box']}>
               <ExclamationCircleOutline onClick={egmInfoOpen} />
               <CloseCircleOutline onClick={hidden} />
@@ -66,10 +70,10 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
             <img src={select(slotType).img} alt="info" className={styles['header-content-image']} />
             <div className={styles['header-content-action']}>
               <button type="button" className={styles['booking-btn']}>
-                預約
+                {language.reservationGame}
               </button>
               <button type="button" onClick={() => selectEgmHandler(select(slotType).id)} className={styles['start-btn']}>
-                開始遊戲
+                {language.startGame}
               </button>
             </div>
           </div>
@@ -82,10 +86,10 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
 
         <div className={styles.body}>
           <div className={styles['body-title']}>
-            <span className={styles.text}>機台資訊</span>
+            <span className={styles.text}>{language.slotInfo}</span>
             <span className={styles.time}>
               <ClockCircleOutline />
-              <span>Today</span>
+              <span>{language.today}</span>
             </span>
           </div>
           <div className={styles['body-current-data']}>
@@ -102,7 +106,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
             <DownFill />
           </div>
           <div className={styles['body-bb']}>
-            <div>BB</div>
+            <div>{language.bb}</div>
             <div className={styles.spaceBetween}>
               {[['本日', 28], ['一日前', 9], ['兩日前', 6]].map((item) => (
                 <div className={styles.statistics}>
@@ -113,7 +117,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
             </div>
           </div>
           <div className={styles['body-rb']}>
-            <div>RB</div>
+            <div>{language.rb}</div>
             <div className={styles.spaceBetween}>
               {[['本日', 28], ['一日前', 9], ['兩日前', 6]].map((item) => (
                 <div className={styles.statistics}>
