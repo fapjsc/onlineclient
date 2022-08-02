@@ -129,7 +129,7 @@ const GameTypePage = () => {
     console.log('pixi', showJpSlot, pixiRef, pixiApp);
     const jpArr = egmList.data?.filter((item) => item.brand_name === showJpSlot.model);
     pixiApp.current = new PixiApp(pixiRef.current.clientWidth);
-    pixiApp.current.active(new Array(jpArr.length).fill(6)).then(() => {
+    pixiApp.current?.active(new Array(jpArr.length).fill(6)).then(() => {
       addPeopleSlot();
       console.log('showJpSlot', showJpSlot, pixiApp.current);
     });
