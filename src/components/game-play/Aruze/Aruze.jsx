@@ -116,10 +116,11 @@ const Aruze = ({
       return;
     }
   */
+
     switch (name) {
     case 'spin':
       setIsAuto({ action: false, limit: null });
-      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      dispatch(buttonPress({ code, ip }));
       break;
 
     case 'auto':
@@ -190,9 +191,9 @@ const Aruze = ({
   // Auto Spin Cal Api
   const autoSpinHandler = useCallback(() => {
     intervalID.current = setInterval(() => {
-      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      dispatch(buttonPress({ code: '0', ip }));
     }, apiConfig.mainBtnApiTimeSpace);
-  }, [dispatch, ip, currentBtnPress]);
+  }, [dispatch, ip]);
 
   // Stop Auto Spin
   const stopAutoSpinHandler = useCallback(() => {
@@ -235,7 +236,7 @@ const Aruze = ({
   */
   useEffect(() => {
     if (isAuto.action) {
-      dispatch(buttonPress({ code: currentBtnPress, ip }));
+      dispatch(buttonPress({ code: currentBtnPress === '1' ? '1' : '0', ip }));
       autoSpinHandler();
     }
 
@@ -244,7 +245,7 @@ const Aruze = ({
     }
 
     // eslint-disable-next-line
-  }, [isAuto]);
+  }, [isAuto, currentBtnPress]);
 
   return (
     <Wrapper img={image} className={styles.container}>
