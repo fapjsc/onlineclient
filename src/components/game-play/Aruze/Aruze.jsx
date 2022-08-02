@@ -119,8 +119,7 @@ const Aruze = ({
     switch (name) {
     case 'spin':
       setIsAuto({ action: false, limit: null });
-      console.log(currentBtnPress, code);
-      dispatch(buttonPress({ code: currentBtnPress ?? code, ip }));
+      dispatch(buttonPress({ code: currentBtnPress, ip }));
       break;
 
     case 'auto':

@@ -39,7 +39,6 @@ const MainBtn = ({
   };
 
   const onClickHandler = ({ target, code }) => {
-    console.log(code);
     const { id } = target;
     animationHandler(id);
     mainBtnHandler({ name: id, code });
