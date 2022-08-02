@@ -13,9 +13,13 @@ const Video = ({
 }) => {
   const videoRef = useRef();
   const sdkRef = useRef();
+  console.log(url);
 
   const startPlay = useCallback(() => {
     console.log('start play');
+
+    console.log(url);
+
     if (!flag) return;
     flag = false;
     // if (!url) return;

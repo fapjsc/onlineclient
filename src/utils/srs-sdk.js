@@ -7,6 +7,7 @@ export const SrsRtcPlayerAsync = () => {
   self.play = async (url) => {
     let conf = self.__internal.prepareUrl(url);
 
+
     self.pc.addTransceiver('audio', { direction: 'recvonly' });
     self.pc.addTransceiver('video', { direction: 'recvonly' });
 
