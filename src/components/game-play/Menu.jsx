@@ -29,22 +29,23 @@ import { leaveEgm } from '../../store/actions/egmActions';
 // Styles
 import styles from './Menu.module.scss';
 
-const menuLis = [
-  { id: 'description', icon: <TextOutline />, name: '遊戲說明' },
-  { id: 'jp', icon: <StarOutline />, name: '現場攝影機' },
-  { id: 'cs', icon: <BellOutline />, name: '線上客服' },
-  { id: 'wallet', icon: <BankcardOutline />, name: '我的錢包' },
-  { id: 'friends', icon: <TeamOutline />, name: '好友' },
-  { id: 'show-live', icon: <VideoOutline />, name: '直播' },
-  { id: 'leave', icon: <TravelOutline />, name: '返回大廳' },
-];
+const menuLis = process.env.REACT_APP_HOST_NAME === 'WHEEL'
+  ? [
+    { id: 'description', icon: <TextOutline />, name: '遊戲說明' },
+    { id: 'leave', icon: <TravelOutline />, name: '返回大廳' },
+  ]
+  : [
+    { id: 'description', icon: <TextOutline />, name: '遊戲說明' },
+    { id: 'jp', icon: <StarOutline />, name: '現場攝影機' },
+    { id: 'cs', icon: <BellOutline />, name: '線上客服' },
+    { id: 'wallet', icon: <BankcardOutline />, name: '我的錢包' },
+    { id: 'friends', icon: <TeamOutline />, name: '好友' },
+    { id: 'show-live', icon: <VideoOutline />, name: '直播' },
+    { id: 'leave', icon: <TravelOutline />, name: '返回大廳' },
+  ];
 
 const Menu = ({
-  visible,
-  setVisible,
-  exitGameHandler,
-  size,
-  setIsAuto,
+  visible, setVisible, exitGameHandler, size, setIsAuto,
 }) => {
   const { isMobile } = useRwd();
   const [height, width] = useWindowSize();
