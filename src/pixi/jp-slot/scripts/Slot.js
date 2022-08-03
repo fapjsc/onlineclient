@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as PIXI from 'pixi.js';
 import { store } from '../../../store/index';
 import { setPixiStatus } from '../../../store/actions/pixiAction';

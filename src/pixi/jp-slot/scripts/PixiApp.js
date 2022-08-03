@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as PIXI from 'pixi.js';
 import { Loader } from './Loader';
 import { MainScene } from './MainScene';

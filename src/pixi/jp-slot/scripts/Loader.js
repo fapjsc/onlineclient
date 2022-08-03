@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { loadConfig } from './loaderConfig';
 import { Globals } from './Globals';
 

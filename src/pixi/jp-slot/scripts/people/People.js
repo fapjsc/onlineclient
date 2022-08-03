@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as PIXI from 'pixi.js';
 import { Globals } from '../Globals';
 import { PeopleAnim } from './PeopleAnim';
