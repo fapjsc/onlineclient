@@ -26,8 +26,11 @@ export class Slot extends PIXI.Container {
 
   #_createSlot() {
     const frames = [
-      'slot',
-      'slotGizon',
+      'sammy',
+      'daito',
+      'igt',
+      'aruze',
+      'aristocrat'
     ];
     const texture = Slot.createTexture(frames);
     const slot = new PIXI.AnimatedSprite(texture);
@@ -73,7 +76,7 @@ export class Slot extends PIXI.Container {
       const { slot: slotArr } = store.getState().slotList;
       console.log(slotArr);
       const findSlot = slotArr.find((item) => item.id === this.id);
-      store.dispatch(setPixiStatus(true, findSlot.machine));
+      store.dispatch(setPixiStatus(true, findSlot.brandName));
     });
   }
 }

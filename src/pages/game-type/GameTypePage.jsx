@@ -9,16 +9,25 @@ import { Button, NoticeBar, CapsuleTabs } from 'antd-mobile';
 // eslint-disable-next-line no-unused-vars
 import { UserCircleOutline } from 'antd-mobile-icons';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // eslint-disable-next-line no-unused-vars
 import axios from 'axios';
 import useWindowSize from '../../hooks/useWindowSize';
 
 import { store } from '../../store/index';
+// eslint-disable-next-line no-unused-vars
+import { getEgmImage, getBrandImage } from '../../utils/helper';
+
+// actions
+import {
+  getEgmList,
+  selectEgm,
+  getBrandList,
+} from '../../store/actions/egmActions';
 
 // Components
-import SlotList from '../../components/slot-list/SlotList';
-import JpSlotSelect from '../../components/jp-slot/jp-slot-select/JpSlotSelect';
+// eslint-disable-next-line no-unused-vars
+import SlotSelect from '../../components/jp-slot/jp-slot-select/SlotSelect';
 
 // Layout
 import { text } from '../Layout/Layout';
@@ -31,17 +40,17 @@ import styles from './GameTypePage.module.scss';
 import { changePeople, changeSlot, setPixiStatus } from '../../store/actions/pixiAction';
 
 const jpSlotList = ['sammy', 'daito'];
+const slotList = ['igt', 'aruze', 'aristocrat'];
 
 const GameTypePage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [height] = useWindowSize();
 
-  const [showJpSlot, setShowJpSlot] = useState({ action: false, model: null });
-  const { action: showJpSelectAction, slotType } = useSelector((state) => state.pixi);
+  const [showSlot, setShowSlot] = useState({ action: false, brandName: null });
 
   const pixiRef = useRef(null);
-  const pixiApp = useRef(null);
   const { egmList } = store.getState();
 
   const {
@@ -71,10 +80,12 @@ const GameTypePage = () => {
     return returngender;
   };
 
-  const resetSlotList = (type, row) => {
+  const resetSlotList = (brandName, model, row) => {
     // eslint-disable-next-line no-unused-vars
     new Array(6).fill('').forEach((item, index) => {
-      store.dispatch(changeSlot(parseInt(`${row + 1 }${ index + 1}`, 10), type, '5'));
+      store.dispatch(
+        changeSlot(parseInt(`${row + 1 }${ index + 1}`, 10), brandName, model, '5', jpSlotList.indexOf(brandName) !== -1 ? '' : 'd1'),
+      );
     });
   };
 
@@ -85,28 +96,11 @@ const GameTypePage = () => {
     });
   };
 
-  const brandNameSwitch = (brandName) => {
-    let returnName;
-    switch (brandName) {
-    case 'sammy':
-      returnName = 'slot';
-      break;
-    case 'daito':
-      returnName = 'slotGizon';
-      break;
-    default:
-      returnName = 'slot';
-      break;
-    }
-    console.log('brandName => ', brandName, returnName);
-    return returnName;
-  };
-
   const addPeopleSlot = () => {
-    const jp = egmList.data?.filter((item) => item?.brand_name === showJpSlot.model);
-    if (!jp) return;
-    console.log('jp =>', jp);
-    jp.forEach((item, index) => {
+    const slot = egmList.data?.filter((item) => item?.brand_name === showSlot.brandName);
+    if (!slot) return;
+    console.log('slot =>', slot);
+    slot.forEach((item, index) => {
       if (Object.keys(item?.member).length > 0
       || item?.hasCredit
       || item?.waitingList?.length > 0) {
@@ -115,7 +109,7 @@ const GameTypePage = () => {
       } else {
         resetPeopleList('', index);
       }
-      resetSlotList(brandNameSwitch(showJpSlot.model), index);
+      resetSlotList(showSlot.brandName, item?.model, index);
     });
   };
 
@@ -125,18 +119,18 @@ const GameTypePage = () => {
   }, [egmList]);
 
   useEffect(() => {
-    if (!showJpSlot.action || !pixiRef.current) return;
-    console.log('pixi', showJpSlot, pixiRef, pixiApp);
-    const jpArr = egmList.data?.filter((item) => item.brand_name === showJpSlot.model);
-    pixiApp.current = new PixiApp(pixiRef.current.clientWidth);
-    pixiApp.current?.active(new Array(jpArr.length).fill(6)).then(() => {
-      addPeopleSlot();
-      console.log('showJpSlot', showJpSlot, pixiApp.current);
-    });
+    if (!showSlot.action) return;
 
-    pixiRef.current.appendChild(pixiApp.current.view);
+    const slotArr = egmList.data?.filter((item) => item.brand_name === showSlot.brandName);
+    const pixiApp = new PixiApp(pixiRef.current?.clientWidth, showSlot.brandName);
+
+    pixiApp?.active(new Array(slotArr?.length).fill(6)).then(() => {
+      addPeopleSlot();
+    });
+    console.log('pixi', showSlot, pixiRef, pixiApp);
+    pixiRef.current?.appendChild(pixiApp?.view);
     return () => {
-      pixiApp.current.destroy();
+      pixiApp?.destroy();
       try {
         if (pixiRef.current) {
           // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,7 +142,7 @@ const GameTypePage = () => {
     };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showJpSlot]);
+  }, [showSlot]);
 
   // 有egmID 代表select egm 成功
   useEffect(() => {
@@ -159,20 +153,24 @@ const GameTypePage = () => {
   }, [egmID, navigate]);
 
   useEffect(() => {
-    console.log('pixiData => ', showJpSelectAction, slotType);
-  }, [showJpSelectAction, slotType]);
+    store.dispatch(setPixiStatus(false));
+    console.log('showSlot => ', showSlot);
+  }, [showSlot]);
+
+  // eslint-disable-next-line no-unused-vars
+  const openSelect = () => {
+
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  const closeSelect = () => {
+    store.dispatch(setPixiStatus(false));
+  };
 
   useEffect(() => {
-    store.dispatch(setPixiStatus(false));
-  }, []);
-
-  const openJpSelect = () => {
-
-  };
-
-  const closeJpSelect = () => {
-    store.dispatch(setPixiStatus(false));
-  };
+    dispatch(getEgmList());
+    dispatch(getBrandList());
+  }, [dispatch]);
 
   return (
     <>
@@ -204,38 +202,35 @@ const GameTypePage = () => {
           />
         </div>
 
-        {showJpSlot.action && (
+        {showSlot.action && (
           <>
-            {showJpSelectAction && (
-              <JpSlotSelect
-                visible={showJpSlot.action}
-                hidden={closeJpSelect}
-                showJpSelectAction={showJpSelectAction}
-                slotType={slotType}
-              />
-            )}
+
+            <SlotSelect
+              hidden={closeSelect}
+            />
 
             <div className={styles['jp-slot-header']}>
               <div
                 className={styles.back}
                 role="presentation"
-                onClick={() => setShowJpSlot({ action: false, model: null })}
+                onClick={() => setShowSlot({ action: false, brandName: null })}
               />
               <div className={styles.title}>
-                {`${showJpSlot.model?.toUpperCase()}遊戲大廳`}
+                {`${showSlot.brandName?.toUpperCase()}遊戲大廳`}
               </div>
             </div>
             <nav className={styles.nav}>
               <CapsuleTabs
-                defaultActiveKey={showJpSlot.model}
+                defaultActiveKey={showSlot.brandName}
                 onChange={(key) => {
-                  setShowJpSlot((prev) => ({
+                  setShowSlot((prev) => ({
                     ...prev,
-                    model: key,
+                    brandName: key,
                   }));
                 }}
               >
-                {jpSlotList.map((el) => (
+                {/* eslint-disable-next-line max-len */}
+                {(jpSlotList.indexOf(showSlot.brandName) !== -1 ? jpSlotList : slotList).map((el) => (
                   <CapsuleTabs.Tab
                     key={el}
                     title={el.toUpperCase()}
@@ -248,7 +243,7 @@ const GameTypePage = () => {
                       <div
                         role="presentation"
                         style={{ cursor: 'pointer' }}
-                        onClick={openJpSelect}
+                        onClick={openSelect}
                         id="jp-pixi"
                         ref={pixiRef}
                       />
@@ -260,12 +255,23 @@ const GameTypePage = () => {
           </>
         )}
 
-        {!showJpSlot.action && (
+        {!showSlot.action && (
           <nav className={styles.nav}>
             <CapsuleTabs>
               <CapsuleTabs.Tab title="老虎機" key="slot" className={styles.tab}>
                 <div className={styles.body} style={{ height: height * 0.69 }}>
-                  <SlotList />
+                  {
+                    slotList?.map((el) => (
+                      <div
+                        role="presentation"
+                        onClick={() => setShowSlot({ action: true, brandName: el })}
+                        key={el}
+                        model={el}
+                        className={styles['jp-slot-box']}
+                      />
+                    ))
+                  }
+
                 </div>
               </CapsuleTabs.Tab>
 
@@ -274,7 +280,7 @@ const GameTypePage = () => {
                   {jpSlotList.map((el) => (
                     <div
                       role="presentation"
-                      onClick={() => setShowJpSlot({ action: true, model: el })}
+                      onClick={() => setShowSlot({ action: true, brandName: el })}
                       key={el}
                       model={el}
                       className={styles['jp-slot-box']}

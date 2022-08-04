@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Antd
 // eslint-disable-next-line
@@ -9,9 +9,16 @@ import {
   DownFill,
   ClockCircleOutline,
 } from 'antd-mobile-icons';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+// Antd
+import { Image, Dialog, Toast } from 'antd-mobile';
+
+import loadingImg from '../../../assets/slot-list/loading.png';
+import notFoundImg from '../../../assets/slot-list/找不到圖片.png';
+
+import { getEgmImage } from '../../../utils/helper';
+
 // actions
 import {
   selectEgm,
@@ -38,9 +45,14 @@ const select = (slotType) => {
 };
 
 // eslint-disable-next-line
-const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
+const SlotSelect = ({ hidden }) => {
   const dispatch = useDispatch();
   const [showEgmInfo, setShowEgmInfo] = useState(false);
+  const { action: showSelectAction, slotType } = useSelector((state) => state.pixi);
+
+  useEffect(() => {
+    console.log('pixiData => ', showSelectAction, slotType);
+  }, [showSelectAction, slotType]);
 
   const selectEgmHandler = (id) => {
     dispatch(selectEgm(id));
@@ -56,7 +68,7 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
     <>
       {/* <Mask visible={visible} onMaskClick={hidden} opacity={0.1} /> */}
       <EgmInfo show={showEgmInfo} close={egmInfoClose} slotType={slotType} />
-      <section style={{ display: showJpSelectAction ? 'block' : 'none' }} className={styles.container}>
+      <section style={{ display: showSelectAction ? 'block' : 'none' }} className={styles.container}>
         <div className={styles.header}>
           <div className={styles['header-title']}>
             <span>{language[slotType]}</span>
@@ -67,7 +79,32 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
           </div>
 
           <div className={styles['header-content']}>
-            <img src={select(slotType).img} alt="info" className={styles['header-content-image']} />
+            <Image
+              className={styles['header-content-image']}
+              src={getEgmImage({
+                model: slotType,
+                brandName: slotType,
+              })}
+              alt="Egm"
+              style={{ height: '100%' }}
+              lazy
+              fallback={
+                <Image
+                  style={{ height: '100%', width: '100%' }}
+                  src={notFoundImg}
+                  lazy
+                />
+              }
+              placeholder={
+                <Image
+                  lazy
+                  style={{ height: '100%', width: '100%' }}
+                  src={loadingImg}
+                />
+              }
+            />
+            {/* eslint-disable-next-line max-len */}
+            {/* <img src={select(slotType).img} alt="info" className={styles['header-content-image']} /> */}
             <div className={styles['header-content-action']}>
               <button type="button" className={styles['booking-btn']}>
                 {language.reservationGame}
@@ -134,14 +171,10 @@ const JpSlotSelect = ({ visible, hidden, showJpSelectAction, slotType }) => {
   );
 };
 
-JpSlotSelect.propTypes = {
-  visible: PropTypes.bool.isRequired,
+SlotSelect.propTypes = {
   hidden: PropTypes.func.isRequired,
-  showJpSelectAction: PropTypes.bool.isRequired,
-  slotType: PropTypes.string,
 };
-JpSlotSelect.defaultProps = {
-  slotType: 'slot',
+SlotSelect.defaultProps = {
 };
 
-export default JpSlotSelect;
+export default SlotSelect;
