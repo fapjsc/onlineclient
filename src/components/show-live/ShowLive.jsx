@@ -40,7 +40,7 @@ import { sendMessage } from '../../utils/socket';
 import { scrollToBottom } from '../../utils/scrollToBottom';
 
 // eslint-disable-next-line
-const testUrl = 'webrtc://220.135.67.240/stream/test123';
+const testUrl = process.env.REACT_APP_SHOW_LIVE_URL || 'webrtc://220.135.67.240/stream/test123';
 
 const resultStyles = {
   position: 'absolute',
