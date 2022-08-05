@@ -7,31 +7,36 @@ import { store } from '../../../store/index';
 export class PixiApp extends PIXI.Application {
   Scene = 0;
   #_brandName = ''
+  #_timeAmount = []
+  appWidth = 0
 
   constructor(width, brandName) {
     super({
       width: width,
-      height: 600,
+      height: 500,
       backgroundColor: 0xFBBA6F,
       antialias: true,
       resolution: 1,
     });
+    this.appWidth = width;
     this.mainScene = null;
     this.#_brandName = brandName
 
     //let mobile can slide this canvas;
-    this.renderer.plugins.interaction.autoPreventDefault = false;
-    this.view.style.touchAction = 'auto';
+    this.renderer.plugins.interaction.cursorStyles.default = 'default'
+    // this.view.style.touchAction = 'none';
     this.prevPeopleSexual = [];
     this.prevSlot = [];
   }
 
   async active(rowSlotAmount) {
     const loaders = new Loader(this.loader);
-
+    this.#_timeAmount = rowSlotAmount
     this.mainScene = await loaders.preload().then(() => {
       console.log('game start!');
-      const mainScene = new MainScene(this.view.width, this.view.height, this.#_brandName);
+      const resize = this.view.height + 250 * rowSlotAmount?.length
+      this.renderer.resize(this.appWidth, resize)
+      const mainScene = new MainScene(this.appWidth, resize, this.#_brandName);
       // eslint-disable-next-line no-plusplus
       for (let item = 0; item < rowSlotAmount?.length; item++) {
         // eslint-disable-next-line
@@ -110,8 +115,14 @@ export class PixiApp extends PIXI.Application {
     let slotFrame = 0;
     let timeStartFrame = 0;
     let timeEndFrame = 0;
+    const firstSlot = slot.filter((slotItem, slotIndex) => {
+      const findItem = this.#_timeAmount.find((timeItem, timeIndex) =>  
+        (slotItem.id + '') === `${timeIndex + 1}1`
+      )
 
-    const firstSlot = slot.filter((item, index) => (item.id + '') === `${index + 1}1`)//only catch first slot in slot group
+      if (findItem) return slotItem;
+
+    })//only catch first slot in slot group
 
     firstSlot.forEach((item, index) => {
       const slotTime = this.mainScene.slotTime[index]?.times
@@ -126,7 +137,7 @@ export class PixiApp extends PIXI.Application {
           timeEndFrame = 1;
           break;
       }
-
+      // console.log(slotTime, timeStartFrame, timeEndFrame, slotTime.currentFrame, index, item, firstSlot)
       if (slotTime.currentFrame >= timeEndFrame) {
         slotTime.gotoAndPlay(timeStartFrame)
       }

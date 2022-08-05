@@ -3,6 +3,7 @@ export const loadConfig = {
 
   bgJp: require('../sprites/background/bg_日本版.jpg'),
   bgNormal: require('../sprites/background/bgNormal.jpg'),
+  bgNormalExtend: require('../sprites/background/bgNormalExtend.jpg'),
 
 
 
@@ -39,8 +40,8 @@ export const loadConfig = {
   womanFrame25: require("../sprites/womanFrame/woman25.png"),
   womanFrame26: require("../sprites/womanFrame/woman26.png"),
 
-  showGirlLeft: require("../sprites/老虎機/背景人物1.png"),
-  showGirlRight: require("../sprites/老虎機/背景人物2.png"),
+  showGirl1: require("../sprites/老虎機/背景人物1.png"),
+  showGirl2: require("../sprites/老虎機/背景人物2.png"),
 
   modeSign4: require("../sprites/設定4.png"),
   modeSign5: require("../sprites/設定5.png"),

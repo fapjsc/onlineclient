@@ -16,6 +16,7 @@ export class MainScene extends PIXI.Container {
     super();
     this.#_mainSceneWidth = width;
     this.#_brandName = brandName;
+    // console.log('-======> >>>', brandName)
     this.#_mainSceneHeight = height
     this.visible = true;
     this.name = 'MainScene';
@@ -44,34 +45,42 @@ export class MainScene extends PIXI.Container {
       // eslint-disable-next-line prefer-template
       const id = parseInt((horizonID + '') + (item + ''), 10);
 
-      peopleContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
+      //people container
       const newPeople = new People(id, offsetX - 30 + item * 47, 0 - item * 20);
       this.people.push({ people: newPeople, id: id });//store to people arr
+      peopleContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 15);
       peopleContainer.addChild(newPeople);
 
-      slotContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
+      //slot Container
       let newSlot;
-      if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
-        newSlot = new Slot(id, offsetX - 30 + item * 47, 0 - item * 20);
-      } else {
-        newSlot = new Slot(id, offsetX - 30 + item * 47, 0 - item * 21);
-        newSlot.position.set(newSlot.x, newSlot.y - 15)
-      }
-      
+      newSlot = new Slot(id, offsetX - 30 + item * 47, 0 - item * 21);
+      newSlot.position.set(newSlot.x, newSlot.y)      
       this.slot.push({ slot: newSlot, id: id });
-      slotContainer.addChild(newSlot);//store to slot arr
+      slotContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
 
-      store.dispatch(setSlot({ id: id, brandName: '', model: '', mode: '', times: '' }));
+
+      //showGirl add to slot
+      if (this.#_brandName !== 'sammy' && this.#_brandName !== 'daito') {
+        const showGirl1 = this.#_createShowGirl(0)
+        const showGirl2 = this.#_createShowGirl(1)
+        showGirl1.position.set(400, 0)
+        slotContainer.addChild(newSlot, showGirl1, showGirl2);//store to slot arr
+      } else {slotContainer.addChild(newSlot)}
+      
+
+      //init redux store
+      store.dispatch(setSlot({ id: id, brandName: '', model: '', mode: '', times: '', egmId: '' }));
       store.dispatch(setPeople({ id: id, sexual: '', level: '' }));
+
     }
 
     if (rwdOffset > 0) {
       console.log('here need to resize', this.#_mainSceneWidth, this.width);
-      this.width -= rwdOffset;
+      this.width = this.#_mainSceneWidth;
       this.height -= rwdOffset;
     }
-    this.addChild(slotContainer, peopleContainer);
 
+    this.addChild(slotContainer, peopleContainer);
     this.people.sort((item1, item2) => item1.id - item2.id);
     this.slot.sort((item1, item2) => item1.id - item2.id);
   }
@@ -87,7 +96,7 @@ export class MainScene extends PIXI.Container {
       stage.gotoAndStop(0)
     } else {stage.gotoAndStop(1)}
     stage.position.set(0, -100);
-    stage.buttonMode = false;
+    // stage.buttonMode = false;
     container.addChild(stage);
   }
 
@@ -117,16 +126,22 @@ export class MainScene extends PIXI.Container {
   #_createBackground() {
     const frames = [
       'bgJp',
-      'bgNormal'
+      'bgNormal',
+      'bgNormalExtend',
     ]
 
-    const bgCount = Math.ceil(this.#_mainSceneHeight / 600);
+    const bgCount = Math.ceil(this.#_mainSceneHeight / 500);
     new Array(bgCount).fill('').forEach((item, index) => {
       const bg = new PIXI.AnimatedSprite(Slot.createTexture(frames))
-
+      // console.log('branc', this.#_brandName)
       if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
         bg.gotoAndStop(0)
-      } else {bg.gotoAndStop(1)}
+      } else if (index === 0) {
+        bg.gotoAndStop(1)
+      } else {
+        bg.gotoAndStop(2)
+      }
+
       if (index > 0) {
         bg.y = this.#_prevBg.height + this.#_prevBg.y;
       }
@@ -134,16 +149,20 @@ export class MainScene extends PIXI.Container {
       this.#_prevBg = bg;
       console.log('bg => ', bgCount, this.height, this.#_mainSceneHeight)
     });
+    const showGirl = this.#_createShowGirl(0)
+    showGirl.position.set(100, 80)
+    this.addChild(showGirl)
   }
 
-  #_createShowGirl(container) {
+  #_createShowGirl(frameNum) {
     //add to slotContainer
     const frames = [
-      'showGirlLeft',
-      'showGirlRight',
+      'showGirl1',
+      'showGirl2',
     ]
     const showGirl = new PIXI.AnimatedSprite(Slot.createTexture(frames))
-    container.addChild(showGirl)
+    showGirl.gotoAndStop(frameNum)
+    return showGirl
   }
 
   #_createSign() {

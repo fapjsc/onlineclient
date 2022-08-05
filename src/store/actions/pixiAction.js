@@ -1,14 +1,11 @@
 import { pixiActionTypes } from '../types';
 import { store } from '../index';
 
-export const setPixiStatus = (status, brandName = null, model = null) => {
+export const setPixiStatus = (status, slot) => {
   if (status) {
     return {
       type: pixiActionTypes.STATUS_ON,
-      payload: {
-        brandName: brandName,
-        model: model,
-      },
+      payload: slot,
     };
   }
   return { type: pixiActionTypes.STATUS_OFF };
@@ -59,7 +56,7 @@ export const setSlot = (data) => {
   };
 };
 
-export const changeSlot = (id, brandName, model, mode, times) => {
+export const changeSlot = (id, brandName, model, mode, times, egmId) => {
   const { slot } = store.getState().slotList;
   const slotChanged = slot.map((item) => {
     if (item.id === id) {
@@ -70,6 +67,7 @@ export const changeSlot = (id, brandName, model, mode, times) => {
         model: model,
         mode: mode,
         times: times,
+        egmId: egmId,
       };
     }
     return item;

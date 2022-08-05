@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 
 // Router dom
@@ -80,11 +81,11 @@ const GameTypePage = () => {
     return returngender;
   };
 
-  const resetSlotList = (brandName, model, row) => {
+  const resetSlotList = (brandName, model, row, egmId) => {
     // eslint-disable-next-line no-unused-vars
     new Array(6).fill('').forEach((item, index) => {
       store.dispatch(
-        changeSlot(parseInt(`${row + 1 }${ index + 1}`, 10), brandName, model, '5', jpSlotList.indexOf(brandName) !== -1 ? '' : 'd1'),
+        changeSlot(parseInt(`${row + 1 }${ index + 1}`, 10), brandName, model, '5', jpSlotList.indexOf(brandName) !== -1 ? '' : 'd1', egmId),
       );
     });
   };
@@ -105,11 +106,11 @@ const GameTypePage = () => {
       || item?.hasCredit
       || item?.waitingList?.length > 0) {
       //有人在遊戲中
-        resetPeopleList(item?.member?.gender, index);
+        resetPeopleList(item?.member?.gender || 'female', index);
       } else {
         resetPeopleList('', index);
       }
-      resetSlotList(showSlot.brandName, item?.model, index);
+      resetSlotList(showSlot.brandName, item?.model, index, item.id);
     });
   };
 
@@ -127,7 +128,7 @@ const GameTypePage = () => {
     pixiApp?.active(new Array(slotArr?.length).fill(6)).then(() => {
       addPeopleSlot();
     });
-    console.log('pixi', showSlot, pixiRef, pixiApp);
+    console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current?.clientWidth);
     pixiRef.current?.appendChild(pixiApp?.view);
     return () => {
       pixiApp?.destroy();
