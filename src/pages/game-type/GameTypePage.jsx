@@ -97,8 +97,19 @@ const GameTypePage = () => {
     });
   };
 
+  const findSlot = () => {
+    let slot;
+    if (jpSlotList.indexOf(showSlot.brandName) !== -1) {
+      slot = egmList.data?.filter((item) => item?.brand_name === showSlot.brandName);
+    } else {
+      slot = egmList.data?.filter((item) => slotList.indexOf(item?.brand_name) !== -1);
+    }
+    return slot;
+  };
+
   const addPeopleSlot = () => {
-    const slot = egmList.data?.filter((item) => item?.brand_name === showSlot.brandName);
+    const slot = findSlot();
+
     if (!slot) return;
     console.log('slot =>', slot);
     slot.forEach((item, index) => {
@@ -110,7 +121,7 @@ const GameTypePage = () => {
       } else {
         resetPeopleList('', index);
       }
-      resetSlotList(showSlot.brandName, item?.model, index, item.id);
+      resetSlotList(item?.brand_name, item?.model, index, item.id);
     });
   };
 
@@ -121,15 +132,18 @@ const GameTypePage = () => {
 
   useEffect(() => {
     if (!showSlot.action) return;
-
-    const slotArr = egmList.data?.filter((item) => item.brand_name === showSlot.brandName);
+    const slot = findSlot();
     const pixiApp = new PixiApp(pixiRef.current?.clientWidth, showSlot.brandName);
 
-    pixiApp?.active(new Array(slotArr?.length).fill(6)).then(() => {
+    pixiApp?.active(new Array(slot?.length).fill(6)).then(() => {
       addPeopleSlot();
     });
-    console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current?.clientWidth);
     pixiRef.current?.appendChild(pixiApp?.view);
+    console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current.children[0]);
+    setTimeout(() => {
+      console.log('scroll');
+      pixiRef.current.scrollTop = 400;
+    }, 4000);
     return () => {
       pixiApp?.destroy();
       try {
