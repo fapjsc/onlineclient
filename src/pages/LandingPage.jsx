@@ -92,7 +92,7 @@ const LandingPage = () => {
   }, [landingError, landingStatus]);
 
   useEffect(() => {
-    // if (!landingData) return;
+    if (!landingData) return;
 
     const { result } = landingData || {};
 
