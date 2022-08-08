@@ -100,6 +100,7 @@ const LandingPage = () => {
 
     if (result?.location?.stayingPage === 'game-type') {
       navigate('game-type');
+      return;
     }
 
     if (result?.location?.stayingPage === 'home') {
