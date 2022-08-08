@@ -117,9 +117,10 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
   const btnOnClick = () => {
     setShow(false)
     console.log('onclick')
-    if (statusText[status].btnText === '返回大廳' || statusText[status].windowText === '請登入會員') {
-      console.log('回到主頁')
+    try {
       btnAction()
+    } catch {
+      //pass
     }
   }
 

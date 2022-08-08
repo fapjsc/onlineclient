@@ -80,15 +80,9 @@ const LoginForm = ({ visible, setVisible }) => {
   }, [cryptoKey, dispatch, activeKey]);
 
   const confirmBtnAction = () => {
-    if (cryptoError && userError) {
-      dispatch({ type: rootActionTypes.RESET_STORE });
-    }
-    if (cryptoError && !userError) {
-      dispatch({ type: rootActionTypes.RESET_STORE });
-    }
-    if (!cryptoError && userError) {
-      dispatch({ type: rootActionTypes.RESET_STORE });
-    }
+    dispatch({ type: rootActionTypes.RESET_STORE });
+    dispatch({ type: rootActionTypes.RESET_STORE });
+    dispatch({ type: rootActionTypes.RESET_STORE });
   };
 
   const windowText = () => {
