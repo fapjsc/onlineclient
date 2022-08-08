@@ -9,6 +9,11 @@ import useTimer from '../../hooks/useTimer';
 import _ from 'lodash';
 
 const statusText = {
+  warning: {
+    windowText: '',
+    btnText: '確認',
+    titleText: '警告',
+  },
   timeInterval: {
     windowText: '機器沒有啟動遊戲，即將自動洗分',
     btnText: '繼續遊戲',
@@ -58,7 +63,7 @@ const statusText = {
   },
 };
 const playerPressTimeDefault = {playerPressTime: -1}
-const WarningWindow = ({propStatus, btnAction}) => {
+const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
   const [timeState, timefunc ] = useTimer(30, 0, 270);
   const [status, setStatus] = useState(propStatus);
   const {second:sec, minute:min, showWindow: show} = timeState;
@@ -122,10 +127,12 @@ const WarningWindow = ({propStatus, btnAction}) => {
   useEffect(() => {
     //重egm List 更新playerPressTime
 
-    console.log('更新 playerPressTime => ', playerPressTime);
-    console.log(`selectEgmData: ${selectEgmData}`);
-    // eslint-disable-next-line
-    Timer()
+    if (status === 'timeOut' || status === 'timeInterval') {
+      console.log('更新 playerPressTime => ', playerPressTime);
+      console.log(`selectEgmData: ${selectEgmData}`);
+      // eslint-disable-next-line
+      Timer()
+    }
   }, [playerPressTime]);
 
   useEffect(() => {
@@ -134,14 +141,38 @@ const WarningWindow = ({propStatus, btnAction}) => {
     }
   }, [min, sec])
 
+  useEffect(() => {
+    setShow(visible)
+  },[visible])
+
   return(
     <div className={styles.mask} style={{ display: show ? 'flex' : 'none' }}>
       {
-        status === 'timeInterval' || status === 'timeOut'
+        status === 'timeInterval' || status === 'timeOut' || status === 'warning'
           ? <div className={styles.warningwindow2}>
               <div style={{ height: '20%' }}>{statusText[status].titleText}</div>
               <div style={{ height: '60%' }}>
-                {statusText[status].windowText}
+                <img 
+                  src={
+                    status === 'warning'
+                    ? require('./warning.png')
+                    : require('./clock.png')
+                  }
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain',
+                    marginBottom: '20px'
+                  }}
+                />
+                
+                {
+                  windowText
+                  ||
+                  statusText[status].windowText
+                }
                 <br />
                 {
                   status === 'timeInterval'
@@ -184,6 +215,8 @@ const WarningWindow = ({propStatus, btnAction}) => {
 
 WarningWindow.propTypes = {
   propStatus: PropTypes.string.isRequired,
+  windowText: PropTypes.string,
   btuAction: PropTypes.func.isRequired,
+  visible: PropTypes.bool,
 };
 export default WarningWindow;
