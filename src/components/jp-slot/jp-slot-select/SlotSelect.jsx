@@ -58,12 +58,16 @@ const SlotSelect = ({ hidden }) => {
     setShowEgmInfo(true);
   };
 
+  const rwd = (one, two) => ({
+    height: (slot?.brandName === 'sammy' || slot?.brandName === 'daito') ? one : two,
+  });
+
   return (
     <>
       {/* <Mask visible={visible} onMaskClick={hidden} opacity={0.1} /> */}
       <EgmInfo show={showEgmInfo} close={egmInfoClose} slot={slot} />
-      <section style={{ display: showSelectAction ? 'block' : 'none' }} className={styles.container}>
-        <div className={styles.header}>
+      <section style={{ display: showSelectAction ? 'block' : 'none', ...rwd('100%', '25%') }} className={styles.container}>
+        <div style={{ ...rwd('25%', '100%') }} className={styles.header}>
           <div className={styles['header-title']}>
             <span>{language[slot?.model] || slot?.model}</span>
             <div className={styles['header-icon-box']}>
