@@ -31,6 +31,8 @@ import { egmActionTypes } from '../../../store/types';
 // Config
 import { apiConfig } from '../../../apis';
 
+import WarningWindow from '../../warningWindow/WarningWindow';
+
 // Helpers
 import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 
@@ -86,14 +88,7 @@ const Aristocrat = ({
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
     if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
-
       setIsAuto({ action: false, limit: null });
-
       return;
     }
 
@@ -116,7 +111,7 @@ const Aristocrat = ({
         payload: { currentBtnCode: code },
       });
       break;
-
+    //can not reslove it
     default:
       Dialog.alert({
         content: '按鈕錯誤',
@@ -185,14 +180,6 @@ const Aristocrat = ({
     if (btnPressError) {
       setMainBtnClick({ auto: false, max: false, spin: false });
       setIsAuto({ action: false, limit: null });
-      Dialog.alert({
-        content: btnPressError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearButtonPressStatus());
-        },
-      });
     }
   }, [btnPressError, dispatch, setIsAuto]);
 
@@ -223,9 +210,21 @@ const Aristocrat = ({
           />
         );
       });
-
+  const windowText = () => {
+    if (!currentBtnPress) return '請先選擇倍率按鈕';
+    if (btnPressError) return btnPressError;
+  };
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
   return (
     <>
+      <WarningWindow
+        visible={!!((!currentBtnPress || btnPressError))}
+        propStatus="warning"
+        btnAction={confirmBtnAction}
+        windowText={windowText()}
+      />
       <Wrapper img={image} className={styles.container} model={model}>
         <section className={styles['menu-box']}>
           <Menu

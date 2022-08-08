@@ -11,6 +11,8 @@ import { Dialog } from 'antd-mobile';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+import WarningWindow from '../../warningWindow/WarningWindow';
+
 // Config
 import { apiConfig } from '../../../apis';
 
@@ -80,7 +82,6 @@ const Igt = ({
   const dispatch = useDispatch();
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
-    /*
     if (!currentBtnPress) {
       Dialog.alert({
         content: '請先選擇倍率按鈕',
@@ -92,7 +93,6 @@ const Igt = ({
 
       return;
     }
-    */
     switch (name) {
     case 'spin':
       setIsAuto({ action: false, limit: null });
@@ -194,14 +194,6 @@ const Igt = ({
     if (btnPressError) {
       setMainBtnClick({ auto: false, max: false, spin: false });
       setIsAuto({ action: false, limit: null });
-      Dialog.alert({
-        content: btnPressError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearButtonPressStatus());
-        },
-      });
     }
   }, [btnPressError, dispatch, setIsAuto]);
 
@@ -225,83 +217,103 @@ const Igt = ({
     // eslint-disable-next-line
   }, [ ]);
 
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
+
+  const windowText = () => {
+    if (btnPressError) {
+      return btnPressError;
+    }
+    if (!currentBtnPress) return '請先選擇倍率按鈕';
+  };
+
   return (
-    <Wrapper img={image} className={styles.container} model={model}>
-      <section className={styles['menu-box']}>
-        <Menu
-          visible={showMenu}
-          setVisible={setShowMenu}
-          exitGameHandler={exitGameHandler}
-        />
-      </section>
 
-      {/* Video */}
-      <section className={styles['video-box']}>
-        <Video
-          rtcUrl={url}
-          play={playVideo}
-          setPlayStatus={setPlayStatus}
-          getSdkRef={getSdkRef}
-        />
-      </section>
+    <>
+      <WarningWindow
+        visible={!!((btnPressError || !currentBtnPress))}
+        propStatus="warning"
+        btnAction={confirmBtnAction}
+        windowText={windowText()}
+      />
+      <Wrapper img={image} className={styles.container} model={model}>
+        <section className={styles['menu-box']}>
+          <Menu
+            visible={showMenu}
+            setVisible={setShowMenu}
+            exitGameHandler={exitGameHandler}
+          />
+        </section>
 
-      {playStatus === 'canPlay' && (
-        <button
-          type="button"
-          style={{
-            width: '10rem',
-            height: '10rem',
-            backgroundColor: 'transparent',
-            color: 'white',
-            position: 'absolute',
-            top: '30%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-          }}
-          onClick={() => {
-            setPlayVideo(true);
-          }}
+        {/* Video */}
+        <section className={styles['video-box']}>
+          <Video
+            rtcUrl={url}
+            play={playVideo}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
+          />
+        </section>
+
+        {playStatus === 'canPlay' && (
+          <button
+            type="button"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              backgroundColor: 'transparent',
+              color: 'white',
+              position: 'absolute',
+              top: '30%',
+              left: '50%',
+              transform: 'translateX(-50%) translateY(-50%)',
+            }}
+            onClick={() => {
+              setPlayVideo(true);
+            }}
+          >
+            點擊後開始播放
+          </button>
+        )}
+        {/* Aft Button */}
+        <section className={styles['cash-in-out-box']}>
+          <div
+            className={styles['cash-in-out-btn']}
+            role="presentation"
+            onClick={() => setIsCashInOutClick(true)}
+          />
+        </section>
+
+        {/* Main Button */}
+        <section className={styles['main-btn-box']}>
+          <MainBtn
+            mainBtnClick={mainBtnClick}
+            setMainBtnClick={setMainBtnClick}
+            mainBtnHandler={mainBtnHandler}
+            setIsAuto={setIsAuto}
+            isAuto={isAuto}
+          />
+        </section>
+
+        {/*  Sub Button */}
+        <section
+          style={{ zIndex: styleConfig.zIndex.max }}
+          ref={subBtnRef}
+          className={styles['sub-btn-box']}
         >
-          點擊後開始播放
-        </button>
-      )}
-      {/* Aft Button */}
-      <section className={styles['cash-in-out-box']}>
-        <div
-          className={styles['cash-in-out-btn']}
-          role="presentation"
-          onClick={() => setIsCashInOutClick(true)}
-        />
-      </section>
-
-      {/* Main Button */}
-      <section className={styles['main-btn-box']}>
-        <MainBtn
-          mainBtnClick={mainBtnClick}
-          setMainBtnClick={setMainBtnClick}
-          mainBtnHandler={mainBtnHandler}
-          setIsAuto={setIsAuto}
-          isAuto={isAuto}
-        />
-      </section>
-
-      {/*  Sub Button */}
-      <section
-        style={{ zIndex: styleConfig.zIndex.max }}
-        ref={subBtnRef}
-        className={styles['sub-btn-box']}
-      >
-        <SubBtnHolder
-          subBtnRef={subBtnRef.current}
-          showSubBtn={showSubBtn}
-          setShowSubBtn={setShowSubBtn}
-          currentSubBtn={currentSubBtn}
-          subBtnClickHandler={subBtnClickHandler}
-          subBtnEl={subBtnEl}
-          height="-60%"
-        />
-      </section>
-    </Wrapper>
+          <SubBtnHolder
+            subBtnRef={subBtnRef.current}
+            showSubBtn={showSubBtn}
+            setShowSubBtn={setShowSubBtn}
+            currentSubBtn={currentSubBtn}
+            subBtnClickHandler={subBtnClickHandler}
+            subBtnEl={subBtnEl}
+            height="-60%"
+          />
+        </section>
+      </Wrapper>
+    </>
   );
 };
 

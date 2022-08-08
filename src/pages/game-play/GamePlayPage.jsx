@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 // Antd
-import { Dialog, Toast } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -158,49 +158,6 @@ const GamePlay = () => {
     // eslint-disable-next-line
   }, [aftFormData]);
 
-  // 開洗分成功
-  useEffect(() => {
-    if (aftData) {
-      let text;
-
-      if (aftType === 'aft-in') {
-        text = '開分';
-      }
-
-      if (aftType === 'aft-out') {
-        text = '洗分';
-      }
-
-      Dialog.alert({
-        content: `${text}指令已送出，請確認機台分數是否正確。`,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearCashInOutStatus());
-          setIsCashInOutClick(false);
-        },
-      });
-    }
-  }, [aftData, dispatch, aftType]);
-
-  // 開洗分錯誤
-  useEffect(() => {
-    if (aftError) {
-      setIsCashInOutClick(false);
-
-      Dialog.alert({
-        content: aftError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearCashInOutStatus());
-          setIsCashInOutClick(false);
-        },
-      });
-    }
-  }, [aftError, dispatch]);
-  //const { state: playerPressTimeState } = useSelector((state) => state.playerPressTime);
-
   useEffect(() => {
     // window.history.pushState(null, null, null);
 
@@ -269,8 +226,38 @@ const GamePlay = () => {
     };
   }, [playStatus]);
 
+  const windowText = () => {
+    if (aftData) {
+      let text;
+
+      if (aftType === 'aft-in') {
+        text = '開分';
+      }
+
+      if (aftType === 'aft-out') {
+        text = '洗分';
+      }
+      return `${text}指令已送出，請確認機台分數是否正確。`;
+    }
+    if (aftError) {
+      setIsCashInOutClick(false);
+      return aftError;
+    }
+  };
+
+  const confirmBtnAction = () => {
+    dispatch(clearCashInOutStatus());
+    setIsCashInOutClick(false);
+  };
+
   return (
     <>
+      <WarningWindow
+        visible={!!((aftData || aftError))}
+        propStatus="warning"
+        btnAction={confirmBtnAction}
+        windowText={windowText()}
+      />
       <CSSTransition
         in={!model || !brandName}
         classNames="animation-item"
