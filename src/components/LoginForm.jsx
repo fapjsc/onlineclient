@@ -10,11 +10,11 @@ import crypto from 'crypto';
 
 // Antd
 import {
-  Form, Input, Button, TabBar, Modal, Space, Dialog,
+  Form, Input, Button, TabBar, Modal, Space,
 } from 'antd-mobile';
-
 // Icon
 import { PhonebookOutline, AppstoreOutline } from 'antd-mobile-icons';
+import WarningWindow from './warningWindow/WarningWindow';
 
 import { rootActionTypes } from '../store/types';
 
@@ -62,48 +62,13 @@ const LoginForm = ({ visible, setVisible }) => {
   );
 
   useEffect(() => {
-    if (cryptoError && userError) {
-      Dialog.alert({
-        content: '登入錯誤，請稍後再試',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch({ type: rootActionTypes.RESET_STORE });
-        },
-      });
-    }
-
-    if (cryptoError && !userError) {
-      Dialog.alert({
-        content: cryptoError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch({ type: rootActionTypes.RESET_STORE });
-        },
-      });
-    }
-
-    if (!cryptoError && userError) {
-      Dialog.alert({
-        content: userError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch({ type: rootActionTypes.RESET_STORE });
-        },
-      });
-    }
-  }, [userError, cryptoError, dispatch]);
-
-  useEffect(() => {
     if (!cryptoKey) return;
 
     let formValue = formRef.current.getFieldValue();
 
-    const password = crypto.publicEncrypt(
+    const password = crypto?.publicEncrypt(
       cryptoKey,
-      Buffer.from(formValue.password),
+      Buffer?.from(formValue?.password || ''),
     );
 
     formValue = {
@@ -114,63 +79,99 @@ const LoginForm = ({ visible, setVisible }) => {
     dispatch(setupUser({ currentUser: formValue, endPoint: 'login' }));
   }, [cryptoKey, dispatch, activeKey]);
 
+  const confirmBtnAction = () => {
+    if (cryptoError && userError) {
+      dispatch({ type: rootActionTypes.RESET_STORE });
+    }
+    if (cryptoError && !userError) {
+      dispatch({ type: rootActionTypes.RESET_STORE });
+    }
+    if (!cryptoError && userError) {
+      dispatch({ type: rootActionTypes.RESET_STORE });
+    }
+  };
+
+  const windowText = () => {
+    if (cryptoError && userError) {
+      return '登入錯誤';
+    }
+    if (cryptoError && !userError) {
+      return cryptoError;
+    }
+    if (!cryptoError && userError) {
+      return userError;
+    }
+  };
+
   return (
-    <Modal
-      visible={visible}
-      closeOnMaskClick
-      onClose={() => {
-        setVisible(false);
-      }}
-      content={
-        <Form
-          ref={formRef}
-          layout="horizontal"
-          onFinish={onFinish}
-          hasFeedback
-          footer={
-            <Space direction="vertical" style={{ width: '100%' }}>
-              <Button
-                loading={userLoading || cryptoLoading}
-                loadingText="請稍等"
-                type="submit"
-                block
-                color="primary"
-                size="large"
-              >
-                確定
-              </Button>
-              <Button block size="large" onClick={() => setVisible(false)}>
-                取消
-              </Button>
-            </Space>
-          }
-        >
-          <Form.Header>{toolBar}</Form.Header>
-
-          <Form.Item
-            label={activeKey === 'account' ? '帳號' : '手機'}
-            name={activeKey}
-            clearable
-            rules={[{ required: true, message: '此項為必填' }]}
+    <>
+      <WarningWindow
+        visible={!!(
+          (cryptoError && userError)
+          || (cryptoError && !userError)
+          || (!cryptoError && userError)
+        )}
+        propStatus="warning"
+        btnAction={confirmBtnAction}
+        windowText={windowText()}
+      />
+      <Modal
+        visible={visible}
+        closeOnMaskClick
+        onClose={() => {
+          setVisible(false);
+        }}
+        content={
+          <Form
+            ref={formRef}
+            layout="horizontal"
+            onFinish={onFinish}
+            hasFeedback
+            footer={
+              <Space direction="vertical" style={{ width: '100%' }}>
+                <Button
+                  loading={userLoading || cryptoLoading}
+                  loadingText="請稍等"
+                  type="submit"
+                  block
+                  color="primary"
+                  size="large"
+                >
+                  確定
+                </Button>
+                <Button block size="large" onClick={() => setVisible(false)}>
+                  取消
+                </Button>
+              </Space>
+            }
           >
-            <Input placeholder="請輸入" autoComplete="off" />
-          </Form.Item>
+            <Form.Header>{toolBar}</Form.Header>
 
-          <Form.Item
-            label="密碼"
-            name="password"
-            clearable
-            rules={[{ required: true, message: '此項為必填' }]}
-          >
-            <Input
-              placeholder="請輸入"
-              autoComplete="current-password"
-              type="password"
-            />
-          </Form.Item>
-        </Form>
-      }
-    />
+            <Form.Item
+              label={activeKey === 'account' ? '帳號' : '手機'}
+              name={activeKey}
+              clearable
+              rules={[{ required: true, message: '此項為必填' }]}
+            >
+              <Input placeholder="請輸入" autoComplete="off" />
+            </Form.Item>
+
+            <Form.Item
+              label="密碼"
+              name="password"
+              clearable
+              rules={[{ required: true, message: '此項為必填' }]}
+            >
+              <Input
+                placeholder="請輸入"
+                autoComplete="current-password"
+                type="password"
+              />
+            </Form.Item>
+          </Form>
+        }
+      />
+    </>
   );
 };
 
