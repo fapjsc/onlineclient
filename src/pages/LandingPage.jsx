@@ -97,9 +97,9 @@ const LandingPage = () => {
     const { result } = landingData || {};
 
     dispatch(autoLogin(result));
-    console.log(result?.location);
     if (result?.location?.stayingPage === 'game-type') {
-      navigate('game-type');
+      console.log(result?.location);
+      navigate('/game-type');
       return;
     }
 
