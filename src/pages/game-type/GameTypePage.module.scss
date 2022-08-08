@@ -74,6 +74,10 @@
 
   .body {
     overflow-y: scroll;
+    -ms-overflow-style: none;
+  }
+  .body::-webkit-scrollbar {
+    display: none;
   }
 
   .footer-nav {

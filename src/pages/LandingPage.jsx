@@ -92,12 +92,12 @@ const LandingPage = () => {
   }, [landingError, landingStatus]);
 
   useEffect(() => {
-    if (!landingData) return;
+    // if (!landingData) return;
 
     const { result } = landingData || {};
 
     dispatch(autoLogin(result));
-
+    console.log(result?.location);
     if (result?.location?.stayingPage === 'game-type') {
       navigate('game-type');
       return;
