@@ -98,6 +98,10 @@ const LandingPage = () => {
 
     dispatch(autoLogin(result));
 
+    if (result?.location?.stayingPage === 'game-type') {
+      navigate('game-type');
+    }
+
     if (result?.location?.stayingPage === 'home') {
       dispatch(clearSelectEgmData());
       dispatch(setCurrentAction('home'));
