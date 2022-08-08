@@ -10,7 +10,6 @@ import {
   Button,
   NoticeBar,
   CapsuleTabs,
-  Dialog,
   Toast,
 } from 'antd-mobile';
 // eslint-disable-next-line no-unused-vars
@@ -73,6 +72,25 @@ const GameTypePage = () => {
     // eslint-disable-next-line no-unused-vars
     error: selectEgmError,
   } = useSelector((state) => state.selectEgm);
+
+  const {
+    // eslint-disable-next-line
+    data: egmListData,
+    error: egmListError,
+    isLoading: egmListLoading,
+  } = useSelector((state) => state.egmList);
+
+  const {
+    // data: brandListData,
+    error: brandListError,
+    // eslint-disable-next-line
+    isLoading: brandListLoading,
+  } = useSelector((state) => state.brand);
+
+  const dispatchData = () => {
+    dispatch(getEgmList());
+    dispatch(getBrandList());
+  };
 
   const { id: egmID } = selectEgmDta || {};
 
@@ -143,18 +161,22 @@ const GameTypePage = () => {
   }, [egmList]);
 
   useEffect(() => {
+    dispatchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  useEffect(() => {
     if (!showSlot.action) return;
     const slot = findSlot();
     const pixiApp = new PixiApp(pixiRef.current?.clientWidth, showSlot.brandName);
-
     pixiApp?.active(new Array(slot?.length).fill(6)).then(() => {
-      addPeopleSlot();
+      dispatchData();
     });
     pixiRef.current?.appendChild(pixiApp?.view);
     console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current.children[0]);
     setTimeout(() => {
       console.log('scroll');
-      pixiRef.current.scrollTop = 400;
+      // pixiRef.current.scrollTop = 400;
     }, 4000);
     return () => {
       pixiApp?.destroy();
@@ -193,38 +215,6 @@ const GameTypePage = () => {
   const closeSelect = () => {
     store.dispatch(setPixiStatus(false));
   };
-
-  useEffect(() => {
-    dispatch(getEgmList());
-    dispatch(getBrandList());
-  }, [dispatch]);
-
-  const {
-    // eslint-disable-next-line
-    data: egmListData,
-    error: egmListError,
-    isLoading: egmListLoading,
-  } = useSelector((state) => state.egmList);
-
-  const {
-    // data: brandListData,
-    error: brandListError,
-    // eslint-disable-next-line
-    isLoading: brandListLoading,
-  } = useSelector((state) => state.brand);
-
-  useEffect(() => {
-    dispatch(getEgmList());
-    dispatch(getBrandList());
-  }, [dispatch]);
-
-  // 有egmID 代表select egm 成功
-  useEffect(() => {
-    if (egmID) {
-      navigate('/game-play', { replace: true });
-      window.history.pushState(null, null, null);
-    }
-  }, [egmID, navigate]);
 
   useEffect(() => {
     if (egmListLoading) {
