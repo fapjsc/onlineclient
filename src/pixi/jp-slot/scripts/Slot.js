@@ -12,6 +12,7 @@ export class Slot extends PIXI.Container {
     this.visible = true;
     this.anim = this.#_createSlot();
     this.modeSign = this.#_createMode();
+    this.#_Event();
   }
 
   static createTexture(frames) {
@@ -26,8 +27,11 @@ export class Slot extends PIXI.Container {
 
   #_createSlot() {
     const frames = [
-      'slot',
-      'slotGizon',
+      'sammy',
+      'daito',
+      'igt',
+      'aruze',
+      'aristocrat'
     ];
     const texture = Slot.createTexture(frames);
     const slot = new PIXI.AnimatedSprite(texture);
@@ -39,7 +43,6 @@ export class Slot extends PIXI.Container {
     slot.width = 130;
     slot.height = 130;
     slot.gotoAndStop(0);
-    this.#_Event(slot);
     this.addChild(slot);
     return slot;
   }
@@ -61,19 +64,19 @@ export class Slot extends PIXI.Container {
     return modeSign;
   }
 
-  #_Event(instance) {
-    instance.on('pointerover', () => {
-      instance.tint = 0xFFE66F;
+  #_Event() {
+    this.anim.on('pointerover', () => {
+      this.anim.tint = 0xFFE66F;
     });
-    instance.on('pointerout', () => {
-      instance.tint = 0xFFFFFF;
+    this.anim.on('pointerout', () => {
+      this.anim.tint = 0xFFFFFF;
     });
-    instance.on('pointerdown', () => {
+    this.anim.on('pointerdown', () => {
       console.log(`slot ${this.id} is clicked`);
       const { slot: slotArr } = store.getState().slotList;
       console.log(slotArr);
       const findSlot = slotArr.find((item) => item.id === this.id);
-      store.dispatch(setPixiStatus(true, findSlot.machine));
+      store.dispatch(setPixiStatus(true, findSlot));
     });
   }
 }

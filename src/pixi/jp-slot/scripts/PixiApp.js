@@ -6,32 +6,39 @@ import { store } from '../../../store/index';
 
 export class PixiApp extends PIXI.Application {
   Scene = 0;
+  #_brandName = ''
+  #_timeAmount = []
+  appWidth = 0
 
-  constructor(width) {
+  constructor(width, brandName) {
     super({
       width: width,
-      height: 600,
+      height: 500,
       backgroundColor: 0xFBBA6F,
       antialias: true,
       resolution: 1,
     });
+    this.appWidth = width;
     this.mainScene = null;
+    this.#_brandName = brandName
 
     //let mobile can slide this canvas;
-    this.renderer.plugins.interaction.autoPreventDefault = false;
-    this.view.style.touchAction = 'auto';
+    this.renderer.plugins.interaction.cursorStyles.default = 'default'
+    // this.view.style.touchAction = 'none';
     this.prevPeopleSexual = [];
     this.prevSlot = [];
   }
 
   async active(rowSlotAmount) {
     const loaders = new Loader(this.loader);
-
+    this.#_timeAmount = rowSlotAmount
     this.mainScene = await loaders.preload().then(() => {
       console.log('game start!');
-      const mainScene = new MainScene(this.view.width, this.view.height);
+      const resize = this.view.height + 250 * rowSlotAmount?.length
+      this.renderer.resize(this.appWidth, resize)
+      const mainScene = new MainScene(this.appWidth, resize, this.#_brandName);
       // eslint-disable-next-line no-plusplus
-      for (let item = 0; item < rowSlotAmount.length; item++) {
+      for (let item = 0; item < rowSlotAmount?.length; item++) {
         // eslint-disable-next-line
         mainScene.createGroup(item + 1, 30, 450 + 300 * item, rowSlotAmount[item]);
       }
@@ -39,7 +46,6 @@ export class PixiApp extends PIXI.Application {
       this.stage.addChild(mainScene);
       return mainScene;
     });
-    console.log();
   }
 
   #_effectUpdate(numbers) {
@@ -103,53 +109,93 @@ export class PixiApp extends PIXI.Application {
   }
 
   #_slotAnim() {
+
     const { slot } = store.getState().slotList;
     let modeFrame = 0;
     let slotFrame = 0;
-    slot.map((item, index) => {
-      if (!this.mainScene.slot[index]?.slot) return;
-      switch (item.machine) {
-      case 'slot':
+    let timeStartFrame = 0;
+    let timeEndFrame = 0;
+    const firstSlot = slot.filter((slotItem, slotIndex) => {
+      const findItem = this.#_timeAmount.find((timeItem, timeIndex) =>  
+        (slotItem.id + '') === `${timeIndex + 1}1`
+      )
+
+      if (findItem) return slotItem;
+
+    })//only catch first slot in slot group
+
+    firstSlot.forEach((item, index) => {
+      const slotTime = this.mainScene.slotTime[index]?.times
+      if (!slotTime) return;
+      switch (item.times) {
+        case 'd1':
+          timeStartFrame = 1;
+          timeEndFrame = 30;
+          break;
+        default:
+          timeStartFrame = 0;
+          timeEndFrame = 1;
+          break;
+      }
+      // console.log(slotTime, timeStartFrame, timeEndFrame, slotTime.currentFrame, index, item, firstSlot)
+      if (slotTime.currentFrame >= timeEndFrame) {
+        slotTime.gotoAndPlay(timeStartFrame)
+      }
+    })
+
+    slot.forEach((item, index) => {
+      const slotMachine = this.mainScene.slot[index]?.slot
+      if (!slotMachine) return;
+      switch (item.brandName) {
+      case 'sammy':
         slotFrame = 0;
         break;
-      case 'slotGizon':
+      case 'daito':
         slotFrame = 1;
+        break;
+      case 'igt':
+        slotFrame = 2;
+        break;
+      case 'aruze':
+        slotFrame = 3;
+        break;
+      case 'aristocrat':
+        slotFrame = 4;
         break;
       default:
         slotFrame = 0;
         break;
       }
-      this.mainScene.slot[index]?.slot?.anim.gotoAndStop(slotFrame);
-      this.mainScene.slot[index].slot.visible = true;
-      return item;
+      slotMachine?.anim.gotoAndStop(slotFrame);
+      slotMachine.visible = true;
     });
 
-    slot.map((item, index) => {
-      if (!this.mainScene.slot[index]?.slot) return;
+    slot.forEach((item, index) => {
+      const slotMachine = this.mainScene.slot[index]?.slot
+      if (!slotMachine) return;
       switch (item.mode) {
       case '4':
-        this.mainScene.slot[index].slot.modeSign.visible = true;
+        slotMachine.modeSign.visible = true;
         modeFrame = 0;
         break;
       case '5':
-        this.mainScene.slot[index].slot.modeSign.visible = true;
+        slotMachine.modeSign.visible = true;
         modeFrame = 1;
         break;
       case '6':
-        this.mainScene.slot[index].slot.modeSign.visible = true;
+        slotMachine.modeSign.visible = true;
         modeFrame = 2;
         break;
       case '456':
-        this.mainScene.slot[index].slot.modeSign.visible = true;
+        slotMachine.modeSign.visible = true;
         modeFrame = 3;
         break;
       default:
-        this.mainScene.slot[index].slot.modeSign.visible = false;
+        slotMachine.modeSign.visible = false;
         modeFrame = 0;
         break;
       }
-      this.mainScene.slot[index]?.slot?.modeSign.gotoAndStop(modeFrame);
-      return item;
+      slotMachine?.modeSign?.gotoAndStop(modeFrame);
     });
   }
 }

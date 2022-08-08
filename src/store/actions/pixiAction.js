@@ -1,9 +1,12 @@
 import { pixiActionTypes } from '../types';
 import { store } from '../index';
 
-export const setPixiStatus = (status, slotType = null) => {
+export const setPixiStatus = (status, slot) => {
   if (status) {
-    return { type: pixiActionTypes.STATUS_ON, payload: slotType };
+    return {
+      type: pixiActionTypes.STATUS_ON,
+      payload: slot,
+    };
   }
   return { type: pixiActionTypes.STATUS_OFF };
 };
@@ -43,7 +46,6 @@ export const changePeople = (id, sexual, level) => {
 
 // eslint-disable-next-line arrow-body-style
 export const setSlot = (data) => {
-  //data => {id: , machine: , mode: }
   const { slot } = store.getState().slotList;
   const findMutiple = slot.find((item) => item.id === data.id);
   const arr = slot.filter((item) => item !== findMutiple);
@@ -54,16 +56,18 @@ export const setSlot = (data) => {
   };
 };
 
-export const changeSlot = (id, machine, mode) => {
+export const changeSlot = (id, brandName, model, mode, times, egmId) => {
   const { slot } = store.getState().slotList;
-  //console.log(id, machine, mode);
   const slotChanged = slot.map((item) => {
     if (item.id === id) {
       //console.log('change => ', id);
       return {
         id: id,
-        machine: machine,
+        brandName: brandName,
+        model: model,
         mode: mode,
+        times: times,
+        egmId: egmId,
       };
     }
     return item;
