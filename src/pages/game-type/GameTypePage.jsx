@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 // Antd
 // eslint-disable-next-line no-unused-vars
-import { Button, NoticeBar, CapsuleTabs } from 'antd-mobile';
+import {
+  Button,
+  NoticeBar,
+  CapsuleTabs,
+  Dialog,
+  Toast,
+} from 'antd-mobile';
 // eslint-disable-next-line no-unused-vars
 import { UserCircleOutline } from 'antd-mobile-icons';
 
@@ -39,6 +45,9 @@ import { PixiApp } from '../../pixi/jp-slot/scripts/PixiApp';
 // Styles
 import styles from './GameTypePage.module.scss';
 import { changePeople, changeSlot, setPixiStatus } from '../../store/actions/pixiAction';
+//type
+import { egmActionTypes } from '../../store/types';
+import WarningWindow from '../../components/warningWindow/WarningWindow';
 
 const jpSlotList = ['sammy', 'daito'];
 const slotList = ['igt', 'aruze', 'aristocrat'];
@@ -46,6 +55,9 @@ const slotList = ['igt', 'aruze', 'aristocrat'];
 const GameTypePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const egmListLoadingRef = useRef();
+  const selectEgmLoadingRef = useRef();
 
   const [height] = useWindowSize();
 
@@ -187,8 +199,76 @@ const GameTypePage = () => {
     dispatch(getBrandList());
   }, [dispatch]);
 
+  const {
+    // eslint-disable-next-line
+    data: egmListData,
+    error: egmListError,
+    isLoading: egmListLoading,
+  } = useSelector((state) => state.egmList);
+
+  const {
+    // data: brandListData,
+    error: brandListError,
+    // eslint-disable-next-line
+    isLoading: brandListLoading,
+  } = useSelector((state) => state.brand);
+
+  useEffect(() => {
+    dispatch(getEgmList());
+    dispatch(getBrandList());
+  }, [dispatch]);
+
+  // 有egmID 代表select egm 成功
+  useEffect(() => {
+    if (egmID) {
+      navigate('/game-play', { replace: true });
+      window.history.pushState(null, null, null);
+    }
+  }, [egmID, navigate]);
+
+  useEffect(() => {
+    if (egmListLoading) {
+      egmListLoadingRef.current = Toast.show({
+        icon: 'loading',
+        content: '遊戲加载中!',
+        position: 'center',
+      });
+    }
+
+    return () => {
+      egmListLoadingRef.current?.close();
+    };
+  }, [egmListLoading]);
+
+  useEffect(() => {
+    if (selectEgmLoading) {
+      selectEgmLoadingRef.current = Toast.show({
+        icon: 'loading',
+        content: '請稍等…',
+        position: 'center',
+        duration: 0,
+      });
+    }
+
+    return () => {
+      selectEgmLoadingRef.current?.close();
+    };
+  }, [selectEgmLoading]);
+
+  const confirmBtnAction = () => {
+    dispatch({ type: egmActionTypes.CLEAR_BRAND_LIST_STATUS });
+    dispatch({ type: egmActionTypes.CLEAR_SELECT_EGM_DATA });
+    dispatch({ type: egmActionTypes.CLEAR_EGM_LIST_STATUS });
+  };
+
   return (
     <>
+      <WarningWindow
+        visible={!!((brandListError || selectEgmError || egmListError))}
+        propStatus="warning"
+        btnAction={confirmBtnAction}
+        windowText={brandListError || selectEgmError || egmListError}
+      />
       <div
         className={styles.container}
         style={{ width: window.innerWidth, height: window.innerHeight }}
