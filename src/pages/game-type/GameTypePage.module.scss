@@ -1,3 +1,17 @@
+%navbtnStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  width: 25%;
+  height: 60%;
+  transition: 0.4s;
+  &:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -28,28 +42,53 @@
 
   .nav {
     height: 8%;
-
     .tab:focus {
-      background-color: #ffc53d;
+      background-color: #cf3333;
     }
   }
 
   .jp-slot-header {
-    height: 5%;
+    height: 10%;
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-evenly;
+    background-image: url('../../assets/廠牌按鈕素材/bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    .btn{
+      width: 90%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
 
     .back {
-      background-image: url("../../assets/back.png");
+      background-image: url("../../assets/廠牌按鈕素材/返回.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
-      width: 5rem;
-      height: 2rem;
+      width: 50px;
+      height: 50px;
       cursor: pointer;
+      transform: scale(1.1);
+      transition: 0.4s;
     }
+    .navBtn {
+      &-origin {
+        color: #000;
+        background-color: #fff;
+        @extend %navbtnStyle;
+      }
+      &-click {
+        color:white;
+        background: linear-gradient(to right, #00c8e6, #00e5ba);
+        @extend %navbtnStyle;
+      }
+    }
+    
 
     .title {
       background-image: url("../../assets/jp-slot-title.png");
@@ -75,6 +114,7 @@
   .body {
     overflow-y: scroll;
     -ms-overflow-style: none;
+    margin-top: 30px;
   }
   .body::-webkit-scrollbar {
     display: none;
@@ -129,3 +169,4 @@
 .jp-slot-box[model="daito"] {
   background-image: url("../../assets/daito.webp");
 }
+

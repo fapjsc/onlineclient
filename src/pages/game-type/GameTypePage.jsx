@@ -177,7 +177,7 @@ const GameTypePage = () => {
       dispatchData();
     });
     pixiRef.current?.appendChild(pixiApp?.view);
-    console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current.children[0]);
+    console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current?.children[0]);
     setTimeout(() => {
       console.log('scroll');
       // pixiRef.current.scrollTop = 400;
@@ -309,27 +309,36 @@ const GameTypePage = () => {
                 role="presentation"
                 onClick={() => setShowSlot({ action: false, brandName: null })}
               />
-              <div className={styles.title}>
-                {`${showSlot.brandName?.toUpperCase()}遊戲大廳`}
+              <div className={styles.btn}>
+                {
+                  jpSlotList.indexOf(showSlot.brandName) !== -1
+                  && jpSlotList.map((item) => (
+                    <div
+                      role="presentation"
+                      onClick={() => { setShowSlot((prev) => ({ ...prev, brandName: item })); }}
+                      className={styles[showSlot.brandName === item ? 'navBtn-click' : 'navBtn-origin']}
+                    >
+                      {item === 'sammy' ? '北斗' : '吉宗'}
+                    </div>
+                  ))
+                }
+                {
+                  slotList.indexOf(showSlot.brandName) !== -1
+                  && slotList.map((item) => (
+                    <div
+                      role="presentation"
+                      onClick={() => { setShowSlot((prev) => ({ ...prev, brandName: item })); }}
+                      className={styles[showSlot.brandName === item ? 'navBtn-click' : 'navBtn-origin']}
+                    >
+                      {item.toUpperCase()}
+                    </div>
+                  ))
+                }
               </div>
             </div>
-            <nav className={styles.nav}>
-              <CapsuleTabs
-                defaultActiveKey={showSlot.brandName}
-                onChange={(key) => {
-                  setShowSlot((prev) => ({
-                    ...prev,
-                    brandName: key,
-                  }));
-                }}
-              >
-                {/* eslint-disable-next-line max-len */}
-                {(jpSlotList.indexOf(showSlot.brandName) !== -1 ? jpSlotList : slotList).map((el) => (
-                  <CapsuleTabs.Tab
-                    key={el}
-                    title={el.toUpperCase()}
-                    className={styles.tab}
-                  >
+            {/* eslint-disable-next-line max-len */}
+            {jpSlotList.indexOf(showSlot.brandName) !== -1
+                  && (
                     <div
                       className={styles.body}
                       style={{ height: height * 0.63 }}
@@ -342,10 +351,23 @@ const GameTypePage = () => {
                         ref={pixiRef}
                       />
                     </div>
-                  </CapsuleTabs.Tab>
-                ))}
-              </CapsuleTabs>
-            </nav>
+                  )}
+            {slotList.indexOf(showSlot.brandName) !== -1
+                  && (
+
+                    <div
+                      className={styles.body}
+                      style={{ height: height * 0.63 }}
+                    >
+                      <div
+                        role="presentation"
+                        style={{ cursor: 'pointer' }}
+                        onClick={openSelect}
+                        id="jp-pixi"
+                        ref={pixiRef}
+                      />
+                    </div>
+                  )}
           </>
         )}
 
@@ -356,11 +378,13 @@ const GameTypePage = () => {
                 <div className={styles.body} style={{ height: height * 0.69 }}>
                   {
                     slotList?.map((el) => (
-                      <div
+                      <img
+                        alt={`${el}機台`}
                         role="presentation"
                         onClick={() => setShowSlot({ action: true, brandName: el })}
                         key={el}
-                        model={el}
+                        // eslint-disable-next-line import/no-dynamic-require, global-require
+                        src={require(`../../assets/廠牌按鈕素材/${el}_無框.webp`)}
                         className={styles['jp-slot-box']}
                       />
                     ))
@@ -372,11 +396,13 @@ const GameTypePage = () => {
               <CapsuleTabs.Tab title="日本Slot" key="jp-slot">
                 <div className={styles.body} style={{ height: height * 0.69 }}>
                   {jpSlotList.map((el) => (
-                    <div
+                    <img
+                      alt={`${el}機台`}
                       role="presentation"
                       onClick={() => setShowSlot({ action: true, brandName: el })}
                       key={el}
-                      model={el}
+                      // eslint-disable-next-line import/no-dynamic-require, global-require
+                      src={require(`../../assets/廠牌按鈕素材/${el}_無框.webp`)}
                       className={styles['jp-slot-box']}
                     />
                   ))}

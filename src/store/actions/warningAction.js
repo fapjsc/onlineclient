@@ -1,5 +1,5 @@
 import { warningActionTypes } from '../types';
-
+/* eslint-disable import/prefer-default-export */
 export const showWarningWindow = (status, propStatus = 'warning', btnAction = (() => {}), windowText = '', btnText = '') => {
   if (status === 'on') {
     return {

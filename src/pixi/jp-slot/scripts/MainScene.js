@@ -78,6 +78,7 @@ export class MainScene extends PIXI.Container {
       console.log('here need to resize', this.#_mainSceneWidth, this.width);
       this.width = this.#_mainSceneWidth;
       this.height -= rwdOffset;
+      console.log('after resize', this.width);
     }
 
     this.addChild(slotContainer, peopleContainer);

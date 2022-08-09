@@ -1,5 +1,5 @@
 import { warningActionTypes } from '../types';
-
+/* eslint-disable import/prefer-default-export */
 const warningState = {
   visible: false,
   propStatus: '',
