@@ -5,9 +5,6 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-
-// Antd
-import { Dialog } from 'antd-mobile';
 /*
 // Lodash
 import throttle from 'lodash.throttle';
@@ -40,6 +37,12 @@ import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 
 // Styles
 import styles from './Aruze.module.scss';
+<<<<<<< HEAD
+=======
+
+import { store } from '../../../store';
+import { showWarningWindow } from '../../../store/actions/warningAction';
+>>>>>>> edb0650 (彈出視窗fixed)
 
 const Aruze = ({
   // model,
@@ -105,11 +108,7 @@ const Aruze = ({
   const mainBtnHandler = ({ name, code }) => {
     /*
     if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
 
       setIsAuto({ action: false, limit: null });
 
@@ -138,11 +137,8 @@ const Aruze = ({
       break;
 
     default:
-      Dialog.alert({
-        content: '按鈕錯誤',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
   };
 
@@ -248,24 +244,75 @@ const Aruze = ({
   }, [isAuto, currentBtnPress]);
 
   return (
-    <Wrapper img={image} className={styles.container}>
-      {/* Menu */}
-      <section className={styles['menu-box']}>
-        <Menu
-          visible={showMenu}
-          setVisible={setShowMenu}
-          exitGameHandler={exitGameHandler}
-          setIsAuto={setIsAuto}
-        />
-      </section>
-      {/* Video */}
-      <section className={styles['video-box']}>
-        <div className={styles['button-box']}>
-          <Video
-            rtcUrl={url}
-            play={playVideo}
-            setPlayStatus={setPlayStatus}
-            getSdkRef={getSdkRef}
+    <>
+      <Wrapper img={image} className={styles.container}>
+        {/* Menu */}
+        <section className={styles['menu-box']}>
+          <Menu
+            visible={showMenu}
+            setVisible={setShowMenu}
+            exitGameHandler={exitGameHandler}
+            setIsAuto={setIsAuto}
+          />
+        </section>
+        {/* Video */}
+        <section className={styles['video-box']}>
+          <div className={styles['button-box']}>
+            <Video
+              rtcUrl={url}
+              play={playVideo}
+              setPlayStatus={setPlayStatus}
+              getSdkRef={getSdkRef}
+            />
+          </div>
+        </section>
+
+        {playStatus === 'canPlay' && (
+          <button
+            type="button"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              backgroundColor: 'transparent',
+              color: 'white',
+              position: 'absolute',
+              top: '30%',
+              left: '50%',
+              transform: 'translateX(-50%) translateY(-50%)',
+            }}
+            onClick={() => {
+              setPlayVideo(true);
+            }}
+          >
+            點擊後開始播放
+          </button>
+        )}
+
+        {/* Aft Button */}
+        <section className={styles['cash-in-out-box']}>
+          <div
+            className={styles['cash-in-out-btn']}
+            role="presentation"
+            onClick={aftClick}
+          />
+        </section>
+
+        {/* Money counter */}
+        <section className={styles['money-counter-box']}>
+          <div
+            className={`${styles['money-counter']} ${styles['money-counter-animation']}`}
+          />
+        </section>
+
+        {/* Main Button */}
+        <section className={styles['main-btn-box']}>
+          <MainBtn
+            mainBtnClick={mainBtnClick}
+            setMainBtnClick={setMainBtnClick}
+            mainBtnHandler={mainBtnHandler}
+            mainBtnList={mainBtnList}
+            setIsAuto={setIsAuto}
+            isAuto={isAuto}
           />
         </div>
       </section>

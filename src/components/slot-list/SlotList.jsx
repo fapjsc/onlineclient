@@ -1,13 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 
 // Antd
-import { Image, Dialog, Toast } from 'antd-mobile';
+import { Image, Toast } from 'antd-mobile';
 
 // Router
 import { useNavigate } from 'react-router-dom';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
+
+import { store } from '../../store';
+import { showWarningWindow } from '../../store/actions/warningAction';
 
 // actions
 import {
@@ -83,42 +86,33 @@ const SlotList = () => {
   // Get brand error
   useEffect(() => {
     if (brandListError) {
-      Dialog.alert({
-        content: brandListError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onConfirm: () => {
-          dispatch({ type: egmActionTypes.CLEAR_BRAND_LIST_STATUS });
-        },
-      });
+      store.dispatch(
+        showWarningWindow('on', 'warning',
+          () => dispatch({ type: egmActionTypes.CLEAR_BRAND_LIST_STATUS }),
+          brandListError),
+      );
     }
   }, [brandListError, dispatch]);
 
   // Get egm list error
   useEffect(() => {
     if (egmListError) {
-      Dialog.alert({
-        content: egmListError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onConfirm: () => {
-          dispatch({ type: egmActionTypes.CLEAR_EGM_LIST_STATUS });
-        },
-      });
+      store.dispatch(
+        showWarningWindow('on', 'warning',
+          () => dispatch({ type: egmActionTypes.CLEAR_EGM_LIST_STATUS }),
+          egmListError),
+      );
     }
   }, [egmListError, dispatch, selectEgmError]);
 
   // Select egm error
   useEffect(() => {
     if (selectEgmError) {
-      Dialog.alert({
-        content: selectEgmError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onConfirm: () => {
-          dispatch({ type: egmActionTypes.CLEAR_SELECT_EGM_DATA });
-        },
-      });
+      store.dispatch(
+        showWarningWindow('on', 'warning',
+          () => dispatch({ type: egmActionTypes.CLEAR_SELECT_EGM_DATA }),
+          selectEgmError),
+      );
     }
   }, [selectEgmError, dispatch]);
 

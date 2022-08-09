@@ -28,6 +28,8 @@ import {
   pixiReducer, slotReducer, peopleReducer,
 } from './reducers/pixiReducer';
 
+import { warningReducer } from './reducers/warningReducer';
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -35,6 +37,7 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
+  warning: warningReducer,
   peopleList: peopleReducer,
   slotList: slotReducer,
   pixi: pixiReducer,

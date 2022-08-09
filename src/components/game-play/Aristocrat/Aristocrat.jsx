@@ -5,11 +5,11 @@ import React, {
 // Prop-Type
 import PropTypes from 'prop-types';
 
-// Antd
-import { Dialog } from 'antd-mobile';
-
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
+
+import { store } from '../../../store';
+import { showWarningWindow } from '../../../store/actions/warningAction';
 
 // Components
 import Wrapper from '../Wrapper';
@@ -93,7 +93,7 @@ const Aristocrat = ({
       });
 
       setIsAuto({ action: false, limit: null });
-
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
       return;
     }
 
@@ -118,11 +118,7 @@ const Aristocrat = ({
       break;
 
     default:
-      Dialog.alert({
-        content: '按鈕錯誤',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
   };
 
@@ -224,6 +220,19 @@ const Aristocrat = ({
         );
       });
 
+<<<<<<< HEAD
+=======
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
+
+  useEffect(() => {
+    if (btnPressError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btnPressError]);
+>>>>>>> edb0650 (彈出視窗fixed)
   return (
     <>
       <Wrapper img={image} className={styles.container} model={model}>

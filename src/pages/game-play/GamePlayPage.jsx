@@ -24,6 +24,9 @@ import AutoForm from '../../components/auto-form/AutoForm';
 // eslint-disable-next-line
 import { getSocket, connectSocket, disconnectSocket } from '../../utils/socket';
 
+import { store } from '../../store';
+import { showWarningWindow } from '../../store/actions/warningAction';
+
 // Hooks
 import useRwd from '../../hooks/useRwd';
 
@@ -43,7 +46,6 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
-import WarningWindow from '../../components/warningWindow/WarningWindow';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
@@ -268,6 +270,37 @@ const GamePlay = () => {
       Toast.clear();
     };
   }, [playStatus]);
+
+  const windowText = () => {
+    if (aftData) {
+      let text;
+
+      if (aftType === 'aft-in') {
+        text = '開分';
+      }
+
+      if (aftType === 'aft-out') {
+        text = '洗分';
+      }
+      return `${text}指令已送出，請確認機台分數是否正確。`;
+    }
+    if (aftError) {
+      setIsCashInOutClick(false);
+      return aftError;
+    }
+  };
+
+  const confirmBtnAction = () => {
+    dispatch(clearCashInOutStatus());
+    setIsCashInOutClick(false);
+  };
+
+  useEffect(() => {
+    if (aftData || aftError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, windowText()));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aftData, aftError]);
 
   return (
     <>

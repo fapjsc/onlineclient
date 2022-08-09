@@ -14,7 +14,10 @@ import {
 } from 'antd-mobile';
 // Icon
 import { PhonebookOutline, AppstoreOutline } from 'antd-mobile-icons';
-import WarningWindow from './warningWindow/WarningWindow';
+
+import { showWarningWindow } from '../store/actions/warningAction';
+
+import { store } from '../store';
 
 import { rootActionTypes } from '../store/types';
 
@@ -97,18 +100,17 @@ const LoginForm = ({ visible, setVisible }) => {
     }
   };
 
+  useEffect(() => {
+    if ((cryptoError && userError)
+    || (cryptoError && !userError)
+    || (!cryptoError && userError)) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, windowText()));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cryptoError, userError]);
+
   return (
     <>
-      <WarningWindow
-        visible={!!(
-          (cryptoError && userError)
-          || (cryptoError && !userError)
-          || (!cryptoError && userError)
-        )}
-        propStatus="warning"
-        btnAction={confirmBtnAction}
-        windowText={windowText()}
-      />
       <Modal
         visible={visible}
         closeOnMaskClick

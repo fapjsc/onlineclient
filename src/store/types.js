@@ -73,6 +73,12 @@ export const pixiActionTypes = {
   CHANGE_SLOT: 'CHANGE_SLOT',
 };
 
+export const warningActionTypes = {
+  VISIBLE_ON: 'VISIBLE_ON',
+  VISIBLE_OFF: 'VISIBLE_OFF',
+  WARNING_BTN_CLICK: 'WARNING_BTN_CLICK',
+};
+
 export const menuActionTypes = {
   SET_CURRENT_MENU: 'SET_CURRENT_MENU',
 };

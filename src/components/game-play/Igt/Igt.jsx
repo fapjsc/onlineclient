@@ -5,9 +5,6 @@ import React, {
 // Prop-Type
 import PropTypes from 'prop-types';
 
-// Antd
-import { Dialog } from 'antd-mobile';
-
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,7 +22,8 @@ import MainBtn from './MainBtn';
 import Video from '../../Video';
 // Types
 import { egmActionTypes } from '../../../store/types';
-
+import { showWarningWindow } from '../../../store/actions/warningAction';
+import { store } from '../../../store';
 // Actions
 import {
   buttonPress,
@@ -82,11 +80,7 @@ const Igt = ({
   const mainBtnHandler = ({ name, code }) => {
     /*
     if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
 
       setIsAuto({ action: false, limit: null });
 
@@ -114,11 +108,7 @@ const Igt = ({
       break;
 
     default:
-      Dialog.alert({
-        content: '按鈕錯誤',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
   };
 
@@ -225,6 +215,16 @@ const Igt = ({
     // eslint-disable-next-line
   }, [ ]);
 
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
+
+  useEffect(() => {
+    if (btnPressError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btnPressError]);
   return (
     <Wrapper img={image} className={styles.container} model={model}>
       <section className={styles['menu-box']}>
@@ -245,6 +245,7 @@ const Igt = ({
         />
       </section>
 
+<<<<<<< HEAD
       {playStatus === 'canPlay' && (
         <button
           type="button"
@@ -261,6 +262,73 @@ const Igt = ({
           onClick={() => {
             setPlayVideo(true);
           }}
+=======
+    <>
+      <Wrapper img={image} className={styles.container} model={model}>
+        <section className={styles['menu-box']}>
+          <Menu
+            visible={showMenu}
+            setVisible={setShowMenu}
+            exitGameHandler={exitGameHandler}
+          />
+        </section>
+
+        {/* Video */}
+        <section className={styles['video-box']}>
+          <Video
+            rtcUrl={url}
+            play={playVideo}
+            setPlayStatus={setPlayStatus}
+            getSdkRef={getSdkRef}
+          />
+        </section>
+
+        {playStatus === 'canPlay' && (
+          <button
+            type="button"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              backgroundColor: 'transparent',
+              color: 'white',
+              position: 'absolute',
+              top: '30%',
+              left: '50%',
+              transform: 'translateX(-50%) translateY(-50%)',
+            }}
+            onClick={() => {
+              setPlayVideo(true);
+            }}
+          >
+            點擊後開始播放
+          </button>
+        )}
+        {/* Aft Button */}
+        <section className={styles['cash-in-out-box']}>
+          <div
+            className={styles['cash-in-out-btn']}
+            role="presentation"
+            onClick={() => setIsCashInOutClick(true)}
+          />
+        </section>
+
+        {/* Main Button */}
+        <section className={styles['main-btn-box']}>
+          <MainBtn
+            mainBtnClick={mainBtnClick}
+            setMainBtnClick={setMainBtnClick}
+            mainBtnHandler={mainBtnHandler}
+            setIsAuto={setIsAuto}
+            isAuto={isAuto}
+          />
+        </section>
+
+        {/*  Sub Button */}
+        <section
+          style={{ zIndex: styleConfig.zIndex.max }}
+          ref={subBtnRef}
+          className={styles['sub-btn-box']}
+>>>>>>> edb0650 (彈出視窗fixed)
         >
           點擊後開始播放
         </button>

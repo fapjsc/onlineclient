@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -9,12 +9,16 @@ import {
 } from 'react-router-dom';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { useSelector } from 'react-redux';
 
 import ProtectRouter from './routes/ProtectRouter';
 import LoadingPage from './pages/LoadingPage';
 import LandingPage from './pages/LandingPage';
 
 import './App.scss';
+import WarningWindow from './components/warningWindow/WarningWindow';
+import { store } from './store';
+import { showWarningWindow } from './store/actions/warningAction';
 
 const GamePlayPage = React.lazy(() => import('./pages/game-play/GamePlayPage'));
 const Layout = React.lazy(() => import('./pages/Layout/Layout'));
@@ -23,9 +27,30 @@ const GameTypePage = React.lazy(() => import('./pages/game-type/GameTypePage'));
 
 const AnimatedSwitch = () => {
   const location = useLocation();
+  const {
+    visible,
+    propStatus,
+    btnAction,
+    windowText,
+    btnText,
+  } = useSelector((state) => state.warning);
 
+  useEffect(() => {
+    store.dispatch(showWarningWindow('off'));
+  }, []);
+
+  useEffect(() => {
+    console.log(visible, propStatus, btnAction, windowText, btnText);
+  }, [visible, propStatus, btnAction, windowText, btnText]);
   return (
     <TransitionGroup component={null}>
+      <WarningWindow
+        visible={visible}
+        propStatus={propStatus}
+        btnAction={btnAction}
+        windowText={windowText}
+        btnText={btnText}
+      />
       <CSSTransition
         key={location.key}
         classNames="animation-item"

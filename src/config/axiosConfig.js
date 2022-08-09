@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Dialog } from 'antd-mobile';
 import { store } from '../store';
 import { logout } from '../store/actions/userActions';
+import { showWarningWindow } from '../store/actions/warningAction';
 
 // import { rootActionTypes } from '../store/types';
 
@@ -93,14 +93,8 @@ authFetch.interceptors.response.use(
     // 這裡統一處理429和401錯誤
     // 目前僅先定義401錯誤
     if (response?.status === 401) {
-      Dialog.alert({
-        content: '無效的TOKEN',
-        confirmText: '重新登入',
-        onConfirm: () => {
-          store.dispatch(logout());
-          // store.dispatch({ type: rootActionTypes.RESET_STORE });
-        },
-      });
+      //can not reslove it
+      store.dispatch(showWarningWindow('on', 'warning', () => store.dispatch(logout()), '無效的TOKEN', '重新登入'));
     }
 
     return Promise.reject(error);
