@@ -86,12 +86,6 @@ const Aristocrat = ({
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
     if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
-
       setIsAuto({ action: false, limit: null });
       store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
       return;
@@ -116,7 +110,7 @@ const Aristocrat = ({
         payload: { currentBtnCode: code },
       });
       break;
-
+    //can not reslove it
     default:
       store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
@@ -181,14 +175,6 @@ const Aristocrat = ({
     if (btnPressError) {
       setMainBtnClick({ auto: false, max: false, spin: false });
       setIsAuto({ action: false, limit: null });
-      Dialog.alert({
-        content: btnPressError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearButtonPressStatus());
-        },
-      });
     }
   }, [btnPressError, dispatch, setIsAuto]);
 
@@ -220,8 +206,6 @@ const Aristocrat = ({
         );
       });
 
-<<<<<<< HEAD
-=======
   const confirmBtnAction = () => {
     dispatch(clearButtonPressStatus());
   };
@@ -232,7 +216,6 @@ const Aristocrat = ({
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnPressError]);
->>>>>>> edb0650 (彈出視窗fixed)
   return (
     <>
       <Wrapper img={image} className={styles.container} model={model}>

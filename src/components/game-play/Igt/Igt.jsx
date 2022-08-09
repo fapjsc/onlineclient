@@ -184,14 +184,14 @@ const Igt = ({
     if (btnPressError) {
       setMainBtnClick({ auto: false, max: false, spin: false });
       setIsAuto({ action: false, limit: null });
-      Dialog.alert({
-        content: btnPressError,
-        closeOnMaskClick: true,
-        confirmText: '確定',
-        onClose: () => {
-          dispatch(clearButtonPressStatus());
-        },
-      });
+      // Dialog.alert({
+      //   content: btnPressError,
+      //   closeOnMaskClick: true,
+      //   confirmText: '確定',
+      //   onClose: () => {
+      //     dispatch(clearButtonPressStatus());
+      //   },
+      // });
     }
   }, [btnPressError, dispatch, setIsAuto]);
 
@@ -245,7 +245,6 @@ const Igt = ({
         />
       </section>
 
-<<<<<<< HEAD
       {playStatus === 'canPlay' && (
         <button
           type="button"
@@ -262,73 +261,6 @@ const Igt = ({
           onClick={() => {
             setPlayVideo(true);
           }}
-=======
-    <>
-      <Wrapper img={image} className={styles.container} model={model}>
-        <section className={styles['menu-box']}>
-          <Menu
-            visible={showMenu}
-            setVisible={setShowMenu}
-            exitGameHandler={exitGameHandler}
-          />
-        </section>
-
-        {/* Video */}
-        <section className={styles['video-box']}>
-          <Video
-            rtcUrl={url}
-            play={playVideo}
-            setPlayStatus={setPlayStatus}
-            getSdkRef={getSdkRef}
-          />
-        </section>
-
-        {playStatus === 'canPlay' && (
-          <button
-            type="button"
-            style={{
-              width: '10rem',
-              height: '10rem',
-              backgroundColor: 'transparent',
-              color: 'white',
-              position: 'absolute',
-              top: '30%',
-              left: '50%',
-              transform: 'translateX(-50%) translateY(-50%)',
-            }}
-            onClick={() => {
-              setPlayVideo(true);
-            }}
-          >
-            點擊後開始播放
-          </button>
-        )}
-        {/* Aft Button */}
-        <section className={styles['cash-in-out-box']}>
-          <div
-            className={styles['cash-in-out-btn']}
-            role="presentation"
-            onClick={() => setIsCashInOutClick(true)}
-          />
-        </section>
-
-        {/* Main Button */}
-        <section className={styles['main-btn-box']}>
-          <MainBtn
-            mainBtnClick={mainBtnClick}
-            setMainBtnClick={setMainBtnClick}
-            mainBtnHandler={mainBtnHandler}
-            setIsAuto={setIsAuto}
-            isAuto={isAuto}
-          />
-        </section>
-
-        {/*  Sub Button */}
-        <section
-          style={{ zIndex: styleConfig.zIndex.max }}
-          ref={subBtnRef}
-          className={styles['sub-btn-box']}
->>>>>>> edb0650 (彈出視窗fixed)
         >
           點擊後開始播放
         </button>

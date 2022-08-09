@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Mask,
   Image,
-  Dialog,
   Toast,
 } from 'antd-mobile';
 import {

@@ -1,8 +1,5 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 
-// eslint-disable-next-line
-import { Dialog } from 'antd-mobile';
-
 import PropTypes from 'prop-types';
 import { SrsRtcPlayerAsync } from '../utils/srs-sdk';
 
