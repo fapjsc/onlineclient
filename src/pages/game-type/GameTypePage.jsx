@@ -143,13 +143,17 @@ const GameTypePage = () => {
     if (!slot) return;
     console.log('slot =>', slot);
     slot.forEach((item, index) => {
-      if (Object.keys(item?.member).length > 0
-      || item?.hasCredit
-      || item?.waitingList?.length > 0) {
-      //有人在遊戲中
-        resetPeopleList(item?.member?.gender || 'female', index);
-      } else {
-        resetPeopleList('', index);
+      try {
+        if (Object.keys(item?.member)?.length > 0
+        || item?.hasCredit
+        || item?.waitingList?.length > 0) {
+        //有人在遊戲中
+          resetPeopleList(item?.member?.gender || 'female', index);
+        } else {
+          resetPeopleList('', index);
+        }
+      } catch {
+        store.dispatch(showWarningWindow('on', 'warning', () => navigate('/'), '尚未有機器可供選擇'));
       }
       resetSlotList(item?.brand_name, item?.model, index, item.id);
     });
