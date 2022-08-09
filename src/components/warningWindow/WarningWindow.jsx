@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import useTimer from '../../hooks/useTimer';
 import _ from 'lodash';
+import { showWarningWindow } from '../../store/actions/warningAction';
+import { store } from '../../store';
 
 const statusText = {
   warning: {
@@ -63,7 +65,7 @@ const statusText = {
   },
 };
 const playerPressTimeDefault = {playerPressTime: -1}
-const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
+const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) => {
   const [timeState, timefunc ] = useTimer(30, 0, 270);
   const [status, setStatus] = useState(propStatus);
   const {second:sec, minute:min, showWindow: show} = timeState;
@@ -78,22 +80,6 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
     data: egmListData,
   } = useSelector((state) => state.egmList);
 
-  /*
-  const egmListDataReduce = () => egmListData.filter((item, index) => {
-
-    let reduceArr = Object.keys(item).reduce((all, currKey) => {
-      if(currKey === 'id' || currKey === 'playerPressTime') {
-        return [...all, currKey]
-      }
-      return all
-    }, [])
-
-    if (reduceArr.length === 2) {
-      if (item.id === egmID) return item;
-    }
-  })
-*/
-
   let findEgmListData = egmListData?.find((item) => {
     if (item?.id === egmID) {
       return item;
@@ -102,21 +88,12 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
   
   findEgmListData = !findEgmListData || typeof findEgmListData === 'undefined' ? {} : findEgmListData
 
-  let { playerPressTime } = !egmListData && Object.keys(findEgmListData)?.length === 0 ? playerPressTimeDefault : findEgmListData 
-  /*
-  egmListData?.map((item,index) => {
-    if(!egmID || !item ) return playerPressTimeDefault;
-    if (item?.id === egmID) {
-      console.log(item?.id, egmID ,'equal')
-      let a = item?.playerPressTime || playerPressTimeDefault;
-      return a == playerPressTimeDefault ? a :item;
-    }
-  }) || [playerPressTimeDefault];
-  */
+  let { playerPressTime } = !egmListData && Object.keys(findEgmListData)?.length === 0 ? playerPressTimeDefault : findEgmListData
 
   const btnOnClick = () => {
     setShow(false)
     console.log('onclick')
+    store.dispatch(showWarningWindow('off'));
     try {
       btnAction()
     } catch {
@@ -145,6 +122,10 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
   useEffect(() => {
     setShow(visible)
   },[visible])
+
+  useEffect(() => {
+    setStatus(propStatus)
+  }, [propStatus])
 
   return(
     <div className={styles.mask} style={{ display: show ? 'flex' : 'none' }}>
@@ -185,15 +166,15 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
                 }
               </div>
               <div role="button" style={{ height: '20%' }} onClick={btnOnClick}>
-                <div>{statusText[status].btnText}</div>
+                <div>{btnText?.length ? btnText : statusText[status]?.btnText}</div>
               </div>
             </div>
           : <div className={styles['position-center']}>
             <div className={styles.warningwindow1}>
               <div role="button" onClick={() => setShow(false)}></div>
               {/*this is corssX*/}
-              <div style={{ height: '20%', alignItems: 'center' }}>{statusText[status].titleText}</div>
-              <div style={{ height: '60%', lineHeight: '40px' }}>{statusText[status].windowText}</div>
+              <div style={{ height: '20%', alignItems: 'center' }}>{statusText[status]?.titleText}</div>
+              <div style={{ height: '60%', lineHeight: '40px' }}>{statusText[status]?.windowText}</div>
               {
                 status !== 'systemMaintenance' &&(
                   <button 
@@ -203,7 +184,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible}) => {
                     }}
                     onClick={btnOnClick}
                   >
-                    {statusText[status].btnText}
+                    {statusText[status]?.btnText}
                     </button>
                 )
               }
@@ -219,5 +200,6 @@ WarningWindow.propTypes = {
   windowText: PropTypes.string,
   btuAction: PropTypes.func.isRequired,
   visible: PropTypes.bool,
+  btnText: PropTypes.string,
 };
 export default WarningWindow;

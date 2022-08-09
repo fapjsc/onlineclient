@@ -59,7 +59,13 @@ export class PixiApp extends PIXI.Application {
     let endFrame = 0;
     const { people } = store.getState().peopleList;
     // eslint-disable-next-line array-callback-return
-    if (!people || people?.length === 0) return;
+    if (!people || people?.length === 0) {
+      this.mainScene.people.forEach((item, index) => {
+        item.people.visible = false;
+        item.people.anim.gotoAndStop(0)
+      })
+      return;
+    }
     // eslint-disable-next-line array-callback-return
     people.map((item, index) => {
       switch (item.sexual) {
@@ -123,6 +129,14 @@ export class PixiApp extends PIXI.Application {
       if (findItem) return slotItem;
 
     })//only catch first slot in slot group
+
+    if (slot?.length === 0 || !slot) {
+      this.mainScene.slotTime.forEach((item, index) => {
+        if (this.#_brandName === 'sammy' || this.#_brandName === 'daito') {
+          item.times.gotoAndStop(0)
+        } else { item.times.gotoAndStop(1)}
+      })
+    }
 
     firstSlot.forEach((item, index) => {
       const slotTime = this.mainScene.slotTime[index]?.times

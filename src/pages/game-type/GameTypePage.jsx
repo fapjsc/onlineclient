@@ -46,7 +46,7 @@ import styles from './GameTypePage.module.scss';
 import { changePeople, changeSlot, setPixiStatus } from '../../store/actions/pixiAction';
 //type
 import { egmActionTypes } from '../../store/types';
-import WarningWindow from '../../components/warningWindow/WarningWindow';
+import { showWarningWindow } from '../../store/actions/warningAction';
 
 const jpSlotList = ['sammy', 'daito'];
 const slotList = ['igt', 'aruze', 'aristocrat'];
@@ -251,14 +251,19 @@ const GameTypePage = () => {
     dispatch({ type: egmActionTypes.CLEAR_EGM_LIST_STATUS });
   };
 
+  useEffect(() => {
+    let windowText;
+    if (brandListError) windowText = brandListError;
+    if (selectEgmError) windowText = selectEgmError;
+    if (egmListError) windowText = egmListError;
+    if (brandListError || selectEgmError || egmListError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, windowText));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [brandListError, selectEgmError, egmListError]);
+
   return (
     <>
-      <WarningWindow
-        visible={!!((brandListError || selectEgmError || egmListError))}
-        propStatus="warning"
-        btnAction={confirmBtnAction}
-        windowText={brandListError || selectEgmError || egmListError}
-      />
       <div
         className={styles.container}
         style={{ width: window.innerWidth, height: window.innerHeight }}

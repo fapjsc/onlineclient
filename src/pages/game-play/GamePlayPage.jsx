@@ -24,6 +24,9 @@ import AutoForm from '../../components/auto-form/AutoForm';
 // eslint-disable-next-line
 import { getSocket, connectSocket, disconnectSocket } from '../../utils/socket';
 
+import { store } from '../../store';
+import { showWarningWindow } from '../../store/actions/warningAction';
+
 // Hooks
 import useRwd from '../../hooks/useRwd';
 
@@ -43,7 +46,6 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 
 // Helpers
 import { getEgmBg } from '../../utils/helper';
-import WarningWindow from '../../components/warningWindow/WarningWindow';
 
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
@@ -250,14 +252,15 @@ const GamePlay = () => {
     setIsCashInOutClick(false);
   };
 
+  useEffect(() => {
+    if (aftData || aftError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, windowText()));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aftData, aftError]);
+
   return (
     <>
-      <WarningWindow
-        visible={!!((aftData || aftError))}
-        propStatus="warning"
-        btnAction={confirmBtnAction}
-        windowText={windowText()}
-      />
       <CSSTransition
         in={!model || !brandName}
         classNames="animation-item"

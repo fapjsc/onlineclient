@@ -5,9 +5,6 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-
-// Antd
-import { Dialog } from 'antd-mobile';
 /*
 // Lodash
 import throttle from 'lodash.throttle';
@@ -40,7 +37,9 @@ import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
 
 // Styles
 import styles from './Aruze.module.scss';
-import WarningWindow from '../../warningWindow/WarningWindow';
+
+import { store } from '../../../store';
+import { showWarningWindow } from '../../../store/actions/warningAction';
 
 const Aruze = ({
   // model,
@@ -105,11 +104,7 @@ const Aruze = ({
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
     if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
 
       setIsAuto({ action: false, limit: null });
 
@@ -137,11 +132,8 @@ const Aruze = ({
       break;
 
     default:
-      Dialog.alert({
-        content: '按鈕錯誤',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
   };
 
@@ -246,20 +238,8 @@ const Aruze = ({
     // eslint-disable-next-line
   }, [isAuto, currentBtnPress]);
 
-  const windowText = () => {
-    if (!currentBtnPress) return '請先選擇倍率按鈕';
-  };
-  const confirmBtnAction = () => {
-  };
-
   return (
     <>
-      <WarningWindow
-        visible={!currentBtnPress}
-        propStatus="warning"
-        btnAction={confirmBtnAction}
-        windowText={windowText()}
-      />
       <Wrapper img={image} className={styles.container}>
         {/* Menu */}
         <section className={styles['menu-box']}>

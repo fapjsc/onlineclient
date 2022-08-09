@@ -5,11 +5,11 @@ import React, {
 // Prop-Type
 import PropTypes from 'prop-types';
 
-// Antd
-import { Dialog } from 'antd-mobile';
-
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
+
+import { store } from '../../../store';
+import { showWarningWindow } from '../../../store/actions/warningAction';
 
 // Components
 import Wrapper from '../Wrapper';
@@ -30,8 +30,6 @@ import { egmActionTypes } from '../../../store/types';
 
 // Config
 import { apiConfig } from '../../../apis';
-
-import WarningWindow from '../../warningWindow/WarningWindow';
 
 // Helpers
 import { getSubBtnImg, getSubBtnImgSelect } from '../../../utils/helper';
@@ -89,6 +87,7 @@ const Aristocrat = ({
   const mainBtnHandler = ({ name, code }) => {
     if (!currentBtnPress) {
       setIsAuto({ action: false, limit: null });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
       return;
     }
 
@@ -113,11 +112,7 @@ const Aristocrat = ({
       break;
     //can not reslove it
     default:
-      Dialog.alert({
-        content: '按鈕錯誤',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
   };
 
@@ -210,21 +205,19 @@ const Aristocrat = ({
           />
         );
       });
-  const windowText = () => {
-    if (!currentBtnPress) return '請先選擇倍率按鈕';
-    if (btnPressError) return btnPressError;
-  };
+
   const confirmBtnAction = () => {
     dispatch(clearButtonPressStatus());
   };
+
+  useEffect(() => {
+    if (btnPressError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btnPressError]);
   return (
     <>
-      <WarningWindow
-        visible={!!((!currentBtnPress || btnPressError))}
-        propStatus="warning"
-        btnAction={confirmBtnAction}
-        windowText={windowText()}
-      />
       <Wrapper img={image} className={styles.container} model={model}>
         <section className={styles['menu-box']}>
           <Menu

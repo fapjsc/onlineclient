@@ -5,9 +5,6 @@ import React, {
 // Prop-Type
 import PropTypes from 'prop-types';
 
-// Antd
-import { Dialog } from 'antd-mobile';
-
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,7 +24,8 @@ import MainBtn from './MainBtn';
 import Video from '../../Video';
 // Types
 import { egmActionTypes } from '../../../store/types';
-
+import { showWarningWindow } from '../../../store/actions/warningAction';
+import { store } from '../../../store';
 // Actions
 import {
   buttonPress,
@@ -83,11 +81,7 @@ const Igt = ({
   // Main Button Press Call api
   const mainBtnHandler = ({ name, code }) => {
     if (!currentBtnPress) {
-      Dialog.alert({
-        content: '請先選擇倍率按鈕',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '請先選擇倍率按鈕'));
 
       setIsAuto({ action: false, limit: null });
 
@@ -114,11 +108,7 @@ const Igt = ({
       break;
 
     default:
-      Dialog.alert({
-        content: '按鈕錯誤',
-        closeOnMaskClick: true,
-        confirmText: '確定',
-      });
+      store.dispatch(showWarningWindow('on', 'warning', () => {}, '按鈕錯誤'));
     }
   };
 
@@ -221,22 +211,15 @@ const Igt = ({
     dispatch(clearButtonPressStatus());
   };
 
-  const windowText = () => {
+  useEffect(() => {
     if (btnPressError) {
-      return btnPressError;
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
     }
-    if (!currentBtnPress) return '請先選擇倍率按鈕';
-  };
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btnPressError]);
   return (
 
     <>
-      <WarningWindow
-        visible={!!((btnPressError || !currentBtnPress))}
-        propStatus="warning"
-        btnAction={confirmBtnAction}
-        windowText={windowText()}
-      />
       <Wrapper img={image} className={styles.container} model={model}>
         <section className={styles['menu-box']}>
           <Menu
