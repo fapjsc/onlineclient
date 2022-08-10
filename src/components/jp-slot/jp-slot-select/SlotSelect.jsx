@@ -62,7 +62,7 @@ const SlotSelect = ({ hidden }) => {
   });
 
   useEffect(() => {
-    
+
   }, [showSelectAction]);
 
   const { data: egm } = useSelector((state) => state.egmList);
