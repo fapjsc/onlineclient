@@ -29,12 +29,13 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     console.log('clear');
   };
 
-  const Timer = () => {
+  const Timer = (timeOut, sec, min) => {
     //console.log('timer id => ', timeIntervalTimer.current,timeOutTimer.current)
     //await Clear();
     clearInterval(timeIntervalTimer.current)
     clearTimeout(timeOutTimer.current)
-    console.log(`reset success 等待${propTimeOutCount}秒 重新計時`);
+    console.log(`reset success 等待${timeOut || propTimeOutCount}秒 重新計時`);
+    changeTime(sec, min)
     timeOutTimer.current = setTimeout(() => {
       timeIntervalTimer.current = setInterval(() => {
         setCountDown((prev) => {
@@ -59,7 +60,7 @@ function useTimer(propSec, propMin, propTimeOutCount) {
 
       }, 1000);
       setShow(true);
-    }, propTimeOutCount * 1000);
+    }, (timeOut || propTimeOutCount) * 1000);
   };
 
   useEffect(() => {
@@ -81,6 +82,6 @@ function useTimer(propSec, propMin, propTimeOutCount) {
 
   return [{
     second: countDown.sec, minute: countDown.min, showWindow: show,
-  }, { countDownTimer: Timer, setShowWindow: setShow, ClearTimer: Clear, setTimer: changeTime }];
+  }, { countDownTimer: Timer, setShowWindow: setShow, ClearTimer: Clear, setTimer: changeTime}];
 }
 export default useTimer;

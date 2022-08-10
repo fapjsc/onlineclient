@@ -4,9 +4,11 @@ import { store } from '../../../store/index';
 import { setPixiStatus } from '../../../store/actions/pixiAction';
 
 export class Slot extends PIXI.Container {
-  constructor(id, offsetX, offsetY) {
+  #_brandName;
+  constructor(id, offsetX, offsetY, brandName) {
     super();
     this.id = id;
+    this.#_brandName = brandName;
     this.name = null;
     this.position.set(offsetX, offsetY - 10);
     this.visible = true;
@@ -40,8 +42,7 @@ export class Slot extends PIXI.Container {
     slot.interactive = true;
     slot.buttonMode = true;
     slot.name = frames[slot.currentFrame];
-    slot.width = 130;
-    slot.height = 130;
+
     slot.gotoAndStop(0);
     this.addChild(slot);
     return slot;
@@ -56,9 +57,13 @@ export class Slot extends PIXI.Container {
     ];
     const modeSign = new PIXI.AnimatedSprite(Slot.createTexture(frames));
     modeSign.animationSpeed = 0.1;
-    modeSign.width = 50;
-    modeSign.height = 50;
-    modeSign.position.set(30, -20);
+    modeSign.width = 40;
+    modeSign.height = 40;
+    if (this.#_isJpSlot) {
+      modeSign.position.set(20, -10);
+    } else {
+      modeSign.position.set(10, -10);
+    }
     //modeSign.play();
     this.addChild(modeSign);
     return modeSign;
@@ -78,5 +83,12 @@ export class Slot extends PIXI.Container {
       const findSlot = slotArr.find((item) => item.id === this.id);
       store.dispatch(setPixiStatus(true, findSlot));
     });
+  }
+
+  #_isJpSlot() {
+    if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
+      return true;
+    }
+    return false;
   }
 }

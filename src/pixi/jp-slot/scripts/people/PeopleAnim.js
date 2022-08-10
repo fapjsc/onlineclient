@@ -30,8 +30,6 @@ const textureArr = () => {
 export class PeopleAnim extends PIXI.AnimatedSprite {
   constructor(id) {
     super(textureArr());
-    this.width = 70;
-    this.height = 90;
     this.position.set(60, 20);
     this.animationSpeed = 0.2;
     this.name = 'people';

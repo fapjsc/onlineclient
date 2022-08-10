@@ -61,6 +61,13 @@ const SlotSelect = ({ hidden }) => {
     height: (slot?.brandName === 'sammy' || slot?.brandName === 'daito') ? one : two,
   });
 
+  useEffect(() => {
+    
+  }, [showSelectAction]);
+
+  const { data: egm } = useSelector((state) => state.egmList);
+  const jpSlot = egm?.find((item) => item?.id === slot?.egmId)?.jpSlot;
+  console.log(`this.egmID  ${slot?.egmId}\n all egm  ${egm}\n this.jpSlot   ${jpSlot}`);
   return (
     <>
       {/* <Mask visible={visible} onMaskClick={hidden} opacity={0.1} /> */}
@@ -129,7 +136,10 @@ const SlotSelect = ({ hidden }) => {
                 </span>
               </div>
               <div className={styles['body-current-data']}>
-                {[['Games', 25], ['TotalGames', 9999], ['Average', '1/166']].map((item) => (
+                {[['Games', jpSlot?.games || ''],
+                  ['TotalGames', jpSlot?.totalGames || ''],
+                  ['Average', '1/166'],
+                ].map((item) => (
                   <div className={styles.statistics}>
                     <div>{item[0]}</div>
                     <div>{item[1]}</div>

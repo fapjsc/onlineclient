@@ -44,19 +44,33 @@ export class MainScene extends PIXI.Container {
     for (let item = amount; item > 0; item--) {
       // eslint-disable-next-line prefer-template
       const id = parseInt((horizonID + '') + (item + ''), 10);
-
-      //people container
-      const newPeople = new People(id, offsetX - 30 + item * 47, 0 - item * 20);
-      this.people.push({ people: newPeople, id: id });//store to people arr
-      peopleContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 15);
-      peopleContainer.addChild(newPeople);
-
-      //slot Container
       let newSlot;
-      newSlot = new Slot(id, offsetX - 30 + item * 47, 0 - item * 21);
-      newSlot.position.set(newSlot.x, newSlot.y)      
-      this.slot.push({ slot: newSlot, id: id });
-      slotContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
+      let newPeople;
+      if (this.#_isJpSlot()) {
+        //people container
+        newPeople = new People(id, offsetX - 40 + item * 47, 7 - item * 20);
+        this.people.push({ people: newPeople, id: id });//store to people arr
+        peopleContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 15);
+        peopleContainer.addChild(newPeople);
+
+        //slot Container
+        newSlot = new Slot(id, offsetX - 20 + item * 47, - item * 21, this.#_brandName);
+        newSlot.position.set(newSlot.x, newSlot.y)      
+        this.slot.push({ slot: newSlot, id: id });
+        slotContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
+      } else {
+        //people container
+        newPeople = new People(id, offsetX - 40 + item * 47, -6 - item * 20);
+        this.people.push({ people: newPeople, id: id });//store to people arr
+        peopleContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 15);
+        peopleContainer.addChild(newPeople);
+
+        //slot Container
+        newSlot = new Slot(id, offsetX - 20 + item * 47, -30 - item * 20, this.#_brandName);
+        newSlot.position.set(newSlot.x, newSlot.y)      
+        this.slot.push({ slot: newSlot, id: id });
+        slotContainer.position.set(offsetX - 80 + item * 47, offsetY - item + 20);
+      }
 
 
       //showGirl add to slot
@@ -93,7 +107,7 @@ export class MainScene extends PIXI.Container {
       'stageNormal'
     ]
     const stage = new PIXI.AnimatedSprite(Slot.createTexture(frames))
-    if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
+    if (this.#_isJpSlot()) {
       stage.gotoAndStop(0)
     } else {stage.gotoAndStop(1)}
     stage.position.set(0, -100);
@@ -135,7 +149,7 @@ export class MainScene extends PIXI.Container {
     new Array(bgCount).fill('').forEach((item, index) => {
       const bg = new PIXI.AnimatedSprite(Slot.createTexture(frames))
       // console.log('branc', this.#_brandName)
-      if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
+      if (this.#_isJpSlot()) {
         bg.gotoAndStop(0)
       } else if (index === 0) {
         bg.gotoAndStop(1)
@@ -172,11 +186,18 @@ export class MainScene extends PIXI.Container {
       'signNormal'
     ]
     //最上面的東西
-    if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
+    if (this.#_isJpSlot()) {
       const sign = new PIXI.AnimatedSprite(Slot.createTexture(frames))
       sign.gotoAndStop(0)
       sign.y = -70;
       this.addChild(sign);
     } else {return}
+  }
+
+  #_isJpSlot() {
+    if (this.#_brandName === 'daito' || this.#_brandName === 'sammy') {
+      return true;
+    }
+    return false;
   }
 }

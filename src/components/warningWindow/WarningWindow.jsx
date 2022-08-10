@@ -21,6 +21,11 @@ const statusText = {
     btnText: '繼續遊戲',
     titleText: '系統訊息',
   },
+  wash: {
+    windowText: '正在洗分中',
+    btnText: '正在洗分中',
+    titleText: '系統訊息',
+  },
   timeOut: {
     windowText: <>
       待機過久，系統已自動洗分，
@@ -65,11 +70,17 @@ const statusText = {
   },
 };
 const playerPressTimeDefault = {playerPressTime: -1}
+const autoLeaveEgmDefault = {
+  start: false,
+  done: false,
+  member_id: ""
+}
+
 const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) => {
   const [timeState, timefunc ] = useTimer(30, 0, 270);
   const [status, setStatus] = useState(propStatus);
   const {second:sec, minute:min, showWindow: show} = timeState;
-  const {setShowWindow: setShow, countDownTimer: Timer} = timefunc;
+  const {setShowWindow: setShow, countDownTimer: Timer, setTimer} = timefunc;
 
   const {
     data: selectEgmData,
@@ -80,6 +91,8 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
     data: egmListData,
   } = useSelector((state) => state.egmList);
 
+  const { data: userData } = useSelector((state) => state.user)
+
   let findEgmListData = egmListData?.find((item) => {
     if (item?.id === egmID) {
       return item;
@@ -89,15 +102,36 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
   findEgmListData = !findEgmListData || typeof findEgmListData === 'undefined' ? {} : findEgmListData
 
   let { playerPressTime } = !egmListData && Object.keys(findEgmListData)?.length === 0 ? playerPressTimeDefault : findEgmListData
+  const playerPressTimeOut = findEgmListData?.playerPressTimeOut || {}
+  const { start: washStart, done: washDone, member_id: washMember } = findEgmListData?.autoLeaveEgm || autoLeaveEgmDefault
+
+  const startTimer = () => {
+    const date = playerPressTime === -1 ? 0 : (new Date() - new Date(playerPressTime)) / 1000
+    console.log(`timeout of player press time =>  \n${new Date()}\n${new Date(playerPressTime)}\n${date}`)
+    const timeOutSec = (playerPressTimeOut - 30000) / 1000
+    Timer(timeOutSec, 30, 0)
+  }
 
   const btnOnClick = () => {
     setShow(false)
     console.log('onclick')
     store.dispatch(showWarningWindow('off'));
-    try {
-      btnAction()
-    } catch {
-      //pass
+    if (propStatus === 'timeInterval' ) {
+      if (status === 'timeOut') {
+        try {
+          btnAction()
+        } catch {
+          //pass
+        }
+      } else {
+        startTimer()
+      }
+    } else {
+      try {
+        btnAction()
+      } catch {
+        //pass
+      }
     }
   }
 
@@ -106,18 +140,22 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
     //重egm List 更新playerPressTime
 
     if (status === 'timeOut' || status === 'timeInterval') {
-      console.log('更新 playerPressTime => ', playerPressTime);
-      console.log(`selectEgmData: ${selectEgmData}`);
+      // console.log('更新 playerPressTime => ', playerPressTime);
+      // console.log(`selectEgmData: ${selectEgmData}`);
       // eslint-disable-next-line
-      Timer()
+      startTimer()
     }
-  }, [playerPressTime]);
+  }, [playerPressTime, playerPressTimeOut]);
 
   useEffect(() => {
-    if (sec === 0 && min === 0){
+    console.log('autoleave egm =>', washStart, washDone, washMember ,userData?.member_id)
+    if (washDone) {
       setStatus('timeOut')
+      setShow(true)
+    } else if (sec === 0 && min === 0) {
+      setShow(false)
     }
-  }, [min, sec])
+  }, [min, sec, washDone, washStart])
 
   useEffect(() => {
     setShow(visible)
@@ -130,7 +168,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
   return(
     <div className={styles.mask} style={{ display: show ? 'flex' : 'none' }}>
       {
-        status === 'timeInterval' || status === 'timeOut' || status === 'warning'
+        status === 'timeInterval' || status === 'timeOut' || status === 'warning' || status ==='wash'
           ? <div className={styles.warningwindow2}>
               <div style={{ height: '20%' }}>{statusText[status].titleText}</div>
               <div style={{ height: '60%' }}>
@@ -198,7 +236,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
 WarningWindow.propTypes = {
   propStatus: PropTypes.string.isRequired,
   windowText: PropTypes.string,
-  btuAction: PropTypes.func.isRequired,
+  btuAction: PropTypes.func,
   visible: PropTypes.bool,
   btnText: PropTypes.string,
 };

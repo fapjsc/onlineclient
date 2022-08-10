@@ -50,6 +50,7 @@ import { showWarningWindow } from '../../store/actions/warningAction';
 
 const jpSlotList = ['sammy', 'daito'];
 const slotList = ['igt', 'aruze', 'aristocrat'];
+const peopleSexual = ['m1', 'w1', 'w2'];
 
 const GameTypePage = () => {
   const navigate = useNavigate();
@@ -94,23 +95,6 @@ const GameTypePage = () => {
 
   const { id: egmID } = selectEgmDta || {};
 
-  const genderSwitch = (gender) => {
-    let returngender;
-    switch (gender) {
-    case 'female':
-      returngender = 'w1';
-      break;
-    case 'male':
-      returngender = 'm1';
-      break;
-    default:
-      returngender = '';
-      break;
-    }
-    console.log('gender => ', gender, returngender);
-    return returngender;
-  };
-
   const resetSlotList = (brandName, model, row, egmId) => {
     // eslint-disable-next-line no-unused-vars
     new Array(6).fill('').forEach((item, index) => {
@@ -120,10 +104,16 @@ const GameTypePage = () => {
     });
   };
 
-  const resetPeopleList = (gender, row) => {
+  const resetPeopleList = (isPlaying, row) => {
     // eslint-disable-next-line no-unused-vars
     new Array(6).fill('').forEach((item, index) => {
-      store.dispatch(changePeople(parseInt(`${row + 1}${ index + 1}`, 10), genderSwitch(gender), 'vip'));
+      let sexual;
+      if (isPlaying) {
+        sexual = peopleSexual[Math.floor(Math.random() * 3)];
+      } else {
+        sexual = '';
+      }
+      store.dispatch(changePeople(parseInt(`${row + 1}${ index + 1}`, 10), sexual, 'vip'));
     });
   };
 
@@ -148,9 +138,9 @@ const GameTypePage = () => {
         || item?.hasCredit
         || item?.waitingList?.length > 0) {
         //有人在遊戲中
-          resetPeopleList(item?.member?.gender || 'female', index);
+          resetPeopleList(true, index);
         } else {
-          resetPeopleList('', index);
+          resetPeopleList(false, index);
         }
       } catch {
         store.dispatch(showWarningWindow('on', 'warning', () => navigate('/'), '尚未有機器可供選擇'));
@@ -266,6 +256,13 @@ const GameTypePage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandListError, selectEgmError, egmListError]);
 
+  const clickInScale = (event) => {
+    event.target.style.transform = 'scale(0.8)';
+  };
+  const clickOutScale = (event) => {
+    event.target.style.transform = null;
+  };
+
   return (
     <>
       <div
@@ -305,17 +302,27 @@ const GameTypePage = () => {
 
             <div className={styles['jp-slot-header']}>
               <div
+                onPointerLeave={(event) => clickOutScale(event)}
+                onPointerDown={(event) => clickInScale(event)}
+                onPointerUp={(event) => clickOutScale(event)}
                 className={styles.back}
                 role="presentation"
-                onClick={() => setShowSlot({ action: false, brandName: null })}
+                onClick={(event) => {
+                  setShowSlot({ action: false, brandName: null });
+                }}
               />
               <div className={styles.btn}>
                 {
                   jpSlotList.indexOf(showSlot.brandName) !== -1
                   && jpSlotList.map((item) => (
                     <div
+                      onPointerDown={(event) => clickInScale(event)}
+                      onPointerLeave={(event) => clickOutScale(event)}
+                      onPointerUp={(event) => clickOutScale(event)}
                       role="presentation"
-                      onClick={() => { setShowSlot((prev) => ({ ...prev, brandName: item })); }}
+                      onClick={(event) => {
+                        setShowSlot((prev) => ({ ...prev, brandName: item }));
+                      }}
                       className={styles[showSlot.brandName === item ? 'navBtn-click' : 'navBtn-origin']}
                     >
                       {item === 'sammy' ? '北斗' : '吉宗'}
@@ -327,7 +334,12 @@ const GameTypePage = () => {
                   && slotList.map((item) => (
                     <div
                       role="presentation"
-                      onClick={() => { setShowSlot((prev) => ({ ...prev, brandName: item })); }}
+                      onPointerLeave={(event) => clickOutScale(event)}
+                      onPointerDown={(event) => clickInScale(event)}
+                      onPointerUp={(event) => clickOutScale(event)}
+                      onClick={(event) => {
+                        setShowSlot((prev) => ({ ...prev, brandName: item }));
+                      }}
                       className={styles[showSlot.brandName === item ? 'navBtn-click' : 'navBtn-origin']}
                     >
                       {item.toUpperCase()}
