@@ -110,7 +110,7 @@ const Sammy = ({
 
   const { data: egmList } = useSelector((state) => state.egmList);
 
-  const sammyItem = egmList?.find((el) => el?.brand_name === 'sammy') || {};
+  const sammyItem = egmList?.find((el) => el.id === egmId) || {};
 
   const egmID = sammyItem?.id;
 

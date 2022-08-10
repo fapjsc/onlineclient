@@ -24,55 +24,82 @@
 
   .btn-box {
     position: absolute;
-    // bottom: 30.5%;
     bottom: 25.5%;
     width: 100%;
     height: 14%;
 
     .content {
-      width: 100%;
+      width: 83%;
       height: 100%;
 
-      .max {
-        height: 30%;
-        width: 20%;
+      .top {
+        width: 80%;
+        height: 40%;
         position: absolute;
-        left: 15.5%;
-        background-size: 800%;
-        background-repeat: no-repeat;
-        background-position: 7.5% center;
-        cursor: pointer;
+        top: -10px;
+        left: 10%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-        @media only screen and(max-width: 557px) {
-          height: 40%;
-          top: -2%;
+        div {
+          width: 25%;
+          height: 100%;
+          background-repeat: no-repeat;
+          cursor: pointer;
         }
-      }
 
-      .credit {
-        height: 35%;
-        width: 18%;
-        position: absolute;
-        left: 49%;
-        top: -5%;
-        background-size: 600%;
-        background-repeat: no-repeat;
-        background-position: 10% center;
-        cursor: pointer;
-        // background-color: red;
-      }
+        .max {
+          background-size: 25rem;
+          background-position: 0.3rem -1rem;
 
-      .coin-slot {
-        height: 45%;
-        width: 14%;
-        position: absolute;
-        right: 12%;
-        top: -14%;
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        cursor: pointer;
-        // background-color: red;
+          @media only screen and(max-width: 557px) {
+            background-size: 20rem;
+            background-position: 0 -0.7rem;
+          }
+        }
+
+        .auto {
+          background-size: 25rem;
+          background-position: 0.3rem -1rem;
+
+          @media only screen and(max-width: 557px) {
+            background-size: 20rem;
+            background-position: 0 -0.7rem;
+          }
+        }
+
+        .coin-in {
+          background-size: 18rem;
+          background-position: 0.5rem -0.9rem;
+
+          @media only screen and(max-width: 557px) {
+            background-size: 15rem;
+            background-position: 0 -0.7rem;
+          }
+        }
+
+        .coin-out {
+          background-size: 18rem;
+          background-position: 0.5rem -0.9rem;
+
+          @media only screen and(max-width: 557px) {
+            background-size: 15rem;
+            background-position: 0 -0.7rem;
+          }
+        }
+
+        .coin-slot {
+          height: 45%;
+          width: 14%;
+          position: absolute;
+          right: 12%;
+          top: -14%;
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          background-position: center;
+          cursor: pointer;
+        }
       }
 
       .spin {
@@ -88,7 +115,7 @@
 
         @media only screen and(max-width: 557px) {
           background-size: 21.8rem;
-          background-position: -2.2rem -2.5rem;
+          background-position: -2.2rem center;
         }
       }
 
@@ -102,13 +129,12 @@
         justify-content: space-between;
         align-items: center;
         gap: 5px;
-        // background-color: red;
 
         .stop {
           height: 100%;
           width: 100%;
           border-radius: 100%;
-          background-image: url('../../../assets/button/daito/stop.webp');
+          background-image: url("../../../assets/button/daito/stop.webp");
           background-size: 500%;
           background-position: 9% center;
           background-repeat: no-repeat;
@@ -123,17 +149,39 @@
   animation: 200ms spin-animation steps(3) 1;
 }
 
-@keyframes spin-animation {
-  0% {
-    background-position-x: -3rem;
-  }
-
-  100% {
-    background-position-x: -33rem;
-  }
+.stop-move {
+  animation: 200ms stop-animation steps(3) 1;
 }
 
-@media only screen and(max-width: 557px) {
+.max-move {
+  animation: 200ms max-animation steps(4) 1;
+}
+
+.coin-move {
+  animation: 200ms coin-animation steps(3) 1;
+}
+
+@media screen and(max-width: 557px) {
+  @keyframes max-animation {
+    0% {
+      background-position-x: 0;
+    }
+
+    100% {
+      background-position-x: -20rem;
+    }
+  }
+
+  @keyframes coin-animation {
+    0% {
+      background-position-x: 0;
+    }
+
+    100% {
+      background-position-x: -15rem;
+    }
+  }
+
   @keyframes spin-animation {
     0% {
       background-position-x: -2.2rem;
@@ -145,8 +193,36 @@
   }
 }
 
-.stop-move {
-  animation: 200ms stop-animation steps(3) 1;
+@media screen and(min-width: 558px) {
+  @keyframes spin-animation {
+    0% {
+      background-position-x: -3rem;
+    }
+
+    100% {
+      background-position-x: -33rem;
+    }
+  }
+
+  @keyframes max-animation {
+    0% {
+      background-position-x: 0.3rem;
+    }
+
+    100% {
+      background-position-x: -24.7rem;
+    }
+  }
+
+  @keyframes coin-animation {
+    0% {
+      background-position-x: 0.5rem;
+    }
+
+    100% {
+      background-position-x: -17.5rem;
+    }
+  }
 }
 
 @keyframes stop-animation {
@@ -156,33 +232,5 @@
 
   100% {
     background-position-x: 134%;
-  }
-}
-
-.max-move {
-  animation: 200ms max-animation steps(4) 1;
-}
-
-@keyframes max-animation {
-  0% {
-    background-position-x: 7.5%;
-  }
-
-  100% {
-    background-position-x: 121.8%;
-  }
-}
-
-.credit-move {
-  animation: 200ms credit-animation steps(3) 1;
-}
-
-@keyframes credit-animation {
-  0% {
-    background-position-x: 10%;
-  }
-
-  100% {
-    background-position-x: 130%;
   }
 }

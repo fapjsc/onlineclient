@@ -3,7 +3,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import throttle from 'lodash.throttle';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Prop-Type
 import PropTypes from 'prop-types';
@@ -14,10 +14,13 @@ import classnames from 'classnames';
 import styled from 'styled-components';
 
 // actions
+// eslint-disable-next-line
+import { DatePickerView } from 'antd-mobile';
 import {
   // eslint-disable-next-line
   buttonPress,
   buttonPressDemo,
+  buttonPressToEGMCashInOut,
 } from '../../../store/actions/egmActions';
 
 // Helpers
@@ -32,18 +35,30 @@ import GameHeader from '../game-heder/GameHeader';
 // Styles
 import styles from './Daito.module.scss';
 
+// eslint-disable-next-line
 const SpinBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
 `;
-
+// eslint-disable-next-line
 const MaxBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
 `;
 
-const CashInOutBtn = styled.div`
+// eslint-disable-next-line
+const AutoBtn = styled.div`
+  background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
+`;
+// eslint-disable-next-line
+const CoinInBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
 `;
 
+// eslint-disable-next-line
+const CoinOutBtn = styled.div`
+  background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
+`;
+
+// eslint-disable-next-line
 const CoinBtn = styled.div`
   background-image: ${({ name, brand, model }) => `url(${getMainBtnImg({ name, brand, model })})`};
 `;
@@ -64,9 +79,14 @@ const Daito = ({
   ip,
   brand,
 }) => {
+  // eslint-disable-next-line
   const [spin, setSpin] = useState(false);
+
   const [max, setMax] = useState(false);
-  const [credit, setCredit] = useState(false);
+  // eslint-disable-next-line
+  const [auto, setAuto] = useState(false);
+  const [coinIn, setCoinIn] = useState(false);
+  const [coinOut, setCoinOut] = useState(false);
   const [stop, setStop] = useState({
     left: { action: false, code: 'stop1' },
     center: { action: false, code: 'stop2' },
@@ -75,6 +95,23 @@ const Daito = ({
 
   // Redux
   const dispatch = useDispatch();
+
+  // const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
+
+  const { data: userData } = useSelector((state) => state.user);
+  const { level: userLevel, member_account: userName } = userData || {};
+
+  const { data } = useSelector((state) => state.selectEgm);
+  const { id: egmId } = data || {};
+
+  const { data: egmList } = useSelector((state) => state.egmList);
+
+  const sammyItem = egmList?.find((el) => el.id === egmId) || {};
+
+  const egmID = sammyItem?.id;
+
+  const { jpSlot } = sammyItem || {};
+  const point = jpSlot?.coinPurse;
 
   const btnPressApiHandler = useCallback(
     (code) => {
@@ -89,6 +126,7 @@ const Daito = ({
     [btnPressApiHandler],
   );
 
+  // eslint-disable-next-line
   const onSpinClick = () => {
     setSpin(true);
     throttledBtnPress('spin');
@@ -97,11 +135,20 @@ const Daito = ({
     }, 400);
   };
 
-  const onCreditClick = () => {
-    setCredit(true);
+  const onCoinInClick = () => {
+    setCoinIn(true);
+    dispatch(buttonPressToEGMCashInOut({ type: 'coinIn', egmId }));
     setTimeout(() => {
-      setCredit(false);
-    }, 200);
+      setCoinIn(false);
+    }, 400);
+  };
+
+  const onCoinOutClick = () => {
+    setCoinOut(true);
+    dispatch(buttonPressToEGMCashInOut({ type: 'coinOut', egmId }));
+    setTimeout(() => {
+      setCoinOut(false);
+    }, 400);
   };
 
   const onMaxClick = () => {
@@ -109,6 +156,14 @@ const Daito = ({
     throttledBtnPress('10');
     setTimeout(() => {
       setMax(false);
+    }, 200);
+  };
+
+  const onAutoClick = () => {
+    setAuto(true);
+    // throttledBtnPress('10');
+    setTimeout(() => {
+      setAuto(false);
     }, 200);
   };
 
@@ -131,7 +186,14 @@ const Daito = ({
 
   return (
     <>
-      <GameHeader exitGameHandler={exitGameHandler} />
+      <GameHeader
+        exitGameHandler={exitGameHandler}
+        point={point}
+        egmName={name}
+        egmID={egmID}
+        userLevel={userLevel}
+        userName={userName}
+      />
       <Wrapper jp img={image} className={styles.container} model={model}>
         <section type={name} className={styles['video-box']}>
           <Video
@@ -165,19 +227,34 @@ const Daito = ({
 
         <section className={styles['btn-box']}>
           <div className={styles.content}>
-            <MaxBtn
-              type={name}
-              role="presentation"
-              onClick={onMaxClick}
-              name="max"
-              brand={brand}
-              model={model}
-              className={`${styles.max} ${classnames({
-                [styles['max-move']]: max,
-              })}`}
-            />
 
-            <CashInOutBtn
+            <div className={styles.top}>
+
+              <MaxBtn
+                type={name}
+                role="presentation"
+                onClick={onMaxClick}
+                name="max"
+                brand={brand}
+                model={model}
+                className={`${styles.max} ${classnames({
+                  [styles['max-move']]: max,
+                })}`}
+              />
+
+              <AutoBtn
+                type={name}
+                role="presentation"
+                onClick={onAutoClick}
+                name="auto"
+                brand={brand}
+                model={model}
+                className={`${styles.auto} ${classnames({
+                  [styles['max-move']]: auto,
+                })}`}
+              />
+
+              {/* <CashInOutBtn
               type={name}
               role="presentation"
               name="credit"
@@ -187,14 +264,41 @@ const Daito = ({
                 [styles['credit-move']]: credit,
               })}`}
               onClick={onCreditClick}
-            />
-            <CoinBtn
-              type={name}
-              name="coin"
-              brand={brand}
-              model={model}
-              className={styles['coin-slot']}
-            />
+            /> */}
+
+              <CoinInBtn
+                type={name}
+                role="presentation"
+                name="coinIn"
+                brand={brand}
+                model={model}
+                className={`${styles['coin-in']} ${classnames({
+                  [styles['coin-move']]: coinIn,
+                })}`}
+                onClick={onCoinInClick}
+              />
+
+              <CoinOutBtn
+                type={name}
+                role="presentation"
+                name="coinOut"
+                brand={brand}
+                model={model}
+                className={`${styles['coin-out']} ${classnames({
+                  [styles['coin-move']]: coinOut,
+                })}`}
+                onClick={onCoinOutClick}
+              />
+
+              {/* <CoinBtn
+                type={name}
+                name="coin"
+                brand={brand}
+                model={model}
+                className={styles['coin-slot']}
+              /> */}
+
+            </div>
 
             <SpinBtn
               type={name}
