@@ -17,22 +17,6 @@
     padding: 1% 1% 0;
     font-size: 1rem;
     color: #f2f2f2;
-
-    .egm-info {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-
-      .game-name {
-        font-size: 1.2rem;
-      }
-
-      .game-number {
-        font-size: 0.5rem;
-      }
-    }
-
     .play-info {
       height: 100%;
       display: flex;
@@ -58,6 +42,39 @@
             #abe2fa 100%
           );
       }
+    }
+  }
+
+  .circle {
+    width: 35px;
+    height: 35px;
+    background-color: #b4ddf8;
+    border-radius: 50%;
+  }
+
+  .middle {
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(#e3184b, #ab17a8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .egm-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .game-name {
+      font-size: 1.2rem;
+    }
+
+    .game-number {
+      font-size: 0.5rem;
     }
   }
 

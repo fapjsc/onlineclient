@@ -24,7 +24,7 @@ export class PixiApp extends PIXI.Application {
 
     //let mobile can slide this canvas;
     this.renderer.plugins.interaction.cursorStyles.default = 'default'
-    // this.view.style.touchAction = 'none';
+    this.view.style.touchAction = 'action';
     this.prevPeopleSexual = [];
     this.prevSlot = [];
   }

@@ -10,22 +10,29 @@ import Menu from '../Menu';
 import styles from './GameHeader.module.scss';
 
 const GameHeader = ({
-  exitGameHandler, point, egmName, egmID, userLevel, userName,
+  exitGameHandler, point, egmName, egmID, userLevel, userName, brand,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
     <HeaderWrapper className={styles.header}>
-      <section className={styles['header-left-box']}>
-        <div
-          className={styles['egm-info']}
-        >
-          <span className={styles['game-name']}>{egmName}</span>
-          <span className={styles['game-number']}>
-            NO.
-            {egmID}
-          </span>
-        </div>
+      <section style={{ width: (brand === 'sammy' || brand === 'daito') ? '30%' : '60%' }} className={styles['header-left-box']}>
+        {(brand !== 'sammy' && brand !== 'daito')
+          && (
+            <div
+              className={styles['egm-info']}
+            >
+              <span className={styles['game-name']}>{egmName}</span>
+              <span className={styles['game-number']}>
+                NO.
+                {egmID}
+              </span>
+            </div>)}
+        {
+          (brand === 'sammy' || brand === 'daito') && (
+            <div className={styles.circle} />
+          )
+        }
         <div
           className={styles['play-info']}
         >
@@ -34,6 +41,19 @@ const GameHeader = ({
         </div>
 
       </section>
+      { (brand === 'sammy' || brand === 'daito')
+        && (
+          <section className={styles.middle}>
+            <div
+              className={styles['egm-info']}
+            >
+              <span className={styles['game-name']}>{egmName}</span>
+              <span className={styles['game-number']}>
+                NO.
+                {egmID}
+              </span>
+            </div>
+          </section>)}
       <section className={styles['header-right-box']}>
         <div className={styles['header-total']}>
           <span>代幣</span>
@@ -59,10 +79,12 @@ GameHeader.propTypes = {
   egmID: PropTypes.number.isRequired,
   userLevel: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
+  brand: PropTypes.string,
 };
 
 GameHeader.defaultProps = {
   point: 0,
+  brand: null,
 };
 
 export default GameHeader;

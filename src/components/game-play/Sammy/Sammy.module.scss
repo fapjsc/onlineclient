@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   .menu-box {
     display: flex;
     justify-content: flex-end;
@@ -21,6 +22,9 @@
     right: 2.8%;
     bottom: 41.3%;
     clip-path: polygon(0 0, 100% 0, 100% 99%, 96% 101%, 3% 101%, 0 99%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .btn-box {
@@ -205,5 +209,102 @@
 
   100% {
     background-position-x: 126.3%;
+  }
+}
+
+.middle {
+  width: 100%;
+  height: 15%;
+  align-self: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  bottom: -1%;
+  background-image: url(../../../assets/日本slot/素材/拳王中間框2.jpg);
+}
+.middleContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  >div {
+    margin-right: 3%;
+    background-image: url(../../../assets/日本slot/素材/中間框_拳王_吉宗共用.jpg);
+    width: 20%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+    >p:first-child {
+      color: rgb(199, 199, 199);
+    }
+    >p:last-child {
+      color: rgb(29, 234, 22);
+    }
+  }
+  >img {
+    margin-right: 3%;
+    width: 6%;
+    height: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+.bonusInfo {
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  max-width: 550px;
+  width: 100%;
+  height: 6%;
+  background-color: #000000;
+  z-index: 1000000;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  >div {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 30%;
+    height: 80%;
+
+    >div:first-child {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30%;
+      height: 50%;
+    }
+    >div:last-child {
+      font-size: 2rem;
+    }
+  }
+  >div:first-child {
+    color: red;
+    >div:first-child {
+      border: 2px solid red;
+    }
+  }
+  >div:nth-child(2) {
+    color: rgb(255, 196, 0);
+    >div:first-child {
+      border: 2px solid rgb(255, 196, 0);
+    }
+  }
+  >div:nth-child(3) {
+    color: rgb(42, 237, 12);
+    >div:first-child {
+      border: 2px solid rgb(42, 237, 12);
+    }
   }
 }

@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 import React, {
   useState, useCallback, useMemo, useEffect,
 } from 'react';
@@ -219,7 +222,22 @@ const Sammy = ({
         egmID={egmID}
         userLevel={userLevel}
         userName={userName}
+        brand={brand}
       />
+      <div className={styles.bonusInfo}>
+        <div>
+          <div>大當</div>
+          <div>1232</div>
+        </div>
+        <div>
+          <div>確變</div>
+          <div>1232</div>
+        </div>
+        <div>
+          <div>？？</div>
+          <div>{jpSlot?.games}</div>
+        </div>
+      </div>
 
       <Wrapper jp img={image} className={styles.container} model={model}>
         <section type={name} className={styles['video-box']}>
@@ -229,6 +247,35 @@ const Sammy = ({
             setPlayStatus={setPlayStatus}
             getSdkRef={getSdkRef}
           />
+          <div className={styles.middle}>
+            <div className={styles.middleContainer}>
+              <div>
+                <p>CREDIT</p>
+                <p>{jpSlot?.coin || 0}</p>
+              </div>
+              <img
+                alt="hi"
+                role="presentation"
+                src={require(`../../../assets/日本slot/素材/拳王_押注燈${1}.png`)}
+              />
+              {/* <div>
+                <p>TOTAL</p>
+                <p>20456</p>
+              </div> */}
+              <div>
+                <p>WIN</p>
+                <p>{jpSlot?.win || 0}</p>
+              </div>
+              <img
+                style={{
+                  height: '40%',
+                }}
+                alt="hi"
+                role="presentation"
+                src={require(`../../../assets/日本slot/素材/拳王_燈${1}.png`)}
+              />
+            </div>
+          </div>
         </section>
 
         {playStatus === 'canPlay' && (
@@ -251,7 +298,6 @@ const Sammy = ({
             點擊後開始播放
           </button>
         )}
-
         <section className={styles['btn-box']}>
           <div className={styles.content}>
             {/* Top Btn */}

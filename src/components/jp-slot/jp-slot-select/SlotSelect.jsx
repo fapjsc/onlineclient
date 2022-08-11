@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 // Antd
 import {
   Mask,
@@ -29,6 +29,7 @@ import {
 // Styles
 import styles from './JpSlotSelect.module.scss';
 
+// eslint-disable-next-line import/no-named-as-default
 import Bricks from '../../egmInfo/Bricks';
 import EgmInfo from '../../egmInfo/egmInfo';
 // import image1 from '../../../assets/slot-list/sammy/拳王.webp';
@@ -36,12 +37,17 @@ import EgmInfo from '../../egmInfo/egmInfo';
 
 // Language
 import language from './language';
-
 // eslint-disable-next-line
 const SlotSelect = ({ hidden }) => {
   const dispatch = useDispatch();
   const [showEgmInfo, setShowEgmInfo] = useState(false);
+  const [fetchBonus, setFetchBonus] = useState({
+    status: false,
+    page: 1,
+    take: 10,
+  });
   const { action: showSelectAction, slot } = useSelector((state) => state.pixi);
+  const brickRef = useRef(null);
 
   useEffect(() => {
     console.log('pixiData => ', showSelectAction, slot);
@@ -62,12 +68,32 @@ const SlotSelect = ({ hidden }) => {
   });
 
   useEffect(() => {
+    if (fetchBonus.status) {
+      console.log(fetchBonus);
+      const url = `http://192.168.10.121:3030/online/jp_slot/${slot?.egmId}/infomation/play?page=${fetchBonus.page}&take=${fetchBonus.take}`;
+      axios({
+        method: 'get',
+        url: url,
+      }).then((response) => {
+        brickRef.current = response?.data?.result;
+        console.log('response => ', response?.data?.result);
+        setFetchBonus((prev) => ({ ...prev, status: false }));
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchBonus]);
 
+  useEffect(() => {
+    if (showSelectAction) {
+      setFetchBonus((prev) => ({ ...prev, status: true }));
+    }
   }, [showSelectAction]);
 
   const { data: egm } = useSelector((state) => state.egmList);
   const jpSlot = egm?.find((item) => item?.id === slot?.egmId)?.jpSlot;
-  console.log(`this.egmID  ${slot?.egmId}\n all egm  ${egm}\n this.jpSlot   ${jpSlot}`);
+  //console.log(`this.egmID  ${slot?.egmId}\n all egm  ${egm}\n this.jpSlot   ${jpSlot}`);
   return (
     <>
       {/* <Mask visible={visible} onMaskClick={hidden} opacity={0.1} /> */}
@@ -147,9 +173,16 @@ const SlotSelect = ({ hidden }) => {
                 ))}
               </div>
               <div className={styles['body-chart']}>
-                <DownFill />
-                <Bricks />
-                <DownFill />
+                <DownFill onClick={() => {
+                  // eslint-disable-next-line max-len
+                  setFetchBonus((prev) => ({ ...prev, status: true, page: prev.page <= 0 ? 0 : prev.page - 1 }));
+                }}
+                />
+                <Bricks data={brickRef.current} game={jpSlot?.games || ''} totalGame={jpSlot?.totalGames || ''} />
+                <DownFill onClick={() => {
+                  setFetchBonus((prev) => ({ ...prev, status: true, page: prev.page + 1 }));
+                }}
+                />
               </div>
               <div className={styles['body-bb']}>
                 <div>{language.bb}</div>
