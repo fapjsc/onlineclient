@@ -227,15 +227,15 @@ const Sammy = ({
       <div className={styles.bonusInfo}>
         <div>
           <div>大當</div>
-          <div>1232</div>
+          <div>1</div>
         </div>
         <div>
           <div>確變</div>
-          <div>1232</div>
+          <div>1</div>
         </div>
         <div>
           <div>？？</div>
-          <div>{jpSlot?.games}</div>
+          <div>{1 || jpSlot?.games}</div>
         </div>
       </div>
 
