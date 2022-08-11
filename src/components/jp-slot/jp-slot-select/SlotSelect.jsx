@@ -15,6 +15,7 @@ import {
 } from 'antd-mobile-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { agentServer } from '../../../apis';
 
 import loadingImg from '../../../assets/slot-list/loading.png';
 import notFoundImg from '../../../assets/slot-list/找不到圖片.png';
@@ -70,7 +71,7 @@ const SlotSelect = ({ hidden }) => {
   useEffect(() => {
     if (fetchBonus.status) {
       console.log(fetchBonus);
-      const url = `http://192.168.10.121:3030/online/jp_slot/${slot?.egmId}/infomation/play?page=${fetchBonus.page}&take=${fetchBonus.take}`;
+      const url = `${agentServer.api}/jp_slot/${slot?.egmId}/infomation/play?page=${fetchBonus.page}&take=${fetchBonus.take}`;
       axios({
         method: 'get',
         url: url,
