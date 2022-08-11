@@ -209,7 +209,7 @@ const Daito = ({
           <div>1</div>
         </div>
         <div>
-          <div>？？</div>
+          <div>場次</div>
           <div>{1 || jpSlot?.games}</div>
         </div>
       </div>
