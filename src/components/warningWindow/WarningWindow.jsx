@@ -103,13 +103,19 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
 
   let { playerPressTime } = !egmListData && Object.keys(findEgmListData)?.length === 0 ? playerPressTimeDefault : findEgmListData
   const playerPressTimeOut = findEgmListData?.playerPressTimeOut || {}
-  const { start: washStart, done: washDone, member_id: washMember } = findEgmListData?.autoLeaveEgm || autoLeaveEgmDefault
+  const { start: washStart, done: washDone, online_id: washMember } = findEgmListData?.autoLeaveEgm || autoLeaveEgmDefault
 
   const startTimer = () => {
     const date = playerPressTime === -1 ? 0 : (new Date() - new Date(playerPressTime)) / 1000
     console.log(`timeout of player press time =>  \n${new Date()}\n${new Date(playerPressTime)}\n${date}`)
     const timeOutSec = (playerPressTimeOut - 30000) / 1000
     Timer(timeOutSec, 30, 0)
+  }
+  const isWashMe = () => {
+    if (washMember === userData?.online_id) {
+      return true
+    }
+    return false
   }
 
   const btnOnClick = () => {
@@ -123,7 +129,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
         } catch {
           //pass
         }
-      } else {
+      } else if (!isWashMe()) {
         startTimer()
       }
     } else {
@@ -148,8 +154,8 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
   }, [playerPressTime, playerPressTimeOut]);
 
   useEffect(() => {
-    console.log('autoleave egm =>', washStart, washDone, washMember ,userData?.member_id)
-    if (washDone && (propStatus === 'timeOut' || propStatus === 'timeInterval')) {
+    console.log('autoleave egm =>', washStart, washDone, '\nwashMember =>', washMember, 'user =>', userData?.online_id)
+    if (washDone && isWashMe() && (propStatus === 'timeOut' || propStatus === 'timeInterval')) {
       setStatus('timeOut')
       setShow(true)
     } else if (sec === 0 && min === 0) {

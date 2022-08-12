@@ -2,7 +2,9 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, {
+  useState, useCallback, useMemo, useEffect,
+} from 'react';
 
 import throttle from 'lodash.throttle';
 
@@ -17,6 +19,10 @@ import classnames from 'classnames';
 
 import styled from 'styled-components';
 
+import { store } from '../../../store';
+
+import { showWarningWindow } from '../../../store/actions/warningAction';
+
 // actions
 // eslint-disable-next-line
 import { DatePickerView } from 'antd-mobile';
@@ -25,6 +31,7 @@ import {
   buttonPress,
   buttonPressDemo,
   buttonPressToEGMCashInOut,
+  clearButtonPressStatus,
 } from '../../../store/actions/egmActions';
 
 // Helpers
@@ -104,6 +111,7 @@ const Daito = ({
 
   const { data: userData } = useSelector((state) => state.user);
   const { level: userLevel, member_account: userName } = userData || {};
+  const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
 
   const { data } = useSelector((state) => state.selectEgm);
   const { id: egmId } = data || {};
@@ -187,6 +195,18 @@ const Daito = ({
       }));
     }, 200);
   };
+
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
+
+  useEffect(() => {
+    if (btnPressError) {
+      setAuto(false);
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btnPressError]);
 
   return (
     <>

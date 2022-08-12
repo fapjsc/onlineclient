@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Actions
-import { buttonPress } from '../../../store/actions/egmActions';
+import { buttonPress, clearButtonPressStatus } from '../../../store/actions/egmActions';
 import { egmActionTypes } from '../../../store/types';
 
 // Config
@@ -80,6 +80,7 @@ const Aruze = ({
   const { data } = useSelector((state) => state.selectEgm);
 
   const { buttonList } = data || {};
+  const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
 
   // Ref
   const subBtnRef = useRef();
@@ -237,6 +238,17 @@ const Aruze = ({
 
     // eslint-disable-next-line
   }, [isAuto, currentBtnPress]);
+
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
+
+  useEffect(() => {
+    if (btnPressError) {
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [btnPressError]);
 
   return (
     <>

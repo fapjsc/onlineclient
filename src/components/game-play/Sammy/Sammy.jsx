@@ -26,10 +26,14 @@ import {
   // eslint-disable-next-line
   buttonPress,
   buttonPressDemo,
+  clearButtonPressStatus,
   // eslint-disable-next-line
   buttonPressToEGMCashInOut,
   sammyAutoPlay,
 } from '../../../store/actions/egmActions';
+import { store } from '../../../store';
+
+import { showWarningWindow } from '../../../store/actions/warningAction';
 
 // Helpers
 import { getMainBtnImg, getCoinBtnImg } from '../../../utils/helper';
@@ -207,10 +211,16 @@ const Sammy = ({
     // eslint-disable-next-line
   }, [auto, dispatch, ip]);
 
+  const confirmBtnAction = () => {
+    dispatch(clearButtonPressStatus());
+  };
+
   useEffect(() => {
     if (btnPressError) {
       setAuto(false);
+      store.dispatch(showWarningWindow('on', 'warning', confirmBtnAction, btnPressError));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnPressError]);
 
   return (
