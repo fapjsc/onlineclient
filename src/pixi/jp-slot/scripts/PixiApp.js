@@ -36,6 +36,10 @@ export class PixiApp extends PIXI.Application {
       console.log('game start!');
       const resize = this.view.height + 250 * rowSlotAmount?.length
       this.renderer.resize(this.appWidth, resize)
+
+      this.renderer.plugins.interaction.autoPreventDefault = false;
+      this.renderer.view.style.touchAction = 'auto';
+      
       const mainScene = new MainScene(this.appWidth, resize, this.#_brandName);
       // eslint-disable-next-line no-plusplus
       for (let item = 0; item < rowSlotAmount?.length; item++) {
