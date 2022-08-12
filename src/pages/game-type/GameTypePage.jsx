@@ -48,9 +48,13 @@ import { changePeople, changeSlot, setPixiStatus } from '../../store/actions/pix
 import { egmActionTypes } from '../../store/types';
 import { showWarningWindow } from '../../store/actions/warningAction';
 
+import Bounce from '../../HOC/Bounce';
+
 const jpSlotList = ['sammy', 'daito'];
 const slotList = ['igt', 'aruze', 'aristocrat'];
 const peopleSexual = ['m1', 'w1', 'w2'];
+
+const Bouncing = Bounce();
 
 const GameTypePage = () => {
   const navigate = useNavigate();
@@ -256,13 +260,6 @@ const GameTypePage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandListError, selectEgmError, egmListError]);
 
-  const clickInScale = (event) => {
-    event.target.style.transform = 'scale(0.8)';
-  };
-  const clickOutScale = (event) => {
-    event.target.style.transform = null;
-  };
-
   return (
     <>
       <div
@@ -301,10 +298,7 @@ const GameTypePage = () => {
             />
 
             <div className={styles['jp-slot-header']}>
-              <div
-                onPointerLeave={(event) => clickOutScale(event)}
-                onPointerDown={(event) => clickInScale(event)}
-                onPointerUp={(event) => clickOutScale(event)}
+              <Bouncing
                 className={styles.back}
                 role="presentation"
                 onClick={(event) => {
@@ -315,10 +309,7 @@ const GameTypePage = () => {
                 {
                   jpSlotList.indexOf(showSlot.brandName) !== -1
                   && jpSlotList.map((item) => (
-                    <div
-                      onPointerDown={(event) => clickInScale(event)}
-                      onPointerLeave={(event) => clickOutScale(event)}
-                      onPointerUp={(event) => clickOutScale(event)}
+                    <Bouncing
                       role="presentation"
                       onClick={(event) => {
                         setShowSlot((prev) => ({ ...prev, brandName: item }));
@@ -326,24 +317,21 @@ const GameTypePage = () => {
                       className={styles[showSlot.brandName === item ? 'navBtn-click' : 'navBtn-origin']}
                     >
                       {item === 'sammy' ? '北斗' : '吉宗'}
-                    </div>
+                    </Bouncing>
                   ))
                 }
                 {
                   slotList.indexOf(showSlot.brandName) !== -1
                   && slotList.map((item) => (
-                    <div
+                    <Bouncing
                       role="presentation"
-                      onPointerLeave={(event) => clickOutScale(event)}
-                      onPointerDown={(event) => clickInScale(event)}
-                      onPointerUp={(event) => clickOutScale(event)}
                       onClick={(event) => {
                         setShowSlot((prev) => ({ ...prev, brandName: item }));
                       }}
                       className={styles[showSlot.brandName === item ? 'navBtn-click' : 'navBtn-origin']}
                     >
                       {item.toUpperCase()}
-                    </div>
+                    </Bouncing>
                   ))
                 }
               </div>

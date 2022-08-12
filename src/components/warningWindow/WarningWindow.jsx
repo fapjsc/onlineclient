@@ -149,7 +149,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
 
   useEffect(() => {
     console.log('autoleave egm =>', washStart, washDone, washMember ,userData?.member_id)
-    if (washDone) {
+    if (washDone && (propStatus === 'timeOut' || propStatus === 'timeInterval')) {
       setStatus('timeOut')
       setShow(true)
     } else if (sec === 0 && min === 0) {

@@ -32,20 +32,20 @@ const Bricks = ({ data, game, totalGame }) => {
     {
       id: 0,
       type: '',
-      count: game < 101 ? 101 : game,
+      count: game < 100 ? 100 : game,
     }, //first column
     ...bonusData,
-    10 - bonusData?.length !== 0
-      ? [
-        ...new Array(10 - bonusData?.length)
-          .fill('').map((item, index) => (
-            {
-              id: index + 1 + 10 - bonusData?.length,
-              type: '',
-              count: 0,
-            }
-          ))]
-      : bonusData,
+    // 10 - bonusData?.length !== 0
+    //   ? [
+    //     ...new Array(10 - bonusData?.length)
+    //       .fill('').map((item, index) => (
+    //         {
+    //           id: index + 1 + 10 - bonusData?.length,
+    //           type: '',
+    //           count: 0,
+    //         }
+    //       ))]
+    //   : bonusData,
   ];
 
   transfer?.forEach((bonusItem, bonusIndex) => {
@@ -75,7 +75,7 @@ const Bricks = ({ data, game, totalGame }) => {
           };
           break;
         default:
-          console.log('hihi => ', empIdx, count);
+          console.log('hihi => ', empIdx, count, game);
           if (count > 0) {
             empty[empIdx] = {
               className: mainStyle.green,
@@ -88,6 +88,7 @@ const Bricks = ({ data, game, totalGame }) => {
               text: '',
             };
           }
+          break;
         }
         // eslint-disable-next-line no-continue
         continue;

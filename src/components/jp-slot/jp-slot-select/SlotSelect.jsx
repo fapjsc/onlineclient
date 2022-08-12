@@ -36,8 +36,13 @@ import EgmInfo from '../../egmInfo/egmInfo';
 // import image1 from '../../../assets/slot-list/sammy/拳王.webp';
 // import image2 from '../../../assets/slot-list/daito/吉宗.webp';
 
+import Bounce from '../../../HOC/Bounce';
+
 // Language
 import language from './language';
+
+const BouncingDown = Bounce(DownFill);
+
 // eslint-disable-next-line
 const SlotSelect = ({ hidden }) => {
   const dispatch = useDispatch();
@@ -174,13 +179,13 @@ const SlotSelect = ({ hidden }) => {
                 ))}
               </div>
               <div className={styles['body-chart']}>
-                <DownFill onClick={() => {
+                <BouncingDown onClick={() => {
                   // eslint-disable-next-line max-len
                   setFetchBonus((prev) => ({ ...prev, status: true, page: prev.page <= 0 ? 0 : prev.page - 1 }));
                 }}
                 />
                 <Bricks data={brickRef.current} game={jpSlot?.games || ''} totalGame={jpSlot?.totalGames || ''} />
-                <DownFill onClick={() => {
+                <BouncingDown onClick={() => {
                   setFetchBonus((prev) => ({ ...prev, status: true, page: prev.page + 1 }));
                 }}
                 />
