@@ -1,9 +1,10 @@
 // import { axios } from '../../config/axiosConfig';
 import axios from 'axios';
+// import { store } from '..';
 
 import { userActionTypes, rootActionTypes } from '../types';
 
-import { agentServer, authApi } from '../../apis';
+import { agentServer, authApi, userApi } from '../../apis';
 
 // const addUserToLocalStorage = ({ user, token, location }) => {
 //   localStorage.setItem('user', JSON.stringify(user));
@@ -42,6 +43,28 @@ export const setupUser = ({ currentUser, endPoint }) => async (dispatch) => {
         error: error?.response?.data?.message || 'setup uer fail',
       },
     });
+  }
+};
+
+export const getUserInfo = (token) => async (dispatch) => {
+  // dispatch({ type: userActionTypes.SETUP_USER_BEGIN });
+  if (!token) return;
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(`${agentServer.api}/${userApi.selfInfo}`, config);
+
+    const { result } = data || {};
+
+    dispatch({
+      type: userActionTypes.UPDATE_ONLINE,
+      payload: { onlineData: result },
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 

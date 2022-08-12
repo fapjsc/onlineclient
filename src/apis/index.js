@@ -14,6 +14,10 @@ export const authApi = {
   landing15Wheel: '15slot/autoLogin',
 };
 
+export const userApi = {
+  selfInfo: 'selfInfo',
+};
+
 export const egmAPi = {
   getEgmList: 'egmList',
   selectEgm: 'selectEgm',

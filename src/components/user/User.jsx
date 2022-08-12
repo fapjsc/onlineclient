@@ -9,7 +9,8 @@ import {
 } from 'antd-mobile';
 
 // Actions
-import { logout } from '../../store/actions/userActions';
+// eslint-disable-next-line
+import { logout, getUserInfo } from '../../store/actions/userActions';
 
 // Socket
 import { disconnectSocket } from '../../utils/socket';
@@ -26,7 +27,9 @@ const User = () => {
   // Redux
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.user);
-  const { online, member_account: account, mail_address: email } = data || {};
+  const {
+    online, member_account: account, mail_address: email, token,
+  } = data || {};
 
   const contentArr = [
     { content: online?.id, text: 'ID' },
@@ -67,7 +70,11 @@ const User = () => {
           <Avatar
             src="https://picsum.photos/200"
             style={{
+              cursor: 'pointer',
               '--size': isMobile ? '5rem' : '8rem',
+            }}
+            onClick={() => {
+              dispatch(getUserInfo(token));
             }}
           />
           <Button onClick={logoutHandler}>登出</Button>
