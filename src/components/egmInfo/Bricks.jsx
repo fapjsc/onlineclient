@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './Bricks.module.scss';
 
 const mainStyle = {
@@ -13,15 +13,18 @@ const mainStyle = {
   text: 'container-text',
 };
 
-const bonusDefault = {
+const bonusDefault = [{
   id: 0,
   type: '',
   count: 0,
-};
+}];
 
-// eslint-disable-next-line no-unused-vars
-const Bricks = ({ data, game, totalGame }) => {
-  if (!data) return <></>;
+const Bricks = ({
+  // eslint-disable-next-line no-unused-vars
+  data, game, totalGame, fetchBonus,
+}) => {
+  const slideRef = useRef(null);
+  // if (!data) return <></>;
   const empty = new Array(143).fill({ className: mainStyle.empty, text: '' });
   const bonusData = (data?.bonusList || data?.bounsList) || bonusDefault;
   // console.log('empty =>', empty);
@@ -75,7 +78,7 @@ const Bricks = ({ data, game, totalGame }) => {
           };
           break;
         default:
-          console.log('hihi => ', empIdx, count, game);
+          // console.log('hihi => ', empIdx, count, game);
           if (count > 0) {
             empty[empIdx] = {
               className: mainStyle.green,
@@ -154,14 +157,44 @@ const Bricks = ({ data, game, totalGame }) => {
       }
     }
   });
-  return (
-    <div className={styles.container}>
-
-      {
-        empty.map((item, index) =>
-        // eslint-disable-next-line react/no-array-index-key, implicit-arrow-linebreak
-          <div key={index} className={styles[item.className]}>{item.text}</div>)
+  useEffect(() => {
+    slideRef.current.style.overflow = 'hidden';
+    if (fetchBonus.status && slideRef.current) {
+      const width = slideRef.current.clientWidth;
+      const scrollPosition = slideRef.current.scrollLeft;
+      slideRef.current.style.overflow = 'scroll';
+      // console.log(width, scrollPosition);
+      if (fetchBonus.position === 'left') {
+        slideRef.current.scroll(-1 * width + scrollPosition, 0);
+        slideRef.current.style.opacity = 0;
+      } else if (fetchBonus.position === 'right') {
+        slideRef.current.scroll(width + scrollPosition, 0);
+        slideRef.current.style.opacity = 0;
+      } else if (fetchBonus.position === 'init') {
+        slideRef.current.scroll(0, 0);
+        slideRef.current.style.opacity = 0;
       }
+      setTimeout(() => {
+        slideRef.current.scroll(width, 0);
+        setTimeout(() => {
+          slideRef.current.style.opacity = 1;
+        }, 600);
+      }, 400);
+      slideRef.current.style.overflow = 'hidden';
+    }
+  }, [fetchBonus]);
+  return (
+    <div ref={slideRef} className={styles.switch}>
+      <div className={styles.container} />
+      <div className={styles.container}>
+
+        {
+          empty.map((item, index) =>
+          // eslint-disable-next-line react/no-array-index-key, implicit-arrow-linebreak
+            <div key={index} className={styles[item.className]}>{item.text}</div>)
+        }
+      </div>
+      <div className={styles.container} />
     </div>
   );
 };

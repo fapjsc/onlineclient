@@ -51,6 +51,7 @@ const SlotSelect = ({ hidden }) => {
     status: false,
     page: 1,
     take: 10,
+    position: 'init',
   });
   const { action: showSelectAction, slot } = useSelector((state) => state.pixi);
   const brickRef = useRef(null);
@@ -181,12 +182,21 @@ const SlotSelect = ({ hidden }) => {
               <div className={styles['body-chart']}>
                 <BouncingDown onClick={() => {
                   // eslint-disable-next-line max-len
-                  setFetchBonus((prev) => ({ ...prev, status: true, page: prev.page <= 0 ? 0 : prev.page - 1 }));
+                  setFetchBonus((prev) => ({
+                    ...prev, status: true, page: prev.page <= 0 ? 0 : prev.page - 1, position: 'left',
+                  }));
                 }}
                 />
-                <Bricks data={brickRef.current} game={jpSlot?.games || ''} totalGame={jpSlot?.totalGames || ''} />
+                <Bricks
+                  data={brickRef.current}
+                  game={jpSlot?.games || ''}
+                  totalGame={jpSlot?.totalGames || ''}
+                  fetchBonus={fetchBonus}
+                />
                 <BouncingDown onClick={() => {
-                  setFetchBonus((prev) => ({ ...prev, status: true, page: prev.page + 1 }));
+                  setFetchBonus((prev) => ({
+                    ...prev, status: true, page: prev.page + 1, position: 'right',
+                  }));
                 }}
                 />
               </div>
