@@ -1,6 +1,8 @@
 /* eslint-disable */
 import * as PIXI from 'pixi.js';
 import { Slot } from '../Slot';
+import HitAreaShapes from 'hitarea-shapes';
+import people from '../../sprites/people.json'
 
 const textureArr = () => {
   const frames = [
@@ -36,6 +38,7 @@ export class PeopleAnim extends PIXI.AnimatedSprite {
     this.interactive = true;
     this.buttonMode = true;
     this.#Event();
+    this.#_hitArea()
     // let frames = 0;
     // if (sexual === 'w1') {
     //   frames = 6;
@@ -60,5 +63,9 @@ export class PeopleAnim extends PIXI.AnimatedSprite {
     this.on('click', () => {
       console.log(`people ${this.id} is clicked`);
     });
+  }
+
+  #_hitArea() {
+    this.hitArea = new HitAreaShapes(people)
   }
 }

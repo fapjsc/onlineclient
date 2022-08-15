@@ -23,6 +23,7 @@ export class MainScene extends PIXI.Container {
     this.slot = [];//this is the slot group  and store the slot info at here;
     this.people = [];//this is the people group and store the people info at here
     this.slotTime = []//this is the times of slot
+    this.stages = []
 
     this.#_createBackground();
   }
@@ -113,6 +114,7 @@ export class MainScene extends PIXI.Container {
     stage.position.set(0, -100);
     // stage.buttonMode = false;
     container.addChild(stage);
+    this.stages.push(stage)
   }
 
   #_createTimes(container, horizonID) {

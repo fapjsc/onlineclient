@@ -99,33 +99,45 @@ const GameTypePage = () => {
 
   const { id: egmID } = selectEgmDta || {};
 
-  const resetSlotList = (brandName, model, row, egmId) => {
+  const resetSlotList = (brandName, model, rowIndex, egmId) => {
     // eslint-disable-next-line no-unused-vars
-    new Array(6).fill('').forEach((item, index) => {
-      store.dispatch(
-        changeSlot(parseInt(`${row + 1 }${ index + 1}`, 10), brandName, model, '5', jpSlotList.indexOf(brandName) !== -1 ? '' : 'd1', egmId),
-      );
-    });
+    store.dispatch(
+      changeSlot(rowIndex, brandName, model, '5', jpSlotList.indexOf(brandName) !== -1 ? '' : 'd1', egmId),
+    );
+    console.log(`設定機台\n編號 ${rowIndex}\n品牌 ${brandName}\n機器名  ${model} `);
   };
 
-  const resetPeopleList = (isPlaying, row) => {
+  const resetPeopleList = (isPlaying, rowIndex) => {
     // eslint-disable-next-line no-unused-vars
-    new Array(6).fill('').forEach((item, index) => {
-      let sexual;
-      if (isPlaying) {
-        sexual = peopleSexual[Math.floor(Math.random() * 3)];
-      } else {
-        sexual = '';
-      }
-      store.dispatch(changePeople(parseInt(`${row + 1}${ index + 1}`, 10), sexual, 'vip'));
-    });
+    let sexual;
+    if (isPlaying) {
+      sexual = peopleSexual[Math.floor(Math.random() * 3)];
+    } else {
+      sexual = '';
+    }
+    store.dispatch(changePeople(rowIndex, sexual, 'vip'));
+    console.log(`設定遊戲玩家\n編號${rowIndex}\n角色編號${sexual}`);
+  };
+
+  const breackLine = (arr) => {
+    const slotArr = [];
+    const row = Math.floor(arr?.length / 6);
+    const amount = arr?.length % 6;
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < row; i++) {
+      slotArr.push(6);
+    }
+    slotArr.push(amount);
+    return slotArr;
   };
 
   const findSlot = () => {
     let slot;
     if (jpSlotList.indexOf(showSlot.brandName) !== -1) {
+      //jp slot
       slot = egmList.data?.filter((item) => item?.brand_name === showSlot.brandName);
     } else {
+      //origin slot
       slot = egmList.data?.filter((item) => slotList.indexOf(item?.brand_name) !== -1);
     }
     return slot;
@@ -137,19 +149,22 @@ const GameTypePage = () => {
     if (!slot) return;
     console.log('slot =>', slot);
     slot.forEach((item, index) => {
+      const row = Math.floor(index / 6) + 1;
+      const amount = (index % 6) + 1;
+      const rowIndex = parseInt(`${row }${amount}`, 10);
       try {
         if (Object.keys(item?.member)?.length > 0
         || item?.hasCredit
         || item?.waitingList?.length > 0) {
         //有人在遊戲中
-          resetPeopleList(true, index);
+          resetPeopleList(true, rowIndex);
         } else {
-          resetPeopleList(false, index);
+          resetPeopleList(false, rowIndex);
         }
       } catch {
         store.dispatch(showWarningWindow('on', 'warning', () => navigate('/'), '尚未有機器可供選擇'));
       }
-      resetSlotList(item?.brand_name, item?.model, index, item.id);
+      resetSlotList(item?.brand_name, item?.model, rowIndex, item.id);
     });
   };
 
@@ -166,8 +181,10 @@ const GameTypePage = () => {
   useEffect(() => {
     if (!showSlot.action) return;
     const slot = findSlot();
+    const arr = breackLine(slot);
+    console.log(`初始化\n  ${arr?.length}  排\n  ${slot?.length}  台`);
     const pixiApp = new PixiApp(pixiRef.current?.clientWidth, showSlot.brandName);
-    pixiApp?.active(new Array(slot?.length).fill(6)).then(() => {
+    pixiApp?.active(arr).then(() => {
       dispatchData();
     });
     pixiRef.current?.appendChild(pixiApp?.view);

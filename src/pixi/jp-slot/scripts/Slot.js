@@ -2,7 +2,12 @@
 import * as PIXI from 'pixi.js';
 import { store } from '../../../store/index';
 import { setPixiStatus } from '../../../store/actions/pixiAction';
-
+import HitAreaShapes from 'hitarea-shapes';
+import aruze from '../sprites/老虎機/aruze.json';
+import aristocrat from '../sprites/老虎機/aristocrat.json';
+import igt from '../sprites/老虎機/igt.json';
+import daito from '../sprites/daito.json';
+import sammy from '../sprites/sammy.json';
 export class Slot extends PIXI.Container {
   #_brandName;
   constructor(id, offsetX, offsetY, brandName) {
@@ -45,6 +50,7 @@ export class Slot extends PIXI.Container {
 
     slot.gotoAndStop(0);
     this.addChild(slot);
+    this.#_hitArea(slot)
     return slot;
   }
 
@@ -90,5 +96,30 @@ export class Slot extends PIXI.Container {
       return true;
     }
     return false;
+  }
+
+  #_hitArea(sprite) {
+    let areaJson;
+    switch(this.#_brandName) {
+    case 'aruze':
+      areaJson = aruze;
+      break;
+    case 'aristocrat':
+      areaJson = aristocrat;
+      break;
+    case 'igt':
+      areaJson = igt;
+      break;
+    case 'sammy':
+      areaJson = sammy;
+      break;
+    case 'daito':
+      areaJson = daito;
+      break;
+    default:
+      areaJson = igt;
+      break;
+    }
+    sprite.hitArea = new HitAreaShapes(areaJson)
   }
 }

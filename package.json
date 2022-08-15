@@ -15,6 +15,7 @@
     "crypto": "npm:crypto-browserify",
     "crypto-browserify": "^3.12.0",
     "gsap": "^3.9.1",
+    "hitarea-shapes": "^1.1.1",
     "https-browserify": "^1.0.0",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",

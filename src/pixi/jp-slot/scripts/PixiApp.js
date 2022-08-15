@@ -14,7 +14,7 @@ export class PixiApp extends PIXI.Application {
     super({
       width: width,
       height: 500,
-      backgroundColor: 0xFBBA6F,
+      backgroundColor: 0x000000,
       antialias: true,
       resolution: 1,
     });
@@ -30,15 +30,14 @@ export class PixiApp extends PIXI.Application {
   }
 
   async active(rowSlotAmount) {
-    const loaders = new Loader(this.loader);
+    const loaders = new Loader(this);
     this.#_timeAmount = rowSlotAmount
+    this.renderer.plugins.interaction.autoPreventDefault = false;
+    this.renderer.view.style.touchAction = 'auto';
     this.mainScene = await loaders.preload().then(() => {
       console.log('game start!');
       const resize = this.view.height + 250 * rowSlotAmount?.length
       this.renderer.resize(this.appWidth, resize)
-
-      this.renderer.plugins.interaction.autoPreventDefault = false;
-      this.renderer.view.style.touchAction = 'auto';
       
       const mainScene = new MainScene(this.appWidth, resize, this.#_brandName);
       // eslint-disable-next-line no-plusplus
@@ -139,6 +138,13 @@ export class PixiApp extends PIXI.Application {
         if (this.#_brandName === 'sammy' || this.#_brandName === 'daito') {
           item.times.gotoAndStop(0)
         } else { item.times.gotoAndStop(1)}
+        item.times.alpha = 0;
+      })
+      this.mainScene.slot.forEach((item) => {
+        item.slot.alpha = 0
+      })
+      this.mainScene.stages.forEach((item) => {
+        item.alpha = 0;
       })
     }
 
