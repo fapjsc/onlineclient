@@ -137,7 +137,7 @@ export class MainScene extends PIXI.Container {
     times.play()
     this.slotTime.push({times: times, id: horizonID})
     container.addChild(times);
-    console.log('slotTime => ', this.slotTime)
+    // console.log('slotTime => ', this.slotTime)
   }
 
   #_createBackground() {
@@ -164,7 +164,7 @@ export class MainScene extends PIXI.Container {
       }
       this.addChild(bg);
       this.#_prevBg = bg;
-      console.log('bg => ', bgCount, this.height, this.#_mainSceneHeight)
+      // console.log('bg => ', bgCount, this.height, this.#_mainSceneHeight)
     });
     const showGirl = this.#_createShowGirl(0)
     showGirl.position.set(100, 80)

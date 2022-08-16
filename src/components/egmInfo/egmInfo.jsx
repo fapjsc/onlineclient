@@ -12,7 +12,7 @@ import image2 from './吉宗遊戲說明_日文版.jpeg';
 const EgmInfo = ({ show, close, slot }) => (
   <div style={{ display: show ? 'flex' : 'none' }} className={styles.container}>
     <div className={styles.header}>
-      <div>{console.log(slot)}</div>
+      {/* <div>{console.log(slot)}</div> */}
       <CloseCircleOutline onClick={close} />
     </div>
     <div className={styles.body}>

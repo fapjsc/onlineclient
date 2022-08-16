@@ -31,6 +31,10 @@ export const peopleReducer = (state = peoleState, action) => {
     return { people: action.payload.sort((item1, item2) => item1.id - item2.id) };
   case pixiActionTypes.CHANGE_PEOPLE:
     return { people: action.payload.sort((item1, item2) => item1.id - item2.id) };
+  case pixiActionTypes.INIT_PEOPLE:
+    return {
+      people: [],
+    };
   default:
     return state;
   }
@@ -46,6 +50,10 @@ export const slotReducer = (state = slotState, action) => {
     return { slot: action.payload.sort((item1, item2) => item1.id - item2.id) };
   case pixiActionTypes.CHANGE_SLOT:
     return { slot: action.payload.sort((item1, item2) => item1.id - item2.id) };
+  case pixiActionTypes.INIT_SLOT:
+    return {
+      slot: [],
+    };
   default:
     return state;
   }

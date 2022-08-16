@@ -140,6 +140,9 @@ const GameTypePage = () => {
       //origin slot
       slot = egmList.data?.filter((item) => slotList.indexOf(item?.brand_name) !== -1);
     }
+    // if (slot) {
+    //   slot = [...slot, ...slot, ...slot, ...slot];
+    // }
     return slot;
   };
 
@@ -147,7 +150,7 @@ const GameTypePage = () => {
     const slot = findSlot();
 
     if (!slot) return;
-    console.log('slot =>', slot);
+    // console.log('slot =>', slot);
     slot.forEach((item, index) => {
       const row = Math.floor(index / 6) + 1;
       const amount = (index % 6) + 1;
@@ -188,11 +191,7 @@ const GameTypePage = () => {
       dispatchData();
     });
     pixiRef.current?.appendChild(pixiApp?.view);
-    console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current?.children[0]);
-    setTimeout(() => {
-      console.log('scroll');
-      // pixiRef.current.scrollTop = 400;
-    }, 4000);
+    // console.log('pixi', showSlot, pixiRef, pixiApp, pixiRef.current?.children[0]);
     return () => {
       pixiApp?.destroy();
       try {
@@ -218,7 +217,7 @@ const GameTypePage = () => {
 
   useEffect(() => {
     store.dispatch(setPixiStatus(false));
-    console.log('showSlot => ', showSlot);
+    // console.log('showSlot => ', showSlot);
   }, [showSlot]);
 
   // eslint-disable-next-line no-unused-vars

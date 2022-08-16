@@ -10,6 +10,7 @@ import daito from '../sprites/daito.json';
 import sammy from '../sprites/sammy.json';
 export class Slot extends PIXI.Container {
   #_brandName;
+  #_isTouch = false;
   constructor(id, offsetX, offsetY, brandName) {
     super();
     this.id = id;
@@ -20,6 +21,7 @@ export class Slot extends PIXI.Container {
     this.anim = this.#_createSlot();
     this.modeSign = this.#_createMode();
     this.#_Event();
+    this.isSelected = this.isSelected.bind(this)
   }
 
   static createTexture(frames) {
@@ -75,17 +77,31 @@ export class Slot extends PIXI.Container {
     return modeSign;
   }
 
+  isSelected() {
+    const { slot: slotSelected, action: slotAction } = store.getState().pixi
+    if (slotSelected?.id === this.id) {
+      this.anim.tint = 0xFFE66F;
+    } else if (!this.#_isTouch) {
+      this.anim.tint = 0xFFFFFF;
+    }
+  }
+
   #_Event() {
     this.anim.on('pointerover', () => {
       this.anim.tint = 0xFFE66F;
+      this.#_isTouch = true;
     });
     this.anim.on('pointerout', () => {
+      const { slot: slotSelected, action: slotAction } = store.getState().pixi
       this.anim.tint = 0xFFFFFF;
+      this.#_isTouch = false;
+      
     });
     this.anim.on('pointerdown', () => {
+      this.anim.tint = 0xFFE66F;
       console.log(`slot ${this.id} is clicked`);
       const { slot: slotArr } = store.getState().slotList;
-      console.log(slotArr);
+      // console.log(slotArr);
       const findSlot = slotArr.find((item) => item.id === this.id);
       store.dispatch(setPixiStatus(true, findSlot));
     });

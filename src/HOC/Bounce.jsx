@@ -5,13 +5,12 @@ const Bounce = (Wrapper = null) => {
     constructor(props) {
       super(props);
       this.state = {};
-      // this.clickInScale = this.clickInScale.bind(this);
-      // this.clickOutScale = this.clickOutScale.bind(this);
+      this.clickInScale = this.clickInScale.bind(this);
+      this.clickOutScale = this.clickOutScale.bind(this);
     }
 
     clickInScale(event) {
-      console.log(event);
-      event.target.style.transform = 'scale(0.8)';
+      event.target.style.transform = 'scale(0.6)';
     }
 
     clickOutScale(event) {
@@ -24,7 +23,7 @@ const Bounce = (Wrapper = null) => {
           <Wrapper
             onPointerLeave={(event) => this.clickOutScale(event)}
             onPointerDown={(event) => this.clickInScale(event)}
-            onPointerUp={(event) => this.clickOutScale(event)}
+            onPointerOut={(event) => this.clickOutScale(event)}
             {...this.props}
           >
             {/* //pass */}
@@ -33,6 +32,7 @@ const Bounce = (Wrapper = null) => {
       }
       return (
         <div
+          onPointerOut={(event) => this.clickOutScale(event)}
           onPointerLeave={(event) => this.clickOutScale(event)}
           onPointerDown={(event) => this.clickInScale(event)}
           onPointerUp={(event) => this.clickOutScale(event)}

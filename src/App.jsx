@@ -40,7 +40,7 @@ const AnimatedSwitch = () => {
   }, []);
 
   useEffect(() => {
-    console.log(visible, propStatus, btnAction, windowText, btnText);
+    // console.log(visible, propStatus, btnAction, windowText, btnText);
   }, [visible, propStatus, btnAction, windowText, btnText]);
   return (
     <TransitionGroup component={null}>

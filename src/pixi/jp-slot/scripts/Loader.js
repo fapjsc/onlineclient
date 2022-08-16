@@ -13,7 +13,7 @@ export class Loader {
     this.resources = loadConfig;
     this.#_mainSceneWidth = app.appWidth;
     app.stage.addChild(this.container());
-    console.log(app.appWidth)
+    // console.log(app.appWidth)
     //載入檔案錯誤時
     // this.loader.onError.add((err) => {
     //   // console.log("error:", err);
@@ -36,7 +36,7 @@ export class Loader {
 
   loadingHandler(event){
     // console.log("onProgress: ", event);
-    this.#_text.text = '載入中  ' + (event.progress | 0) + '%';
+    this.#_text.text = 'loading  ' + (event.progress | 0) + '%';
     this.#_progress.beginFill(0x93ff93);
     this.#_progress.drawRoundedRect(0, 0, (event.progress | 0) * 3, 30, 50)
     this.#_progress.endFill();
@@ -45,7 +45,7 @@ export class Loader {
   container() {
     const progressContainer = new PIXI.Container()
     progressContainer.position.set((this.#_mainSceneWidth - 300 ) / 2, 200)
-    console.log(this.#_mainSceneWidth)
+    // console.log(this.#_mainSceneWidth)
     this.#_text = new PIXI.Text(this._now, {
       fontSize: 20,
       fill: 0xffffff
@@ -68,7 +68,9 @@ export class Loader {
       });
       this.loader.load((loader, resources) => {
         Globals.resources = resources;
-        resolve();
+        setTimeout(() => {
+          resolve();
+        }, 300);
       });
     });
   }

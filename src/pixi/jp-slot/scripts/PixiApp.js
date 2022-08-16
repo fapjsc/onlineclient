@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 import { Loader } from './Loader';
 import { MainScene } from './MainScene';
 import { store } from '../../../store/index';
+import { initPeople, initSLot } from '../../../store/actions/pixiAction';
 
 export class PixiApp extends PIXI.Application {
   Scene = 0;
@@ -18,6 +19,8 @@ export class PixiApp extends PIXI.Application {
       antialias: true,
       resolution: 1,
     });
+    store.dispatch(initPeople())
+    store.dispatch(initSLot())
     this.appWidth = width;
     this.mainScene = null;
     this.#_brandName = brandName
@@ -192,6 +195,7 @@ export class PixiApp extends PIXI.Application {
       }
       slotMachine?.anim.gotoAndStop(slotFrame);
       slotMachine.visible = true;
+      slotMachine.isSelected()
     });
 
     slot.forEach((item, index) => {

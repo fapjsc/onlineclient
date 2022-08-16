@@ -69,6 +69,8 @@ export const egmActionTypes = {
 export const pixiActionTypes = {
   STATUS_ON: 'STATUS_ON',
   STATUS_OFF: 'STATUS_OFF',
+  INIT_PEOPLE: 'INIT_PEOPLE',
+  INIT_SLOT: 'INIT_SLOT',
   SET_PEOPLE: 'SET_PEOPLE',
   SET_SLOT: 'SET_SLOT',
   CHANGE_PEOPLE: 'CHANGE_PEOPLE',

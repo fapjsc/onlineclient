@@ -11,6 +11,11 @@ export const setPixiStatus = (status, slot) => {
   return { type: pixiActionTypes.STATUS_OFF };
 };
 
+export const initPeople = () => ({
+  type: pixiActionTypes.INIT_PEOPLE,
+  payload: null,
+});
+
 // eslint-disable-next-line arrow-body-style
 export const setPeople = (data) => {
   //data => {id: , sexual: , level: }
@@ -43,6 +48,11 @@ export const changePeople = (id, sexual, level) => {
     payload: peopleChanged,
   };
 };
+
+export const initSLot = () => ({
+  type: pixiActionTypes.INIT_SLOT,
+  payload: null,
+});
 
 // eslint-disable-next-line arrow-body-style
 export const setSlot = (data) => {

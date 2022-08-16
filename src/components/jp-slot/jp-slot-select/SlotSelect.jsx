@@ -26,6 +26,7 @@ import { getEgmImage } from '../../../utils/helper';
 import {
   selectEgm,
 } from '../../../store/actions/egmActions';
+import { setPixiStatus } from '../../../store/actions/pixiAction';
 
 // Styles
 import styles from './JpSlotSelect.module.scss';
@@ -46,6 +47,7 @@ const BouncingDown = Bounce(DownFill);
 // eslint-disable-next-line
 const SlotSelect = ({ hidden }) => {
   const dispatch = useDispatch();
+  const { slot: slotList } = useSelector((state) => state.slotList);
   const [showEgmInfo, setShowEgmInfo] = useState(false);
   const [fetchBonus, setFetchBonus] = useState({
     status: false,
@@ -57,7 +59,7 @@ const SlotSelect = ({ hidden }) => {
   const brickRef = useRef(null);
 
   useEffect(() => {
-    console.log('pixiData => ', showSelectAction, slot);
+    // console.log('pixiData => ', showSelectAction, slot);
   }, [showSelectAction, slot]);
 
   const selectEgmHandler = (id) => {
@@ -70,20 +72,31 @@ const SlotSelect = ({ hidden }) => {
     setShowEgmInfo(true);
   };
 
+  const setPixi = (step) => {
+    // console.log(slotArr);
+    const findSlotIdx = slotList.indexOf(slot);
+    if (
+      findSlotIdx !== -1
+      && findSlotIdx + step >= 0
+      && findSlotIdx + step <= slotList?.length - 1) {
+      dispatch(setPixiStatus(true, slotList[findSlotIdx + step]));
+    }
+  };
+
   const rwd = (one, two) => ({
     height: (slot?.brandName === 'sammy' || slot?.brandName === 'daito') ? one : two,
   });
 
   useEffect(() => {
     if (fetchBonus.status) {
-      console.log(fetchBonus);
+      // console.log(fetchBonus);
       const url = `${agentServer.api}/jp_slot/${slot?.egmId}/infomation/play?page=${fetchBonus.page}&take=${fetchBonus.take}`;
       axios({
         method: 'get',
         url: url,
       }).then((response) => {
         brickRef.current = response?.data?.result;
-        console.log('response => ', response?.data?.result);
+        // console.log('response => ', response?.data?.result);
         setFetchBonus((prev) => ({ ...prev, status: false }));
       }).catch((error) => {
         console.log(error);
@@ -152,9 +165,11 @@ const SlotSelect = ({ hidden }) => {
             </div>
           </div>
           <div className={styles['header-action']}>
-            <DownFill />
-            16
-            <DownFill />
+            <BouncingDown onClick={() => setPixi(-1)} />
+            {
+              slot?.id - 10
+            }
+            <BouncingDown onClick={() => setPixi(1)} />
           </div>
         </div>
 
