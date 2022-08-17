@@ -96,6 +96,8 @@ const Sammy = ({
 
   const [spin, setSpin] = useState({ action: false, code: '4' });
 
+  const [betLightStatus, setBetLightStatus] = useState('pending'); // pending, full
+
   const [stop, setStop] = useState({
     left: { action: false, code: '3' },
     center: { action: false, code: '2' },
@@ -107,7 +109,7 @@ const Sammy = ({
   // Redux
   const dispatch = useDispatch();
 
-  const { error: btnPressError } = useSelector((state) => state.egmButtonPress);
+  const { error: btnPressError, data: btnPressData } = useSelector((state) => state.egmButtonPress);
 
   const { data: userData } = useSelector((state) => state.user);
   const { level: userLevel, member_account: userName } = userData || {};
@@ -168,7 +170,7 @@ const Sammy = ({
         ...prev,
         [target.id]: { ...prev[target.id], action: false },
       }));
-    }, 300);
+    }, 500);
   };
 
   const onStopClick = ({ target }) => {
@@ -200,7 +202,7 @@ const Sammy = ({
         stop.center.code,
         stop.right.code,
       ];
-      dispatch(sammyAutoPlay({ ip, codeList }));
+      dispatch(sammyAutoPlay({ ip, codeList, setBetLightStatus }));
 
       loops = setInterval(() => {
         dispatch(sammyAutoPlay({ ip, codeList }));
@@ -222,6 +224,16 @@ const Sammy = ({
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnPressError]);
+
+  useEffect(() => {
+    if (btnPressData === 'Button: 5 pressed') {
+      setBetLightStatus('full');
+    }
+
+    if (btnPressData === 'Button: 4 pressed') {
+      setBetLightStatus('pending');
+    }
+  }, [btnPressData]);
 
   return (
     <>
@@ -263,11 +275,17 @@ const Sammy = ({
                 <p>CREDIT</p>
                 <p>{jpSlot?.coin || 0}</p>
               </div>
-              <img
+
+              <div className={`
+              ${styles['bet-light']} 
+              ${classnames({ [styles['bet-light-move']]: betLightStatus === 'full' })}
+              `}
+              />
+              {/* <img
                 alt="hi"
                 role="presentation"
                 src={require(`../../../assets/日本slot/素材/拳王_押注燈${1}.png`)}
-              />
+              /> */}
               {/* <div>
                 <p>TOTAL</p>
                 <p>20456</p>

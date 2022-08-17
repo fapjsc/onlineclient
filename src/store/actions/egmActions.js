@@ -208,15 +208,16 @@ export const buttonPressDemo = ({ ip, code, name }) => async (dispatch) => {
         },
       });
     }
-    alert(
-      response
-        ? `${response?.data.status}: ${response?.data.message}`
-        : error,
-    );
+    // alert(
+    //   response
+    //     ? `${response?.data.status}: ${response?.data.message}`
+    //     : error,
+    // );
   }
 };
 
-export const sammyAutoPlay = ({ ip, codeList }) => async (dispatch) => {
+// eslint-disable-next-line
+export const sammyAutoPlay = ({ ip, codeList, setBetLightStatus }) => async (dispatch) => {
   if (!ip || !codeList) return;
 
   dispatch({ type: egmActionTypes.BUTTON_PRESS_BEGIN });
@@ -226,6 +227,12 @@ export const sammyAutoPlay = ({ ip, codeList }) => async (dispatch) => {
     asyncForEach(codeList, async (el, index) => {
       try {
         const { data } = await authFetch.post(url, { ip, code: el });
+        if (el === '5' || el === '4') {
+          dispatch({
+            type: egmActionTypes.BUTTON_PRESS_SUCCESS,
+            payload: { buttonPressData: data.message },
+          });
+        }
 
         if (index === codeList.length - 1) {
           dispatch({
@@ -248,11 +255,11 @@ export const sammyAutoPlay = ({ ip, codeList }) => async (dispatch) => {
           });
         }
 
-        alert(
-          response
-            ? `${response?.data.status}: ${response?.data.message}`
-            : error,
-        );
+        // alert(
+        //   response
+        //     ? `${response?.data.status}: ${response?.data.message}`
+        //     : error,
+        // );
         throw new Error(response?.data?.message);
       }
     });
@@ -268,11 +275,11 @@ export const sammyAutoPlay = ({ ip, codeList }) => async (dispatch) => {
       });
     }
 
-    alert(
-      response
-        ? `${response?.data.status}: ${response?.data.message}`
-        : error,
-    );
+    // alert(
+    //   response
+    //     ? `${response?.data.status}: ${response?.data.message}`
+    //     : error,
+    // );
   }
 };
 
@@ -353,7 +360,6 @@ export const clearLeaveEgm = () => ({
 
 // 直接 call 拳王 egm 投幣 (暫時)
 export const buttonPressToEGMCashInOut = ({ type, egmId }) => async (dispatch) => {
-  console.log(type, egmId);
   // const url = 'http://220.135.67.240:1880/slot/coin/enter';
   const url = `${agentServer.api}/${egmAPi.sammyCashInOut}`;
   dispatch({ type: cashInActionTypes.CASH_IN_BEGIN });
