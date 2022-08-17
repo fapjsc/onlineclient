@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import classnames from 'classnames';
 
 import PropTypes from 'prop-types';
+import { getUserInfo } from '../../store/actions/userActions';
 
 import styles from './HomeButton.module.scss';
 
 const HomeButton = ({ setCurrentAction }) => {
+  const { data } = useSelector((state) => state.user);
+  const { token } = data || {};
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const [btnClick, setBtnClick] = useState({
@@ -36,6 +44,9 @@ const HomeButton = ({ setCurrentAction }) => {
 
     if (id === 'user') {
       setCurrentAction('user');
+      if (token) {
+        dispatch(getUserInfo(token));
+      }
     }
 
     setTimeout(() => {
