@@ -123,7 +123,9 @@ const Daito = ({
   const egmID = sammyItem?.id;
 
   const { jpSlot } = sammyItem || {};
-  const point = jpSlot?.coinPurse;
+  const {
+    coinPurse: point, games, showBB, showRB,
+  } = jpSlot || {};
 
   const btnPressApiHandler = useCallback(
     (code) => {
@@ -222,15 +224,15 @@ const Daito = ({
       <div className={styles.bonusInfo}>
         <div>
           <div>大當</div>
-          <div>1</div>
+          <div>{showBB || 0}</div>
         </div>
         <div>
           <div>確變</div>
-          <div>1</div>
+          <div>{showRB || 0}</div>
         </div>
         <div>
           <div>場次</div>
-          <div>{1 || jpSlot?.games}</div>
+          <div>{games || 0}</div>
         </div>
       </div>
       <Wrapper jp img={image} className={styles.container} model={model}>

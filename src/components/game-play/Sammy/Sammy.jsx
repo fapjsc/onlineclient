@@ -124,7 +124,13 @@ const Sammy = ({
   const egmID = sammyItem?.id;
 
   const { jpSlot } = sammyItem || {};
-  const point = jpSlot?.coinPurse;
+
+  const {
+    coinPurse: point, games, showBB, showRB,
+  } = jpSlot || {};
+
+  console.log(games);
+  // const point = jpSlot?.coinPurse;
 
   const btnPressApiHandler = useCallback(
     (code) => {
@@ -249,15 +255,15 @@ const Sammy = ({
       <div className={styles.bonusInfo}>
         <div>
           <div>大當</div>
-          <div>1</div>
+          <div>{showBB || 0}</div>
         </div>
         <div>
           <div>確變</div>
-          <div>1</div>
+          <div>{showRB || 0}</div>
         </div>
         <div>
           <div>場次</div>
-          <div>{1 || jpSlot?.games}</div>
+          <div>{games || 0}</div>
         </div>
       </div>
 
@@ -281,15 +287,6 @@ const Sammy = ({
               ${classnames({ [styles['bet-light-move']]: betLightStatus === 'full' })}
               `}
               />
-              {/* <img
-                alt="hi"
-                role="presentation"
-                src={require(`../../../assets/日本slot/素材/拳王_押注燈${1}.png`)}
-              /> */}
-              {/* <div>
-                <p>TOTAL</p>
-                <p>20456</p>
-              </div> */}
               <div>
                 <p>WIN</p>
                 <p>{jpSlot?.win || 0}</p>
