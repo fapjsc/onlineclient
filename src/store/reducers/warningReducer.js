@@ -38,3 +38,18 @@ export const warningReducer = (state = warningState, action) => {
     return state;
   }
 };
+
+const previousUrlState = {
+  previousUrl: null,
+};
+
+export const previousUrlReducer = (state = previousUrlState, action) => {
+  switch (action.type) {
+  case warningActionTypes.STORE_URL:
+    return {
+      previousUrl: action.payload,
+    };
+  default:
+    return state;
+  }
+};

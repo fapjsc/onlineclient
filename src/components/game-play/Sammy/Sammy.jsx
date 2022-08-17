@@ -278,8 +278,8 @@ const Sammy = ({
           <div className={styles.middle}>
             <div className={styles.middleContainer}>
               <div>
-                <p>CREDIT</p>
-                <p>{jpSlot?.coin || 0}</p>
+                <span>CREDIT</span>
+                <span>{jpSlot?.coin || 0}</span>
               </div>
 
               <div className={`
@@ -288,8 +288,8 @@ const Sammy = ({
               `}
               />
               <div>
-                <p>WIN</p>
-                <p>{jpSlot?.win || 0}</p>
+                <span>WIN</span>
+                <span>{jpSlot?.win || 0}</span>
               </div>
               <img
                 style={{

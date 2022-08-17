@@ -36,7 +36,7 @@ export const changePeople = (id, sexual, level) => {
     if (item.id === id) {
       return {
         id: id,
-        sexual: sexual,
+        sexual: (item.sexual !== '' && sexual !== '') ? item.sexual : sexual,
         level: level,
       };
     }

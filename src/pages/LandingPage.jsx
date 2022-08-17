@@ -21,6 +21,7 @@ import { clearSelectEgmData } from '../store/actions/egmActions';
 
 // APis
 import { agentServer, authApi } from '../apis';
+import { storePreviousUrl } from '../store/actions/warningAction';
 
 const landing = async ({ playerAccount, hash }) => {
   let endPoint;
@@ -99,6 +100,7 @@ const LandingPage = () => {
     dispatch(autoLogin(result));
     if (result?.location?.stayingPage === 'game-type') {
       console.log(result?.location);
+      dispatch(storePreviousUrl('https://www.zhangxinxu.com/wordpress/2017/02/js-page-url-document-referrer/'));
       navigate('/game-type');
       return;
     }

@@ -68,7 +68,7 @@ const GameTypePage = () => {
   const [showSlot, setShowSlot] = useState({ action: false, brandName: null });
 
   const pixiRef = useRef(null);
-  const { egmList } = store.getState();
+  const { egmList, warning } = store.getState();
 
   const {
     data: selectEgmDta,
@@ -77,6 +77,10 @@ const GameTypePage = () => {
     // eslint-disable-next-line no-unused-vars
     error: selectEgmError,
   } = useSelector((state) => state.selectEgm);
+
+  const {
+    windowText: warningWindowText,
+  } = useSelector((state) => state.warning);
 
   const {
     // eslint-disable-next-line
@@ -119,7 +123,7 @@ const GameTypePage = () => {
     console.log(`設定遊戲玩家\n編號${rowIndex}\n角色編號${sexual}`);
   };
 
-  const breackLine = (arr) => {
+  const breakLine = (arr) => {
     const slotArr = [];
     const row = Math.floor(arr?.length / 6);
     const amount = arr?.length % 6;
@@ -184,7 +188,7 @@ const GameTypePage = () => {
   useEffect(() => {
     if (!showSlot.action) return;
     const slot = findSlot();
-    const arr = breackLine(slot);
+    const arr = breakLine(slot);
     console.log(`初始化\n  ${arr?.length}  排\n  ${slot?.length}  台`);
     const pixiApp = new PixiApp(pixiRef.current?.clientWidth, showSlot.brandName);
     pixiApp?.active(arr).then(() => {
@@ -375,13 +379,13 @@ const GameTypePage = () => {
                       className={styles.body}
                       style={{ height: height * 0.63 }}
                     >
-                      <div
+                      {(warningWindowText !== '無效的TOKEN') && (<div
                         role="presentation"
                         style={{ cursor: 'pointer' }}
                         onClick={openSelect}
                         id="jp-pixi"
                         ref={pixiRef}
-                      />
+                      />)}
                     </div>
                   )}
           </>

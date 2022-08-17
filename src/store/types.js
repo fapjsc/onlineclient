@@ -80,6 +80,7 @@ export const pixiActionTypes = {
 export const warningActionTypes = {
   VISIBLE_ON: 'VISIBLE_ON',
   VISIBLE_OFF: 'VISIBLE_OFF',
+  STORE_URL: 'STORE_URL',
   WARNING_BTN_CLICK: 'WARNING_BTN_CLICK',
 };
 

@@ -172,14 +172,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-size: 0.5rem;
+    justify-content: space-around;
+    font-size: 1.2rem;
+    span {
+      display: inline-block;
+    }
 
-    > p:first-child {
+
+    > span:first-child {
       color: rgb(199 199 199);
     }
 
-    > p:last-child {
+    > span:last-child {
       color: rgb(29 234 22);
     }
   }

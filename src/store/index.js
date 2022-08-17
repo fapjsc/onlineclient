@@ -28,7 +28,7 @@ import {
   pixiReducer, slotReducer, peopleReducer,
 } from './reducers/pixiReducer';
 
-import { warningReducer } from './reducers/warningReducer';
+import { previousUrlReducer, warningReducer } from './reducers/warningReducer';
 
 const persistConfig = {
   key: 'root',
@@ -37,6 +37,7 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
+  previousUrl: previousUrlReducer,
   warning: warningReducer,
   peopleList: peopleReducer,
   slotList: slotReducer,

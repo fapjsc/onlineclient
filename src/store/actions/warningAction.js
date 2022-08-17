@@ -16,3 +16,8 @@ export const showWarningWindow = (status, propStatus = 'warning', btnAction = ((
     type: warningActionTypes.VISIBLE_OFF,
   };
 };
+
+export const storePreviousUrl = (url) => ({
+  type: warningActionTypes.STORE_URL,
+  payload: url,
+});

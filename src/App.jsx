@@ -6,6 +6,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  useNavigate,
 } from 'react-router-dom';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -27,6 +28,7 @@ const GameTypePage = React.lazy(() => import('./pages/game-type/GameTypePage'));
 
 const AnimatedSwitch = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const {
     visible,
     propStatus,
@@ -34,20 +36,29 @@ const AnimatedSwitch = () => {
     windowText,
     btnText,
   } = useSelector((state) => state.warning);
+  const {
+    // eslint-disable-next-line no-unused-vars
+    previousUrl: prevUrl,
+  } = useSelector((state) => state.previousUrl);
 
   useEffect(() => {
     store.dispatch(showWarningWindow('off'));
   }, []);
 
-  useEffect(() => {
-    // console.log(visible, propStatus, btnAction, windowText, btnText);
-  }, [visible, propStatus, btnAction, windowText, btnText]);
   return (
     <TransitionGroup component={null}>
       <WarningWindow
         visible={visible}
         propStatus={propStatus}
-        btnAction={btnAction}
+        btnAction={() => {
+          if (btnText === '重新登入' && !prevUrl) {
+            navigate('/home');
+          }
+          // else {
+          //   navigate(prevUrl);
+          // }
+          btnAction();
+        }}
         windowText={windowText}
         btnText={btnText}
       />

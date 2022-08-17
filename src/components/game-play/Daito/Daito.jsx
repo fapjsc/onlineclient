@@ -246,8 +246,8 @@ const Daito = ({
           <div className={styles.middle}>
             <div className={styles.middleContainer}>
               <div>
-                <p>CREDIT</p>
-                <p>{jpSlot?.coin || 0}</p>
+                <span>CREDIT</span>
+                <span>{jpSlot?.coin || 0}</span>
               </div>
               <img
                 alt="hi"
@@ -255,12 +255,12 @@ const Daito = ({
                 src={require(`../../../assets/日本slot/素材/吉宗_押注燈${1}.png`)}
               />
               <div>
-                <p />
-                <p />
+                <span />
+                <span />
               </div>
               <div>
-                <p>WIN</p>
-                <p>{jpSlot?.win || 0}</p>
+                <span>WIN</span>
+                <span>{jpSlot?.win || 0}</span>
               </div>
               <img
                 style={{
