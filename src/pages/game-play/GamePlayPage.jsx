@@ -150,7 +150,7 @@ const GamePlay = () => {
     dispatch(clearLeaveEgm());
 
     setTimeout(() => {
-      navigate('/');
+      navigate('/game-type');
     }, 10);
   };
 
