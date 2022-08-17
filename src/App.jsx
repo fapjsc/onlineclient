@@ -19,7 +19,7 @@ import LandingPage from './pages/LandingPage';
 import './App.scss';
 import WarningWindow from './components/warningWindow/WarningWindow';
 import { store } from './store';
-import { showWarningWindow } from './store/actions/warningAction';
+import { getPrevUrl, showWarningWindow } from './store/actions/warningAction';
 
 const GamePlayPage = React.lazy(() => import('./pages/game-play/GamePlayPage'));
 const Layout = React.lazy(() => import('./pages/Layout/Layout'));
@@ -42,6 +42,12 @@ const AnimatedSwitch = () => {
   } = useSelector((state) => state.previousUrl);
 
   useEffect(() => {
+    if (btnText === '重新登入') {
+      store.dispatch(getPrevUrl());
+    }
+  }, [btnText]);
+
+  useEffect(() => {
     store.dispatch(showWarningWindow('off'));
   }, []);
 
@@ -51,12 +57,9 @@ const AnimatedSwitch = () => {
         visible={visible}
         propStatus={propStatus}
         btnAction={() => {
-          if (btnText === '重新登入' && !prevUrl) {
-            navigate('/home');
+          if (btnText === '重新登入') {
+            navigate(prevUrl);
           }
-          // else {
-          //   navigate(prevUrl);
-          // }
           btnAction();
         }}
         windowText={windowText}

@@ -18,6 +18,11 @@ export const userApi = {
   selfInfo: 'selfInfo',
 };
 
+export const previousPlatformApi = {
+  platform: 'platform',
+  return_url: 'return_url',
+};
+
 export const egmAPi = {
   getEgmList: 'egmList',
   selectEgm: 'selectEgm',

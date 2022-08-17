@@ -103,7 +103,7 @@ const SlotSelect = ({ hidden }) => {
       });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchBonus]);
+  }, [fetchBonus, slot]);
 
   useEffect(() => {
     if (showSelectAction) {
