@@ -143,7 +143,7 @@ const Cover = ({
     let waitingList,
       syn = '';
 
-    console.log('start booking ');
+    // console.log('start booking ');
     waitingList = egm?.waitingList || [];
 
     setTotalBooking(waitingList?.length || 0);
@@ -152,7 +152,7 @@ const Cover = ({
         syn = item + 1;
       }
     }
-    console.log('egm membere => ', egm?.member);
+    // console.log('egm membere => ', egm?.member);
     if (syn === 1 && Object.keys(egm?.member).length === 0 && !egm?.hasCredit) {
       syn = 0;
     }
@@ -161,15 +161,15 @@ const Cover = ({
   };
 
   const calcExpireTime = () => {
-    console.log('waitingExpireTime => ', egm.waitingExpiredTime);
+    // console.log('waitingExpireTime => ', egm.waitingExpiredTime);
     const expiredTime =
       egm?.waitingExpiredTime - new Date() > 0
         ? (egm?.waitingExpiredTime - new Date()) / 1000
         : 0;
-    console.log('倒數計時 => ', expiredTime);
+    // console.log('倒數計時 => ', expiredTime);
     const expiredTimeSec = Math.round(expiredTime % 60);
     const expiredTimeMin = parseInt(expiredTime / 60);
-    console.log('倒數計時分秒=> ', expiredTimeMin, expiredTimeSec);
+    // console.log('倒數計時分秒=> ', expiredTimeMin, expiredTimeSec);
     changeTime(expiredTimeSec, expiredTimeMin);
     setTrigger(true);
   };
@@ -201,7 +201,7 @@ const Cover = ({
   const btnOnClick = async () => {
     setSynPosition('');
     setTotalBooking('');
-    console.log('egmId OnlineId', egmId, onlineId);
+    // console.log('egmId OnlineId', egmId, onlineId);
     if (status == 'origin') {
       setEgmIdClicked(egmId);
       setStatus('connect');

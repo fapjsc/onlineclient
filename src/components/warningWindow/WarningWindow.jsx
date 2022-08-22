@@ -107,7 +107,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
 
   const startTimer = () => {
     const date = playerPressTime === -1 ? 0 : (new Date() - new Date(playerPressTime)) / 1000
-    console.log(`timeout of player press time =>  \n${new Date()}\n${new Date(playerPressTime)}\n${date}`)
+    // console.log(`timeout of player press time =>  \n${new Date()}\n${new Date(playerPressTime)}\n${date}`)
     const timeOutSec = (playerPressTimeOut - 30000) / 1000
     Timer(timeOutSec, 30, 0)
   }
@@ -120,7 +120,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
 
   const btnOnClick = () => {
     setShow(false)
-    console.log('onclick')
+    // console.log('onclick')
     store.dispatch(showWarningWindow('off'));
     if (propStatus === 'timeInterval' ) {
       if (status === 'timeOut') {
@@ -154,7 +154,7 @@ const WarningWindow = ({propStatus, btnAction, windowText, visible, btnText}) =>
   }, [playerPressTime, playerPressTimeOut]);
 
   useEffect(() => {
-    console.log('autoleave egm =>', washStart, washDone, '\nwashMember =>', washMember, 'user =>', userData?.online_id)
+    // console.log('autoleave egm =>', washStart, washDone, '\nwashMember =>', washMember, 'user =>', userData?.online_id)
     if (washDone && isWashMe() && (propStatus === 'timeOut' || propStatus === 'timeInterval')) {
       setStatus('timeOut')
       setShow(true)

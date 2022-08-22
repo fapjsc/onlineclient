@@ -26,7 +26,7 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     }
     timeIntervalTimer.current = 0;
     timeOutTimer.current = 0;
-    console.log('clear');
+    // console.log('clear');
   };
 
   const Timer = (timeOut, sec, min) => {
@@ -34,7 +34,7 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     //await Clear();
     clearInterval(timeIntervalTimer.current)
     clearTimeout(timeOutTimer.current)
-    console.log(`reset success 等待${timeOut || propTimeOutCount}秒 重新計時`);
+    // console.log(`reset success 等待${timeOut || propTimeOutCount}秒 重新計時`);
     changeTime(sec, min)
     timeOutTimer.current = setTimeout(() => {
       timeIntervalTimer.current = setInterval(() => {
@@ -65,7 +65,7 @@ function useTimer(propSec, propMin, propTimeOutCount) {
 
   useEffect(() => {
     changeTime(propSec, propMin);
-    console.log('reset_timer');
+    // console.log('reset_timer');
     Clear()
     // eslint-disable-next-line
   }, []);
@@ -75,7 +75,7 @@ function useTimer(propSec, propMin, propTimeOutCount) {
     //console.log(`${min}分${sec}秒`);
     if (countDown.sec === 0 && countDown.min === 0) {
       Clear();
-      console.log('計時器停止');
+      // console.log('計時器停止');
     }
     // eslint-disable-next-line
   }, [ countDown.sec, countDown.min]);

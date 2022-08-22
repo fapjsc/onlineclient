@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from 'react-redux';
 // Transition
 import { CSSTransition } from 'react-transition-group';
 
+import useSound from 'use-sound';
+
 // Components
 import LoadingPage from '../LoadingPage';
 import AftForm from '../../components/aft-form/AftForm';
@@ -49,6 +51,8 @@ import { cleanJapanSlotState } from '../../store/actions/japanSlotActins';
 // Helpers
 import { getEgmBg } from '../../utils/helper';
 
+import bgSound from '../../assets/輕快的中國風-Main-version.mp3';
+
 const Aristocrat = React.lazy(() => import('../../components/game-play/Aristocrat/Aristocrat'));
 const Aruze = React.lazy(() => import('../../components/game-play/Aruze/Aruze'));
 const Igt = React.lazy(() => import('../../components/game-play/Igt/Igt'));
@@ -64,6 +68,13 @@ const GamePlay = () => {
 
   // Router prop
   const navigate = useNavigate();
+
+  // Play Sound
+  const [play, { stop }] = useSound(bgSound, {
+    volume: 0.1,
+    loop: true,
+    interrupt: false,
+  });
 
   // Init state
   const [isCashInOutClick, setIsCashInOutClick] = useState(false);
@@ -260,6 +271,12 @@ const GamePlay = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aftData, aftError]);
+
+  useEffect(() => {
+    play();
+
+    return () => { stop(); };
+  }, [play, stop]);
 
   return (
     <>

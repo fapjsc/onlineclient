@@ -30,7 +30,7 @@ const Layout = () => {
 
   const { pathname } = useLocation();
 
-  console.log(pathname);
+  // console.log(pathname);
 
   if (pathname?.includes('game-type')) {
     return (

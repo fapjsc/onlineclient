@@ -108,7 +108,7 @@ const GameTypePage = () => {
     store.dispatch(
       changeSlot(rowIndex, brandName, model, '5', jpSlotList.indexOf(brandName) !== -1 ? '' : 'd1', egmId),
     );
-    console.log(`設定機台\n編號 ${rowIndex}\n品牌 ${brandName}\n機器名  ${model} `);
+    // console.log(`設定機台\n編號 ${rowIndex}\n品牌 ${brandName}\n機器名  ${model} `);
   };
 
   const resetPeopleList = (isPlaying, rowIndex) => {
@@ -120,7 +120,7 @@ const GameTypePage = () => {
       sexual = '';
     }
     store.dispatch(changePeople(rowIndex, sexual, 'vip'));
-    console.log(`設定遊戲玩家\n編號${rowIndex}\n角色編號${sexual}`);
+    // console.log(`設定遊戲玩家\n編號${rowIndex}\n角色編號${sexual}`);
   };
 
   const breakLine = (arr) => {

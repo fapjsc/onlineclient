@@ -34,7 +34,7 @@ export const SrsRtcPlayerAsync = () => {
         dataType: 'json',
       })
         .then((data) => {
-          console.log('Got answer: ', data);
+          // console.log('Got answer: ', data);
           if (data.code) {
             reject(data);
             return;

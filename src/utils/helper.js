@@ -45,7 +45,7 @@ export const getMainBtnImg = ({ name, brand, model }) => {
     imgObj = require(`../assets/button/${brand}/${model}/main/en/${name}.webp`);
   } catch (error) {
     console.log(error);
-    console.log(name, brand, model);
+    // console.log(name, brand, model);
     //eslint-disable-next-line
     // imgObj = require('../assets/button/aruze/sub/en/bet-1.webp');
   }

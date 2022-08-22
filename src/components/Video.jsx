@@ -10,12 +10,12 @@ const Video = ({
 }) => {
   const videoRef = useRef();
   const sdkRef = useRef();
-  console.log(url);
+  // console.log(url);
 
   const startPlay = useCallback(() => {
-    console.log('start play');
+    // console.log('start play');
 
-    console.log(url);
+    // console.log(url);
 
     if (!flag) return;
     flag = false;
@@ -105,11 +105,11 @@ const Video = ({
     };
 
     const canplaythrough = () => {
-      console.log('視訊能夠不停頓地一直播放');
+      // console.log('視訊能夠不停頓地一直播放');
     };
 
     const loadeddata = () => {
-      console.log('當前幀的數據是可用的');
+      // console.log('當前幀的數據是可用的');
     };
 
     current.addEventListener('loadstart', loadstart);

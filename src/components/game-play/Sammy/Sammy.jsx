@@ -129,7 +129,7 @@ const Sammy = ({
     coinPurse: point, games, showBB, showRB,
   } = jpSlot || {};
 
-  console.log(games);
+  // console.log(games);
   // const point = jpSlot?.coinPurse;
 
   const btnPressApiHandler = useCallback(
